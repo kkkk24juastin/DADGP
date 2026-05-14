@@ -1,18 +1,8 @@
-This is BibTeX, Version 0.99d (TeX Live 2024)
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: IISE Transactions Latex Template.aux
 The style file: apalike.bst
 Database file #1: IISE-Trans.bib
-You're missing a field name---line 2 of file IISE-Trans.bib
- : 
- : % title = {Practical Heteroscedastic {Gaussian} Process Modeling for Large Simulation Experiments},
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-You're missing a field name---line 287 of file IISE-Trans.bib
- : 
- : % title = {Space-filling designs for computer experiments},
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
 You've used 48 entries,
             1935 wiz_defined-function locations,
             785 strings with 12298 characters,
@@ -54,4 +44,3 @@ warning$ -- 0
 while$ -- 173
 width$ -- 0
 write$ -- 626
-(There were 2 error messages)
