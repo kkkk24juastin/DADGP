@@ -91,13 +91,6 @@ Joseph, V.~R., Gul, E., and Ba, S. (2019).
   {MaxPro} approach.
 \newblock {\em Journal of Quality Technology}, 52(4):343--354.
 
-\bibitem[Kendall et~al., 2018]{Kendall2018}
-Kendall, A., Gal, Y., and Cipolla, R. (2018).
-\newblock Multi-task learning using uncertainty to weigh losses for scene
-  geometry and semantics.
-\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
-  Pattern Recognition (CVPR)}, pages 7482--7491.
-
 \bibitem[Ko and Kim, 2022]{Ko2022}
 Ko, J. and Kim, H. (2022).
 \newblock Deep {Gaussian} process models for integrating multifidelity
@@ -127,12 +120,6 @@ Liu, P., Ma, Y., and Zhang, C. (2025).
 \newblock Stream of variation modeling and monitoring for heterogeneous
   profiles in multi-stage manufacturing processes.
 \newblock {\em IISE Transactions}, 57(11):1263--1276.
-
-\bibitem[Liu et~al., 2019]{Liu2019}
-Liu, S., Johns, E., and Davison, A.~J. (2019).
-\newblock End-to-end multi-task learning with attention.
-\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
-  Pattern Recognition (CVPR)}.
 
 \bibitem[Luo et~al., 2022]{Luo2022}
 Luo, H., Nattino, G., and Pratola, M.~T. (2022).
@@ -191,12 +178,6 @@ Schmidt, A., Morales-Alvarez, P., and Molina, R. (2024).
   multiple instance learning.
 \newblock {\em IEEE Transactions on Neural Networks and Learning Systems},
   35(8):10909--10922.
-
-\bibitem[Sener and Koltun, 2018]{Sener2018}
-Sener, O. and Koltun, V. (2018).
-\newblock Multi-task learning as multi-objective optimization.
-\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
-  volume~31.
 
 \bibitem[Song et~al., 2025a]{SongJ2025}
 Song, J., Wang, X., Wu, J., and Yue, X. (2025a).
@@ -284,11 +265,5 @@ Zhang, C., Yang, Y., Bramerdorfer, G., Bianchi, N., Zhao, J., Qu, J., and
 \newblock A computationally efficient surrogate model based robust optimization
   for permanent magnet synchronous machines.
 \newblock {\em IEEE Transactions on Energy Conversion}, 37(3):1520--1532.
-
-\bibitem[Zhang and Li, 2007]{Zhang2007}
-Zhang, Q. and Li, H. (2007).
-\newblock {MOEA/D}: A multiobjective evolutionary algorithm based on
-  decomposition.
-\newblock {\em IEEE Transactions on Evolutionary Computation}, 11(6):712--731.
 
 \end{thebibliography}

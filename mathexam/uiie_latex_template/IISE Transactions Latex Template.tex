@@ -61,6 +61,8 @@
 	\newcommand{\bisection}[2]{\section[#1]{#1\protect\\#2}}
 	\newcommand{\bisubsection}[2]{\subsection[#1]{#1\protect\\#2}}
 	\newcommand{\bicaption}[2]{\caption[#1]{#1\protect\\#2}}
+	\newcommand{\revEN}[2]{\textcolor{red}{#1\ \textit{[Resp. to Comment \##2]}}}
+	\newcommand{\revCN}[2]{\textcolor{red}{#1\ \textit{【回应审稿意见 \##2】}}}
 	
 	\begin{document}
 		
@@ -507,15 +509,31 @@ These responses represent escalating levels of complexity: $y_1$ serves as a smo
 
 这些响应代表逐级增强的复杂性：$y_1$ 是平滑、可分的基线函数；$y_2$ 引入变量交互和局部不可导性；$y_3$ 则表现出显著的非凸性和复杂耦合。这样的结构异质性会对标准固定权重优化构成挑战，因此构成了检验所提多注意力机制的严格测试平台。优化目标设定为 $\mathbf{T}=[0, 1.5, 0.8]^T$。
 
-\textbf{Evaluation Metrics and Baselines.} To comprehensively assess model performance, three metrics are employed: Root Mean Square Error (RMSE) to measure point prediction accuracy; Negative Log Predictive Density (NLPD) to evaluate the calibration quality of the probabilistic distributions; and Quality Loss (QL) to quantify the achievement of RPD goals by aggregating deviation and variance.
-For comparative analysis, four representative baselines are selected: (i) EQUAL: The standard uniform weighting strategy \citep{Zhang2007}; (ii) UW: Uncertainty Weighting, which balances tasks via homoscedastic uncertainty \citep{Kendall2018}; (iii) DWA: Dynamic Weight Averaging, based on loss descent rates \citep{Liu2019}; and (iv) MGDA: Multi-Objective Gradient Descent, which seeks Pareto-descent directions \citep{Sener2018}. Additionally, two ablation variants are evaluated to isolate component contributions: T-Atten (retaining only task-level attention) and S-Atten (retaining only sample-level attention). Note that the latter is mathematically equivalent to the EQUAL baseline in this framework.
+\textbf{Evaluation Metrics and Baselines.} To comprehensively assess \textcolor{red}{local ROI modeling quality}, three metrics are employed: Root Mean Square Error (RMSE) to measure point prediction accuracy; Negative Log Predictive Density (NLPD) to evaluate the calibration quality of the probabilistic distributions; and Quality Loss (QL) to quantify the achievement of \textcolor{red}{the local RPD objective} by aggregating deviation and variance. \textcolor{red}{\textit{[Resp. to Comment \#11]}}
+For comparative analysis, \textcolor{red}{the proposed DA-DGP is compared with two single-attention variants S-Atten (EQUAL) and T-Atten, the attention-free Pure DGP, three general multi-task weighting baselines (DWA, UW, and MGDA), and three GP-specific competitors (Indep-DGP, Indep-HetGP, and LMC-DGP). Here, S-Atten (EQUAL) retains only the sample-level attention, T-Atten removes sample-level attention while preserving dynamic task weighting, and Pure DGP removes both attention mechanisms. \textit{[Resp. to Comment \#4,\#6,\#7]}}
 
-\textbf{评估指标与基线方法。} 为全面评估模型性能，本文采用三项指标：均方根误差（RMSE）用于衡量点预测精度；负对数预测密度（NLPD）用于评估概率分布的校准质量；质量损失（QL）则通过聚合偏差和方差来衡量 RPD 目标的达成程度。
-在对比分析中，选取四种代表性基线方法：（i）EQUAL：标准均匀加权策略 \citep{Zhang2007}；（ii）UW：不确定性加权方法，通过同方差不确定性平衡任务 \citep{Kendall2018}；（iii）DWA：动态权重平均方法，基于损失下降速率进行加权 \citep{Liu2019}；（iv）MGDA：多目标梯度下降方法，用于寻找 Pareto 下降方向 \citep{Sener2018}。此外，为隔离各组成模块的贡献，还评估了两种消融变体：T-Atten（仅保留任务级注意力）和 S-Atten（仅保留样本级注意力）。需要指出的是，在本框架下后者在数学上等价于 EQUAL 基线。
+\textbf{评估指标与基线方法。} 为全面评估\textcolor{red}{ROI 局部建模质量}，本文采用三项指标：均方根误差（RMSE）用于衡量点预测精度；负对数预测密度（NLPD）用于评估概率分布的校准质量；质量损失（QL）则通过聚合偏差和方差来衡量\textcolor{red}{局部 RPD 目标}的达成程度。\textcolor{red}{\textit{【回应审稿意见 \#11】}}
+在对比分析中，\textcolor{red}{本文将所提 DA-DGP 与两种单注意力变体 S-Atten（EQUAL）和 T-Atten、无注意力的 Pure DGP、三种通用多任务加权基线（DWA、UW 和 MGDA），以及三种 GP 专用对手（Indep-DGP、Indep-HetGP 和 LMC-DGP）进行比较。其中，S-Atten（EQUAL）仅保留样本级注意力，T-Atten 去除样本级注意力但保留动态任务加权，而 Pure DGP 同时去除两类注意力机制。\textit{【回应审稿意见 \#4,\#6,\#7】}}
 
-\textbf{Experimental Setup.} Latin Hypercube Sampling (LHS) is employed to generate $N=400$ training samples. Figure 3 validates the training stability and mechanism effectiveness by monitoring the convergence trajectories of three key components: the dynamic task weights (reflecting adaptive multi-task balancing), alongside the output scales $\sigma_f^2$ and ARD length-scales $l$ (confirming the capture of intrinsic data structures).
+\textbf{Experimental Setup.} Latin Hypercube Sampling (LHS) is employed to generate $N=400$ training samples. \textcolor{red}{Unless otherwise stated, the DA-DGP uses the default 2L-D5 architecture, namely two DGP layers with five hidden dimensions, and all reported statistics are aggregated over 20 independent runs. \textit{[Resp. to Comment \#1,\#3,\#10,\#11,\#12]}} Figure 3 validates the training stability and mechanism effectiveness by monitoring the convergence trajectories of three key components: the dynamic task weights (reflecting adaptive multi-task balancing), alongside the output scales $\sigma_f^2$ and ARD length-scales $l$ (confirming the capture of intrinsic data structures). \textcolor{red}{\textit{[Resp. to Comment \#3,\#11,\#12]}}
 
-\textbf{实验设置。} 本文采用拉丁超立方采样（LHS）生成 $N=400$ 个训练样本。图 3 通过监测三个关键组成部分的收敛轨迹来验证训练稳定性和机制有效性：动态任务权重（反映自适应多任务平衡能力），以及输出尺度 $\sigma_f^2$ 和 ARD 长度尺度 $l$（用于确认模型是否捕捉到内在数据结构）。
+\textbf{实验设置。} 本文采用拉丁超立方采样（LHS）生成 $N=400$ 个训练样本。\textcolor{red}{除非另有说明，DA-DGP 默认采用 2L-D5 结构，即两层 DGP 与 5 维隐藏表示，且所有统计结果均基于 20 次独立运行汇总。\textit{【回应审稿意见 \#1,\#3,\#10,\#11,\#12】}}图 3 通过监测三个关键组成部分的收敛轨迹来验证训练稳定性和机制有效性：动态任务权重（反映自适应多任务平衡能力），以及输出尺度 $\sigma_f^2$ 和 ARD 长度尺度 $l$（用于确认模型是否捕捉到内在数据结构）。\textcolor{red}{\textit{【回应审稿意见 \#3,\#11,\#12】}}
+
+\revEN{The bandwidth sensitivity analysis shows that the default $\sigma=0.5$ lies in a stable near-optimal interval. Across Tasks 1--3, the range $\sigma=0.3$--$1.0$ maintains similar local QL and NLPD, whereas an overly small value ($\sigma=0.1$) or an overly large value ($\sigma=1.5$) degrades the local fit, with the deterioration being most pronounced on Task 3.}{1,10}
+
+\revCN{$\sigma$ 敏感性分析表明，默认设置 $\sigma=0.5$ 位于表现稳定且接近最优的区间内。对于三个任务而言，$\sigma=0.3$--$1.0$ 的范围整体保持了相近的局部 QL 与 NLPD，而过小的取值（$\sigma=0.1$）或过大的取值（$\sigma=1.5$）都会削弱局部拟合效果，且这种退化在最复杂的 Task 3 上最为明显。}{1,10}
+
+\revEN{The depth/complexity sensitivity analysis supports 2L-D5 as the final default structure. The narrow 2L-D2 configuration underfits, especially on Task 3, while deeper alternatives (3L-D5, 4L-D5, and 5L-D5) all show clear deterioration in both accuracy and stability under the current 400-point design.}{3}
+
+\revCN{网络深度/复杂度敏感性分析支持将 2L-D5 作为最终默认结构。较窄的 2L-D2 配置表现出明显欠拟合，尤其是在 Task 3 上，而更深的备选结构（3L-D5、4L-D5 和 5L-D5）在当前 400 点设计下都出现了精度与稳定性的同步退化。}{3}
+
+\revEN{The sample-size sensitivity analysis indicates that 20 and 50 training points are clearly insufficient, 100 points substantially improve the easier tasks, and 200--400 points enter the stable regime overall, with the hardest task still benefiting most from the increase from 200 to 400 points.}{12}
+
+\revCN{训练样本规模敏感性分析表明，20 点和 50 点训练样本明显不足，100 点会显著改善较容易任务的表现，而 200--400 点整体进入相对稳定区间，其中最困难任务仍然从 200 点增加到 400 点的过程中获益最大。}{12}
+
+\revEN{Additional sensitivity analyses for the kernel bandwidth $\sigma$, the network depth/width, and the training sample size are reported in the Supplementary Materials.}{1,3,10,12}
+
+\revCN{关于核带宽 $\sigma$、网络深度/宽度以及训练样本规模的详细敏感性分析见补充材料。}{1,3,10,12}
 
 \begin{figure}[htb]
 	\centering
@@ -551,134 +569,99 @@ For comparative analysis, four representative baselines are selected: (i) EQUAL:
 
 
 Figures 3(a)-(b) depict the evolution of output scales ($\sigma_f^2$) and length-scales ($l$). The transition from initial fluctuations (exploration) to asymptotic convergence confirms the effective maximization of the log-marginal likelihood. Consequently, the stabilized parameters accurately characterize the inferred function smoothness and signal variance for each objective.
-Figure 3(c) illustrates the dynamic weighting process. The rapid divergence in early training reflects the identification of task difficulty: weights for the complex Task 3 increase significantly, while those for the simple Task 1 decline. The resulting stable hierarchy (Task 3 > Task 2 > Task 1) mirrors the analytical complexity defined in Section 4.1. This confirms the mechanism's ability to adaptively reallocate resources and mitigate gradient dominance by simple tasks. Quantitative performance metrics (RMSE, NLPD, QL) averaged over 20 independent runs are detailed in Tables 1-3 (refer to Appendix D for visual comparisons).
+Figure 3(c) illustrates the dynamic weighting process. The rapid divergence in early training reflects the identification of task difficulty: weights for the complex Task 3 increase significantly, while those for the simple Task 1 decline. The resulting stable hierarchy (Task 3 > Task 2 > Task 1) mirrors the analytical complexity defined in Section 4.1. This confirms the mechanism's ability to adaptively reallocate resources and mitigate gradient dominance by simple tasks. \textcolor{red}{Quantitative comparisons are summarized in Tables 1--3 using mean $\pm$ standard deviation over 20 independent runs; Appendix D provides the metric curves for the full baseline set, and Appendices E--H provide the expanded baseline and sensitivity analyses. \textit{[Resp. to Comment \#3,\#4,\#6,\#7,\#11,\#12]}}
 
 图 3(a)-(b) 展示了输出尺度（$\sigma_f^2$）和长度尺度（$l$）的演化过程。从初始波动（探索）到渐近收敛的过渡，证明了对数边际似然得到了有效最大化。因此，收敛后的参数能够准确表征各目标所对应推断函数的平滑性和信号方差。
-图 3(c) 则展示了动态加权过程。训练初期的快速分化反映了模型对任务难度的识别：复杂任务 3 的权重显著上升，而简单任务 1 的权重则下降。最终形成的稳定层级关系（Task 3 > Task 2 > Task 1）与第 4.1 节定义的解析复杂度一致。这证明该机制能够自适应重新分配资源，并缓解简单任务带来的梯度主导效应。20 次独立运行后平均得到的定量性能指标（RMSE、NLPD、QL）详见表 1-3（可视化比较见附录 D）。
+图 3(c) 则展示了动态加权过程。训练初期的快速分化反映了模型对任务难度的识别：复杂任务 3 的权重显著上升，而简单任务 1 的权重则下降。最终形成的稳定层级关系（Task 3 > Task 2 > Task 1）与第 4.1 节定义的解析复杂度一致。这证明该机制能够自适应重新分配资源，并缓解简单任务带来的梯度主导效应。\textcolor{red}{表 1--3 采用 20 次独立运行的均值 $\pm$ 标准差汇总定量比较结果；附录 D 给出完整基线集合下的指标曲线，附录 E--H 则提供扩展基线与敏感性分析。\textit{【回应审稿意见 \#3,\#4,\#6,\#7,\#11,\#12】}}
 
 
 \begin{table}[htbp]
 	\centering
-	\bicaption{Statistical results of metrics for Task 1 ($y_1$).}{任务 1（$y_1$）各项指标的统计结果。}
+	\bicaption{\textcolor{red}{Statistical results of metrics for Task 1 ($y_1$) reported as mean $\pm$ standard deviation. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}{\textcolor{red}{任务 1（$y_1$）各项指标采用均值 $\pm$ 标准差汇报。 \textit{【回应审稿意见 \#4,\#6,\#7,\#11】}}}
 	\label{tab:results_task1}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	{\color{red}\small
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{Method} & \textbf{RMSE} & \textbf{NLPD} & \textbf{QL} \\
 		\midrule
-		\multirow{6}{*}{RMSE} 
-		& Max    & 0.0769 & 0.0756 & 0.1051 & 0.0786 & 0.0806 & 0.0687 \\
-		& Min    & 0.0181 & 0.0185 & 0.0237 & 0.0170 & 0.0233 & 0.0170 \\
-		& Median & 0.0311 & 0.0409 & 0.0443 & 0.0416 & 0.0488 & 0.0393 \\
-		& Mean   & 0.0353 & 0.0422 & 0.0508 & 0.0436 & 0.0471 & 0.0404 \\
-		& Q1     & 0.0246 & 0.0325 & 0.0343 & 0.0307 & 0.0338 & 0.0348 \\
-		& Q3     & 0.0383 & 0.0486 & 0.0648 & 0.0541 & 0.0554 & 0.0433 \\
-		\midrule
-		\multirow{6}{*}{NLPD} 
-		& Max    & -0.6971 & -0.4063 & -0.3736 & -0.4340 & -0.4108 & -0.7590 \\
-		& Min    & -0.9025 & -0.5316 & -0.5211 & -0.6073 & -0.5165 & -0.8846 \\
-		& Median & -0.8094 & -0.4742 & -0.4503 & -0.5071 & -0.4725 & -0.8226 \\
-		& Mean   & -0.8097 & -0.4772 & -0.4550 & -0.5133 & -0.4720 & -0.8197 \\
-		& Q1     & -0.8527 & -0.5112 & -0.4758 & -0.5537 & -0.4896 & -0.8440 \\
-		& Q3     & -0.7757 & -0.4544 & -0.4408 & -0.4692 & -0.4556 & -0.7973 \\
-		\midrule
-		\multirow{6}{*}{QL}    
-		& Max    & 0.0390 & 0.0706 & 0.0749 & 0.0669 & 0.0699 & 0.0349 \\
-		& Min    & 0.0262 & 0.0550 & 0.0561 & 0.0472 & 0.0566 & 0.0271 \\
-		& Median & 0.0315 & 0.0616 & 0.0646 & 0.0577 & 0.0617 & 0.0307 \\
-		& Mean   & 0.0316 & 0.0614 & 0.0641 & 0.0573 & 0.0620 & 0.0309 \\
-		& Q1     & 0.0289 & 0.0572 & 0.0614 & 0.0526 & 0.0598 & 0.0294 \\
-		& Q3     & 0.0336 & 0.0641 & 0.0658 & 0.0623 & 0.0639 & 0.0321 \\
+		DA-DGP & 0.0383618 $\pm$ 0.0123759 & -0.851704 $\pm$ 0.0403068 & 0.0290137 $\pm$ 0.00227669 \\
+		S-Atten (EQUAL) & 0.04511 $\pm$ 0.0128821 & -0.48884 $\pm$ 0.0426435 & 0.0600407 $\pm$ 0.00499557 \\
+		T-Atten & 0.0450562 $\pm$ 0.0123272 & -0.846558 $\pm$ 0.0606095 & 0.0293932 $\pm$ 0.00342847 \\
+		Pure DGP & 0.0537456 $\pm$ 0.0128079 & -0.491262 $\pm$ 0.0527346 & 0.0598196 $\pm$ 0.00618508 \\
+		DWA & 0.0483144 $\pm$ 0.0104427 & -0.374235 $\pm$ 0.0268429 & 0.0753674 $\pm$ 0.00397215 \\
+		UW & 0.0459655 $\pm$ 0.0136025 & -0.505642 $\pm$ 0.0597247 & 0.0582479 $\pm$ 0.00700642 \\
+		MGDA & 0.0472071 $\pm$ 0.0112324 & -0.517419 $\pm$ 0.0558454 & 0.0568482 $\pm$ 0.00641937 \\
+		Indep-DGP & 0.078412 $\pm$ 0.0195683 & -0.324264 $\pm$ 0.20597 & 0.0898871 $\pm$ 0.0378784 \\
+		Indep-HetGP & 0.150742 $\pm$ 0.025165 & 0.55577 $\pm$ 0.0575063 & 0.497244 $\pm$ 0.0557456 \\
+		LMC-DGP & 0.0647233 $\pm$ 0.00924298 & -0.333697 $\pm$ 0.0916512 & 0.0829096 $\pm$ 0.0163785 \\
 		\bottomrule
 	\end{tabular*}
+	}
 \end{table}
 
 \begin{table}[htbp]
 	\centering
-	\bicaption{Statistical results of metrics for Task 2 ($y_2$).}{任务 2（$y_2$）各项指标的统计结果。}
+	\bicaption{\textcolor{red}{Statistical results of metrics for Task 2 ($y_2$) reported as mean $\pm$ standard deviation. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}{\textcolor{red}{任务 2（$y_2$）各项指标采用均值 $\pm$ 标准差汇报。 \textit{【回应审稿意见 \#4,\#6,\#7,\#11】}}}
 	\label{tab:results_task2}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	{\color{red}\small
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{Method} & \textbf{RMSE} & \textbf{NLPD} & \textbf{QL} \\
 		\midrule
-		\multirow{6}{*}{RMSE} 
-		& Max    & 0.0541 & 0.0781 & 0.0723 & 0.0915 & 0.0686 & 0.0618 \\
-		& Min    & 0.0215 & 0.0142 & 0.0233 & 0.0209 & 0.0223 & 0.0271 \\
-		& Median & 0.0333 & 0.0404 & 0.0426 & 0.0416 & 0.0414 & 0.0390 \\
-		& Mean   & 0.0358 & 0.0417 & 0.0448 & 0.0470 & 0.0437 & 0.0414 \\
-		& Q1     & 0.0309 & 0.0338 & 0.0338 & 0.0358 & 0.0370 & 0.0323 \\
-		& Q3     & 0.0415 & 0.0507 & 0.0543 & 0.0535 & 0.0518 & 0.0497 \\
-		\midrule
-		\multirow{6}{*}{NLPD} 
-		& Max    & -0.6849 & -0.3897 & -0.3714 & -0.3936 & -0.4221 & -0.7430 \\
-		& Min    & -0.8923 & -0.5612 & -0.5475 & -0.5965 & -0.5543 & -0.8812 \\
-		& Median & -0.8097 & -0.4910 & -0.4744 & -0.4984 & -0.4791 & -0.8196 \\
-		& Mean   & -0.8181 & -0.4894 & -0.4680 & -0.5006 & -0.4813 & -0.8189 \\
-		& Q1     & -0.8638 & -0.5282 & -0.4922 & -0.5330 & -0.5013 & -0.8461 \\
-		& Q3     & -0.7858 & -0.4547 & -0.4396 & -0.4785 & -0.4535 & -0.7928 \\
-		\midrule
-		\multirow{6}{*}{QL}    
-		& Max    & 0.0404 & 0.0730 & 0.0756 & 0.0720 & 0.0684 & 0.0360 \\
-		& Min    & 0.0267 & 0.0517 & 0.0532 & 0.0483 & 0.0525 & 0.0273 \\
-		& Median & 0.0315 & 0.0596 & 0.0616 & 0.0586 & 0.0611 & 0.0308 \\
-		& Mean   & 0.0312 & 0.0600 & 0.0626 & 0.0587 & 0.0609 & 0.0310 \\
-		& Q1     & 0.0283 & 0.0553 & 0.0595 & 0.0547 & 0.0584 & 0.0293 \\
-		& Q3     & 0.0330 & 0.0640 & 0.0660 & 0.0611 & 0.0643 & 0.0325 \\
+		DA-DGP & 0.0382353 $\pm$ 0.00970206 & -0.875057 $\pm$ 0.0597237 & 0.0277975 $\pm$ 0.00325052 \\
+		S-Atten (EQUAL) & 0.046013 $\pm$ 0.0112341 & -0.510551 $\pm$ 0.0580144 & 0.0576603 $\pm$ 0.00652536 \\
+		T-Atten & 0.0570344 $\pm$ 0.0141719 & -0.83595 $\pm$ 0.078185 & 0.0299947 $\pm$ 0.00452113 \\
+		Pure DGP & 0.0685897 $\pm$ 0.0164888 & -0.489727 $\pm$ 0.0670687 & 0.0600462 $\pm$ 0.00784115 \\
+		DWA & 0.048661 $\pm$ 0.0130147 & -0.379198 $\pm$ 0.040074 & 0.0747498 $\pm$ 0.00590287 \\
+		UW & 0.0463887 $\pm$ 0.010741 & -0.518569 $\pm$ 0.0712377 & 0.0569292 $\pm$ 0.00803497 \\
+		MGDA & 0.0484224 $\pm$ 0.0130114 & -0.529129 $\pm$ 0.0703082 & 0.0557037 $\pm$ 0.00771379 \\
+		Indep-DGP & 0.0820131 $\pm$ 0.0252286 & -0.361952 $\pm$ 0.278106 & 0.0883681 $\pm$ 0.0461469 \\
+		Indep-HetGP & 0.0848875 $\pm$ 0.0169237 & 0.263949 $\pm$ 0.0812196 & 0.282633 $\pm$ 0.0454945 \\
+		LMC-DGP & 0.0654589 $\pm$ 0.0149421 & -0.353167 $\pm$ 0.0595237 & 0.0789038 $\pm$ 0.00928533 \\
 		\bottomrule
 	\end{tabular*}
+	}
 \end{table}
 
 \begin{table}[htbp]
 	\centering
-	\bicaption{Statistical results of metrics for Task 3 ($y_3$).}{任务 3（$y_3$）各项指标的统计结果。}
+	\bicaption{\textcolor{red}{Statistical results of metrics for Task 3 ($y_3$) reported as mean $\pm$ standard deviation. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}{\textcolor{red}{任务 3（$y_3$）各项指标采用均值 $\pm$ 标准差汇报。 \textit{【回应审稿意见 \#4,\#6,\#7,\#11】}}}
 	\label{tab:results_task3}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	{\color{red}\small
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{Method} & \textbf{RMSE} & \textbf{NLPD} & \textbf{QL} \\
 		\midrule
-		\multirow{6}{*}{RMSE} 
-		& Max    & 0.2187 & 0.2317 & 0.2141 & 0.2372 & 0.2313 & 0.2065 \\
-		& Min    & 0.0668 & 0.0837 & 0.0644 & 0.1062 & 0.0963 & 0.0878 \\
-		& Median & 0.1158 & 0.1417 & 0.1394 & 0.1528 & 0.1369 & 0.1562 \\
-		& Mean   & 0.1282 & 0.1448 & 0.1423 & 0.1584 & 0.1450 & 0.1517 \\
-		& Q1     & 0.1072 & 0.1110 & 0.1162 & 0.1316 & 0.1247 & 0.1114 \\
-		& Q3     & 0.1499 & 0.1670 & 0.1599 & 0.1815 & 0.1619 & 0.1850 \\
-		\midrule
-		\multirow{6}{*}{NLPD} 
-		& Max    & -0.0603 & -0.0445 & -0.1034 & -0.0194 & -0.0432 & -0.1349 \\
-		& Min    & -0.8055 & -0.4302 & -0.4300 & -0.4290 & -0.4248 & -0.7164 \\
-		& Median & -0.5628 & -0.3421 & -0.3106 & -0.3040 & -0.3093 & -0.4198 \\
-		& Mean   & -0.5289 & -0.2975 & -0.2951 & -0.2758 & -0.2989 & -0.4234 \\
-		& Q1     & -0.6540 & -0.3641 & -0.3433 & -0.3353 & -0.3587 & -0.6364 \\
-		& Q3     & -0.4457 & -0.2455 & -0.2616 & -0.2305 & -0.2775 & -0.2711 \\
-		\midrule
-		\multirow{6}{*}{QL}    
-		& Max    & 0.0804 & 0.1078 & 0.1073 & 0.1135 & 0.1143 & 0.0771 \\
-		& Min    & 0.0313 & 0.0668 & 0.0672 & 0.0662 & 0.0670 & 0.0368 \\
-		& Median & 0.0477 & 0.0779 & 0.0816 & 0.0815 & 0.0813 & 0.0567 \\
-		& Mean   & 0.0496 & 0.0824 & 0.0836 & 0.0846 & 0.0828 & 0.0559 \\
-		& Q1     & 0.0411 & 0.0742 & 0.0781 & 0.0776 & 0.0756 & 0.0419 \\
-		& Q3     & 0.0557 & 0.0924 & 0.0895 & 0.0888 & 0.0863 & 0.0665 \\
+		DA-DGP & 0.136005 $\pm$ 0.025993 & -0.52548 $\pm$ 0.135805 & 0.0475065 $\pm$ 0.00804783 \\
+		S-Atten (EQUAL) & 0.157046 $\pm$ 0.0340462 & -0.287386 $\pm$ 0.109856 & 0.0830142 $\pm$ 0.012866 \\
+		T-Atten & 0.170251 $\pm$ 0.0324093 & -0.336573 $\pm$ 0.205039 & 0.0588494 $\pm$ 0.012355 \\
+		Pure DGP & 0.20697 $\pm$ 0.0378432 & -0.128054 $\pm$ 0.14951 & 0.10192 $\pm$ 0.0184568 \\
+		DWA & 0.167309 $\pm$ 0.0345345 & -0.185948 $\pm$ 0.0871167 & 0.103413 $\pm$ 0.0132611 \\
+		UW & 0.160631 $\pm$ 0.035354 & -0.2816 $\pm$ 0.121703 & 0.0834255 $\pm$ 0.0145898 \\
+		MGDA & 0.170842 $\pm$ 0.0355426 & -0.255536 $\pm$ 0.129103 & 0.08592 $\pm$ 0.015104 \\
+		Indep-DGP & 0.188177 $\pm$ 0.047481 & -0.0917607 $\pm$ 0.246908 & 0.13744 $\pm$ 0.0642941 \\
+		Indep-HetGP & 0.282425 $\pm$ 0.036455 & 0.413539 $\pm$ 0.0453168 & 0.349951 $\pm$ 0.0360098 \\
+		LMC-DGP & 0.18495 $\pm$ 0.0380058 & -0.124783 $\pm$ 0.0988841 & 0.114398 $\pm$ 0.0173687 \\
 		\bottomrule
 	\end{tabular*}
+	}
 \end{table}
 
+Based on the experimental data presented in Tables 1-3, the proposed DA-DGP demonstrates significant statistical advantages across three core metrics: RMSE, NLPD, and QL. Regarding prediction accuracy (RMSE), DA-DGP maintains the lowest average RMSE across all tasks, demonstrating its superior fitting capability. \textcolor{red}{For the most difficult Task 3, DA-DGP achieves an RMSE of $0.136005 \pm 0.025993$, compared with $0.157046 \pm 0.0340462$ for S-Atten (EQUAL), $0.170251 \pm 0.0324093$ for T-Atten, $0.20697 \pm 0.0378432$ for Pure DGP, $0.18495 \pm 0.0380058$ for LMC-DGP, and $0.282425 \pm 0.036455$ for Indep-HetGP. These comparisons show that a deep shared architecture alone is not sufficient, and that the strongest local fit is obtained only when sample-level and task-level attention are combined. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}
 
+根据表 1-3 所示实验数据，所提出的 DA-DGP 在 RMSE、NLPD 和 QL 三项核心指标上均展现出显著统计优势。在预测精度（RMSE）方面，DA-DGP 在所有任务上都保持最低的平均 RMSE，体现出其更强的拟合能力。\textcolor{red}{对于最困难的 Task 3，DA-DGP 的 RMSE 为 $0.136005 \pm 0.025993$，而 S-Atten（EQUAL）、T-Atten、Pure DGP、LMC-DGP 和 Indep-HetGP 分别为 $0.157046 \pm 0.0340462$、$0.170251 \pm 0.0324093$、$0.20697 \pm 0.0378432$、$0.18495 \pm 0.0380058$ 和 $0.282425 \pm 0.036455$。这些比较表明，仅依赖深层共享结构并不足以获得最佳局部建模效果，只有将样本级注意力与任务级注意力协同结合，才能得到最强的局部拟合能力。\textit{【回应审稿意见 \#4,\#6,\#7,\#11】}}
 
-Based on the experimental data presented in Tables 1-3, the proposed DA-DGP demonstrates significant statistical advantages across three core metrics: RMSE, NLPD, and QL. Regarding prediction accuracy (RMSE), DA-DGP maintains the lowest average RMSE across all tasks, demonstrating its superior fitting capability. Specifically, in the high-complexity Task 3, compared to the DWA strategy, DA-DGP reduces the mean RMSE by approximately 11.5\% and the median by 18.2\%. This result strongly indicates that by assigning higher weights to difficult tasks via the task-level attention mechanism, the model successfully overcomes the common gradient dominance effect in multi-task learning, significantly enhancing the capture accuracy of non-stationary response surfaces. Notably, T-Atten outperforms EQUAL in simpler tasks (reducing Task 1 RMSE by 20.5\%), validating dynamic task balancing. However, its inferiority to DA-DGP in complex Task 3 (0.1517 vs. 0.1282) confirms sample-level attention is critical for capturing high-dimensional nonlinearities. Furthermore, DA-DGP achieves the smallest interquartile range (IQR) on Tasks 1 and 2, implying a more concentrated distribution of prediction errors and demonstrating strong robustness and stability across different training set partitions.
+Regarding uncertainty quantification quality (NLPD), DA-DGP exhibits the most prominent advantage in this metric, which measures the quality of probabilistic predictions. This precision at the distributional level is attributed to the synergy between the deep structure of the multi-output DGP and the ARD mechanism. This enables the model not only to accurately predict the mean but also to output reasonable confidence intervals based on local data density, effectively avoiding the risks of overfitting or underfitting. \textcolor{red}{The same pattern is observed across the full baseline set, where DA-DGP preserves the most negative NLPD on all three tasks. \textit{[Resp. to Comment \#4,\#6,\#11]}}
 
-根据表 1-3 所示实验数据，所提出的 DA-DGP 在 RMSE、NLPD 和 QL 三项核心指标上均展现出显著统计优势。在预测精度（RMSE）方面，DA-DGP 在所有任务上都保持最低的平均 RMSE，体现出其更强的拟合能力。特别是在高复杂度任务 3 中，相比 DWA 策略，DA-DGP 将平均 RMSE 降低了约 11.5\%，中位数降低了 18.2\%。这一结果强有力地表明，通过任务级注意力机制为困难任务分配更高权重后，模型成功克服了多任务学习中常见的梯度主导效应，显著提升了对非平稳响应曲面的刻画精度。值得注意的是，T-Atten 在简单任务上的表现优于 EQUAL（例如任务 1 的 RMSE 降低 20.5\%），验证了动态任务平衡的有效性；但其在复杂任务 3 上劣于 DA-DGP（0.1517 对比 0.1282），进一步说明样本级注意力对于捕捉高维非线性至关重要。此外，DA-DGP 在任务 1 和任务 2 上获得了最小的四分位距（IQR），意味着预测误差分布更加集中，并表现出跨不同训练集划分的强鲁棒性与稳定性。
+在不确定性量化质量（NLPD）方面，DA-DGP 在这一衡量概率预测质量的指标上展现出最突出的优势。这种分布层面的精度得益于多输出 DGP 的深层结构与 ARD 机制之间的协同作用，使模型不仅能够准确预测均值，还能基于局部数据密度给出合理的置信区间，从而有效避免过拟合或欠拟合风险。\textcolor{red}{在完整基线集合中，DA-DGP 在三个任务上均保持最负的 NLPD。\textit{【回应审稿意见 \#4,\#6,\#11】}}
 
-Regarding uncertainty quantification quality (NLPD), DA-DGP exhibits the most prominent advantage in this metric, which measures the quality of probabilistic predictions. Its average NLPD values for the three tasks improve to -0.81, -0.82, and -0.53, respectively (lower is better), significantly outperforming baselines such as MGDA and UW. This precision at the distributional level is attributed to the synergy between the deep structure of the multi-output DGP and the ARD mechanism. This enables the model not only to accurately predict the mean but also to output reasonable confidence intervals based on local data density, effectively avoiding the risks of overfitting or underfitting.
+Regarding the achievement of robust design goals (QL), QL serves as the core metric for measuring the comprehensive performance of RPD. \textcolor{red}{Using mean $\pm$ standard deviation over 20 independent runs, DA-DGP achieves the smallest QL on all three tasks. The comparison among Pure DGP, S-Atten (EQUAL), T-Atten, and DA-DGP therefore disentangles the contributions of the deep structure, the sample-level attention, and the task-level attention, while the current reporting format further confirms that these gains are not artifacts of a single random partition. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}} This provides a highly reliable surrogate modeling foundation for subsequent parameter optimization.
 
-在不确定性量化质量（NLPD）方面，DA-DGP 在这一衡量概率预测质量的指标上展现出最突出的优势。其三个任务的平均 NLPD 分别提升至 -0.81、-0.82 和 -0.53（数值越低越优），显著优于 MGDA、UW 等基线方法。这种分布层面的精度得益于多输出 DGP 的深层结构与 ARD 机制之间的协同作用，使模型不仅能够准确预测均值，还能基于局部数据密度给出合理的置信区间，从而有效避免过拟合或欠拟合风险。
+在稳健设计目标达成程度（QL）方面，QL 作为衡量 RPD 综合表现的核心指标。\textcolor{red}{基于 20 次独立运行的均值 $\pm$ 标准差汇报，DA-DGP 在三个任务上均取得了最小的 QL。与此同时，Pure DGP、S-Atten（EQUAL）、T-Atten 与 DA-DGP 之间的比较能够区分深层结构、样本级注意力和任务级注意力各自的贡献，而当前统计汇报方式也进一步说明这些增益并非源于某一次随机划分。\textit{【回应审稿意见 \#4,\#6,\#7,\#11】}}这为后续参数优化提供了高度可靠的代理建模基础。
 
-Regarding the achievement of robust design goals (QL), QL serves as the core metric for measuring the comprehensive performance of RPD. DA-DGP achieves the lowest mean and median QL across most tasks, with an IQR of only 0.0047 in Tasks 1 and 2, which is far lower than that of the comparative methods. This implies that the method is capable of minimizing both bias and variance simultaneously, achieving precise locking of the ROI. Even in the worst-case scenario (Max QL), DA-DGP maintains a lower loss upper bound, proving the focusing capability of the sample-level attention mechanism on critical regions under small sample conditions. This provides a highly reliable surrogate modeling foundation for subsequent parameter optimization.
+In summary, the experimental results confirm the superiority of DA-DGP in handling high-dimensional heterogeneity. By synergizing local sample attention with global task weighting, the proposed mechanism optimizes the bias-variance trade-off, consistently outperforming baselines in RMSE, NLPD, and QL. \textcolor{red}{Appendix D provides the metric curves for the full baseline set, Appendix E reports the expanded statistical tables, and Appendices F--H provide the sensitivity analyses for $\sigma$, network depth/width, and sample size, respectively. \textit{[Resp. to Comment \#1,\#3,\#4,\#6,\#7,\#10,\#11,\#12]}} These findings establish a robust algorithmic foundation for the subsequent case study: RPD of a 5G/6G OFDM communication system.
 
-在稳健设计目标达成程度（QL）方面，QL 作为衡量 RPD 综合表现的核心指标，显示出 DA-DGP 在大多数任务上都取得了最低的平均值和中位数。在任务 1 和任务 2 中，其 IQR 仅为 0.0047，远低于对比方法。这说明该方法能够同时最小化偏差与方差，实现对 ROI 的精确锁定。即便在最差情形（Max QL）下，DA-DGP 也维持了更低的损失上界，证明了样本级注意力机制在小样本条件下对关键区域的聚焦能力。这为后续参数优化提供了高度可靠的代理建模基础。
-
-In summary, the experimental results confirm the superiority of DA-DGP in handling high-dimensional heterogeneity. By synergizing local sample attention with global task weighting, the proposed mechanism optimizes the bias-variance trade-off, consistently outperforming baselines in RMSE, NLPD, and QL. These findings establish a robust algorithmic foundation for the subsequent case study: RPD of a 5G/6G OFDM communication system.
-
-总体而言，实验结果验证了 DA-DGP 在处理高维异质性问题上的优越性。通过协同局部样本注意力与全局任务加权，所提机制优化了偏差-方差权衡，并在 RMSE、NLPD 和 QL 指标上持续优于各类基线方法。这些发现为后续 5G/6G OFDM 通信系统的 RPD 案例研究奠定了稳健的算法基础。
+总体而言，实验结果验证了 DA-DGP 在处理高维异质性问题上的优越性。通过协同局部样本注意力与全局任务加权，所提机制优化了偏差-方差权衡，并在 RMSE、NLPD 和 QL 指标上持续优于各类基线方法。\textcolor{red}{附录 D 给出完整基线集合下的指标曲线，附录 E 给出扩展统计表，附录 F--H 则分别提供关于 $\sigma$、网络深度/宽度以及样本规模的敏感性分析。\textit{【回应审稿意见 \#1,\#3,\#4,\#6,\#7,\#10,\#11,\#12】}}这些发现为后续 5G/6G OFDM 通信系统的 RPD 案例研究奠定了稳健的算法基础。
 
 
 \bisubsection{Robust Parameter Design for OFDM Systems}{OFDM 系统的稳健参数设计}\label{s:sec5.1}
