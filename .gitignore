@@ -1,0 +1,76 @@
+# Agent / local assistant metadata
+.ace-tool/
+**/.ace-tool/
+.agents/
+**/.agents/
+.codex/
+**/.codex/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and local package metadata
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+build/
+dist/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Runtime logs and process files
+logs/
+**/logs/
+*.log
+nohup.out
+last_pid.txt
+
+# Python / matplotlib local runtime state
+.ipynb_checkpoints/
+matplotlib/
+
+# Model checkpoints and serialized experiment artifacts
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.pickle
+
+# DA-DGP synthetic benchmark generated outputs
+mathexam/Achievements/
+mathexam/SupplementalModels/
+mathexam/fig/
+mathexam/数据/
+
+# OFDM case generated outputs
+wirelessexam/Achievements/
+wirelessexam/model/
+wirelessexam/moo/
+wirelessexam/result/
+wirelessexam/fig/
+wirelessexam/timealy/
+
+# MATLAB generated/intermediate files
+*.asv
+*.fig
+*.mat
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
