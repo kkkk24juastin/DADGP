@@ -1,0 +1,499 @@
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pdfminorversion=4
+% NOTE: To produce blinded version, replace "0" with "1" below.
+\newcommand{\blind}{0}
+
+%%%%%%% IISE Transactions margin specifications %%%%%%%%%%%%%%%%%%%
+\addtolength{\oddsidemargin}{-.5in}%
+\addtolength{\evensidemargin}{-.5in}%
+\addtolength{\textwidth}{1in}%
+\addtolength{\textheight}{1.3in}%
+\addtolength{\topmargin}{-.8in}%
+
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+	{-3.5ex \@plus -1ex \@minus -.2ex}%
+	{2.3ex \@plus.2ex}%
+	{\normalfont\fontfamily{phv}\fontsize{16}{19}\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+	{-3.25ex\@plus -1ex \@minus -.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\normalfont\fontfamily{phv}\fontsize{14}{17}\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+	{-3.25ex\@plus -1ex \@minus -.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\normalfont\normalsize\fontfamily{phv}\fontsize{14}{17}\selectfont}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% IISE Transactions package list %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{natbib} 
+\usepackage{url} 
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{bm}
+\usepackage{setspace}
+\usepackage{float} 
+\usepackage{subcaption}
+\usepackage{booktabs} 
+\usepackage{multirow} 
+\newcommand{\revSUPP}[2]{\textcolor{red}{#1\ \textit{[Resp. to Comment \##2]}}}
+
+\begin{document}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\def\spacingset#1{\renewcommand{\baselinestretch}%
+		{#1}\small\normalsize} \spacingset{1}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	% =========================================================================
+	%                           单独文件的标题页设置
+	% =========================================================================
+	
+	\if0\blind
+	{
+		\begin{center}
+			% 标题：明确指出是补充材料
+			{\LARGE \bfseries Supplementary Materials for: \\[\baselineskip]
+				``Dual-Attention Deep Gaussian Processes for Multi-Objective Robust Parameter Design''} 
+			
+			\vspace{0.8cm} % 间距
+			
+			% 作者信息
+			
+		\end{center}
+	} \fi
+	
+	\if1\blind
+	{
+		\bigskip
+		\begin{center}
+			{\LARGE \bfseries Supplementary Materials for: \\[\baselineskip]
+				``Dual-Attention Deep Gaussian Processes for Multi-Objective Robust Parameter Design''}
+		\end{center}
+		\medskip
+	} \fi
+	
+	\bigskip
+	\bigskip
+	
+	% =========================================================================
+	%                           附录内容设置
+	% =========================================================================
+	
+	\appendix % 将后续 Section 编号改为 A, B, C...
+	
+	% --- 设置公式、图表的编号格式为 A.1, B.1 等 ---
+	\renewcommand{\theequation}{\Alph{section}.\arabic{equation}}
+	\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+	\renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+	\setcounter{equation}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	
+	% ---------------- Appendix A ----------------
+	% 您可以在这里修改标题，例如 "Proofs" 或 "Mathematical Derivations"
+	\section{Derivation of the Variational ELBO for Sparse GPs} \label{app:A}
+	\setcounter{equation}{0} % 确保这一节的公式从 A.1 开始
+	
+	This appendix provides a detailed derivation of the Evidence Lower Bound (ELBO) (Equation 4) described in Section 2.2. We consider the augmented GP model by introducing $M$ inducing points $\mathbf{Z}$ and corresponding inducing variables $\mathbf{u}$. The joint probability of the observations $\mathbf{y}$, latent functions $\mathbf{f}$, and inducing variables $\mathbf{u}$ is given by:
+	\begin{equation}
+		p({\bf{y}},{\bf{f}},{\bf{u}}) = p({\bf{y}}|{\bf{f}})p({\bf{f}}|{\bf{u}})p({\bf{u}}),
+	\end{equation}
+	where $p(\mathbf{u}) = \mathcal{N}(\mathbf{0}, \mathbf{K}_{\mathbf{uu}})$ is the prior over inducing variables, and $p(\mathbf{f} | \mathbf{u})$ follows the standard GP conditional distribution. To approximate the intractable posterior $p(\mathbf{f}, \mathbf{u} | \mathbf{y})$, we propose a variational distribution $q(\mathbf{f}, \mathbf{u})$. Following the framework of Titsias (2009), we enforce the variational posterior to factorize as:
+	\begin{equation}
+		q({\bf{f}},{\bf{u}}) = p({\bf{f}}|{\bf{u}})q({\bf{u}}),
+	\end{equation}
+	where $q(\mathbf{u}) = \mathcal{N}(\mathbf{m}, \mathbf{S})$ is a free variational distribution to be optimized, and $p(\mathbf{f} | \mathbf{u})$ is fixed to the model prior conditionals. This corresponds to Equation (4) in the main text.The goal of variational inference is to minimize the Kullback-Leibler (KL) divergence between the approximate posterior and the true posterior, which is equivalent to maximizing the ELBO:
+	\begin{equation}
+		\mathcal{L} = \iint q(\mathbf{f}, \mathbf{u}) \log \frac{p(\mathbf{y}, \mathbf{f}, \mathbf{u})}{q(\mathbf{f}, \mathbf{u})} \, d\mathbf{f} d\mathbf{u}
+	\end{equation}
+	
+	Substituting (A.1) and (A.2) into (A.3), the ELBO can be expanded as:
+	\begin{equation}
+		\begin{aligned}
+			\mathcal{L} &= \iint p(\mathbf{f}|\mathbf{u})q(\mathbf{u}) \log \frac{p(\mathbf{y}|\mathbf{f})p(\mathbf{f}|\mathbf{u})p(\mathbf{u})}{p(\mathbf{f}|\mathbf{u})q(\mathbf{u})} \, d\mathbf{f}d\mathbf{u} \\
+			&= \iint p(\mathbf{f}|\mathbf{u})q(\mathbf{u}) \left[ \log p(\mathbf{y}|\mathbf{f}) + \log \frac{p(\mathbf{u})}{q(\mathbf{u})} \right] \, d\mathbf{f}d\mathbf{u}
+		\end{aligned}.
+	\end{equation}
+	
+	The term $p(\mathbf{f} | \mathbf{u})$ cancels out in the logarithm ratio, significantly simplifying the computation. The equation splits into two components:
+	
+	(1) Expected Log-Likelihood:
+	\begin{equation}
+		\iint q(\mathbf{u})\,p(\mathbf{f}\mid \mathbf{u})\,\log p(\mathbf{y}\mid \mathbf{f})\,d\mathbf{f}\,d\mathbf{u}
+		= \mathbb{E}_{q(\mathbf{f})}\!\left[\log p(\mathbf{y}\mid \mathbf{f})\right]
+		= \sum_{i=1}^{N}\mathbb{E}_{q(f_i)}\!\left[\log p(y_i\mid f_i)\right],
+	\end{equation}
+	where $q(\mathbf{f}) = \int p(\mathbf{f} | \mathbf{u}) q(\mathbf{u}) d\mathbf{u}$ represents the marginal variational distribution.
+	
+	(2) KL Divergence:
+	\begin{equation}
+		\int q(\mathbf{u})\left[\int p(\mathbf{f}\mid \mathbf{u})\,d\mathbf{f}\right]
+		\log\frac{p(\mathbf{u})}{q(\mathbf{u})}\,d\mathbf{u}
+		= -\mathrm{KL}\!\left[q(\mathbf{u})\,\|\,p(\mathbf{u})\right].
+	\end{equation}
+	Note that $\int p(\mathbf{f} | \mathbf{u}) d\mathbf{f} = 1$.
+	Combining (A.5) and (A.6), we obtain the final ELBO formulation as presented in Equation (4):
+	\begin{equation}
+		\mathcal{L}_{\mathrm{SGP}}
+		= \sum_{i=1}^{N}\mathbb{E}_{q(f_i)}\!\left[\log p(y_i\mid f_i)\right]
+		- \mathrm{KL}\!\left[q(\mathbf{u})\,\|\,p(\mathbf{u})\right].
+	\end{equation}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	% ---------------- Appendix B ----------------
+	% 您可以在这里修改标题，例如 "Additional Experiments"
+	\section{Proof of Unbiased Gradient Estimation via Reparameterization Trick} \label{app:B}
+	\setcounter{equation}{0}
+	
+	This appendix provides the mathematical justification for the gradient computation in the Doubly Stochastic Variational Inference (DSVI) framework, specifically concerning Equations (9)-(12) in Section 2.3.
+	We aim to compute the gradient of the expected log-likelihood term in the ELBO with respect to the variational parameters $\boldsymbol{\phi}$ (i.e., $\mathbf{m}, \mathbf{S}$). The objective function is:
+	\begin{equation}
+		\mathcal{L}(\phi)
+		= \mathbb{E}_{q_{\phi}(\mathbf{f})}\!\left[\log p(\mathbf{y}\mid \mathbf{f})\right]
+		= \int q_{\phi}(\mathbf{f})\,\log p(\mathbf{y}\mid \mathbf{f})\,d\mathbf{f}.
+	\end{equation}
+	Directly differentiating (B.1) is problematic because the integration domain depends on $\boldsymbol{\phi}$. To resolve this, we apply the reparameterization trick defined in Equation (11):
+	\begin{equation}
+		\mathbf{f}
+		= g(\phi,\boldsymbol{\epsilon})
+		= \boldsymbol{\mu}_{\phi} + \boldsymbol{\Sigma}_{\phi}^{1/2}\odot \boldsymbol{\epsilon},
+		\qquad
+		\boldsymbol{\epsilon}\sim p(\boldsymbol{\epsilon})=\mathcal{N}(\mathbf{0},\mathbf{I}).
+	\end{equation}
+	Using the Law of the Unconscious Statistician (LOTUS), the expectation over $q_{\boldsymbol{\phi}}(\mathbf{f})$ can be rewritten as an expectation over the auxiliary noise distribution $p(\boldsymbol{\epsilon})$, which is independent of $\boldsymbol{\phi}$:
+	\begin{equation}
+		\mathcal{L}(\phi)
+		= \mathbb{E}_{p(\boldsymbol{\epsilon})}\!\left[\log p\!\left(\mathbf{y}\mid g(\phi,\boldsymbol{\epsilon})\right)\right].
+	\end{equation}
+	Now, the gradient operator $\nabla_{\boldsymbol{\phi}}$ can be moved inside the expectation:
+	\begin{equation}
+		\nabla_{\phi}\mathcal{L}(\phi)
+		= \nabla_{\phi}\int p(\boldsymbol{\epsilon})\,\log p\!\left(\mathbf{y}\mid g(\phi,\boldsymbol{\epsilon})\right)\,d\boldsymbol{\epsilon}
+		= \mathbb{E}_{p(\boldsymbol{\epsilon})}\!\left[\nabla_{\phi}\log p\!\left(\mathbf{y}\mid g(\phi,\boldsymbol{\epsilon})\right)\right].
+	\end{equation}
+	This expectation can be efficiently approximated using Monte Carlo sampling. For $S$ samples of $\boldsymbol{\epsilon}_s \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$:
+	\begin{equation}
+		\nabla_{\phi}\mathcal{L}(\phi)
+		\approx \frac{1}{S}\sum_{s=1}^{S}\nabla_{\phi}\log p\!\left(\mathbf{y}\mid g(\phi,\boldsymbol{\epsilon}_s)\right).
+	\end{equation}
+	Since $g(\boldsymbol{\phi}, \boldsymbol{\epsilon})$ is a deterministic differentiable function, the gradients can be computed via standard backpropagation (chain rule). This proves that the reparameterization trick provides an unbiased low-variance gradient estimator for optimizing the ELBO in Equation (9).
+	
+	
+	% ---------------- Appendix C ----------------
+	% 您可以在这里修改标题，例如 "Sensitivity Analysis"
+	\section{Theoretical Justification of the Weighted ELBO} \label{app:C}
+	\setcounter{equation}{0}
+	
+	This appendix provides the theoretical basis for the sample-weighted ELBO objective function defined in Equation (16).Standard variational inference minimizes the KL divergence between the variational posterior $q(\mathbf{u})$ and the true Bayesian posterior $p(\mathbf{u}|\mathbf{y}) \propto p(\mathbf{y}|\mathbf{f})p(\mathbf{f}|\mathbf{u})p(\mathbf{u})$. This is equivalent to maximizing the standard ELBO:
+	\begin{equation}
+		\mathcal{L}
+		= \mathbb{E}_{q}\!\left[\log p(\mathbf{y}\mid \mathbf{f})\right]
+		- \mathrm{KL}\!\left[q(\mathbf{u})\,\|\,p(\mathbf{u})\right].
+	\end{equation}
+	To incorporate the sample-level attention mechanism rigorously, we adopt the framework of generalized variational inference (Knoblauch et al., 2019). In GVI, the standard Bayesian inference is generalized as an optimization problem involving a loss function $\ell$, a divergence $D$, and a prior $\pi$:
+	\begin{equation}
+		q^{\ast}
+		= \arg\min_{q}\left\{\mathbb{E}_{q}\!\left[\ell(\mathbf{y},\mathbf{f})\right] + D\!\left(q\,\|\,\pi\right)\right\}.
+	\end{equation}
+	In our DA-DGP framework, we define a weighted log-likelihood loss to emphasize the ROI:
+	\begin{equation}
+		\ell_{\mathrm{weighted}}(\mathbf{y},\mathbf{f})
+		= -\sum_{k=1}^{p}\sum_{i=1}^{N}\tilde{s}_{i,k}\,\log p\!\left(y_{i,k}\mid f^{L}_{i,k}\right),
+	\end{equation}
+	where $\tilde{s}_{i,k}$ are the normalized attention weights derived in Equation (14). Setting the divergence $D$ to be the KL divergence, the optimization objective becomes:
+	\begin{equation}
+		\mathcal{L}_{\mathrm{DA\text{-}DGP}}
+		= \sum_{k=1}^{p}\sum_{i=1}^{N}\tilde{s}_{i,k}\,
+		\mathbb{E}_{q(f^{L}_{i,k})}\!\left[\log p\!\left(y_{i,k}\mid f^{L}_{i,k}\right)\right]
+		- \mathrm{KL}\!\left[q(\mathbf{u})\,\|\,p(\mathbf{u})\right].
+	\end{equation}
+	This derivation confirms that our weighted objective (Equation 16) is not merely a heuristic modification but a valid GVI posterior approximation that minimizes a preference-weighted risk bound.
+	
+	\newpage
+	\section{Supplementary Visualizations of Experimental Results} \label{app:D}
+	\setcounter{equation}{0}
+	
+	\revSUPP{This appendix presents the metric curves for the numerical example using the complete baseline set reported in the main text.}{4,6,7,11}
+	
+	\begin{figure}[htbp]
+		\centering
+		
+		% --- 第一行: Task 1 (a) ---
+		\begin{subfigure}[b]{1.0\textwidth}
+					\centering
+					\includegraphics[width=0.8\textwidth]{FIG4a_updated.pdf}
+					\caption{Task 1 ($y_1$)}
+					\label{fig:task1_curves}
+				\end{subfigure}
+		
+	%	\vspace{0.4cm} % 增加行间距，防止图挨得太近
+		
+		% --- 第二行: Task 2 (b) ---
+		\begin{subfigure}[b]{1.0\textwidth}
+					\centering
+					\includegraphics[width=0.8\textwidth]{FIG4b_updated.pdf}
+					\caption{Task 2 ($y_2$)}
+					\label{fig:task2_curves}
+				\end{subfigure}
+		
+	%	\vspace{0.4cm} % 增加行间距
+		
+		% --- 第三行: Task 3 (c) ---
+		\begin{subfigure}[b]{1.0\textwidth}
+					\centering
+					\includegraphics[width=0.8\textwidth]{FIG4c_updated.pdf}
+					\caption{Task 3 ($y_3$)}
+					\label{fig:task3_curves}
+				\end{subfigure}
+		
+		\caption{\textcolor{red}{Performance metric curves for the three tasks under the complete baseline set. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}
+		\label{fig:performance_curves}
+	\end{figure}
+
+	\clearpage
+	\section{\textcolor{red}{Expanded Statistical Comparison for the Numerical Example}} \label{app:E}
+	\setcounter{equation}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	
+	\revSUPP{This appendix reports the expanded statistical comparison for the numerical example using the complete baseline set and the full ablation chain. All entries are summarized over 20 independent runs and reported as mean $\pm$ 95\% confidence interval, complementing the mean $\pm$ standard deviation presentation in the main text.}{4,6,7,11}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{\textcolor{red}{Expanded local metrics for Task 1 ($y_1$) reported as mean $\pm$ 95\% confidence interval. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}
+		\label{tab:supp_task1_stats}
+		{\color{red}\small
+		\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
+			\toprule
+			\textbf{Method} & \textbf{RMSE} & \textbf{NLPD} & \textbf{QL} \\
+			\midrule
+			DA-DGP & 0.0384 $\pm$ 0.0054 & -0.8517 $\pm$ 0.0177 & 0.0290 $\pm$ 0.0010 \\
+			S-Atten (EQUAL) & 0.0451 $\pm$ 0.0056 & -0.4888 $\pm$ 0.0187 & 0.0600 $\pm$ 0.0022 \\
+			T-Atten & 0.0451 $\pm$ 0.0054 & -0.8466 $\pm$ 0.0266 & 0.0294 $\pm$ 0.0015 \\
+			Pure DGP & 0.0537 $\pm$ 0.0056 & -0.4913 $\pm$ 0.0231 & 0.0598 $\pm$ 0.0027 \\
+			DWA & 0.0483 $\pm$ 0.0046 & -0.3742 $\pm$ 0.0118 & 0.0754 $\pm$ 0.0017 \\
+			UW & 0.0460 $\pm$ 0.0060 & -0.5056 $\pm$ 0.0262 & 0.0582 $\pm$ 0.0031 \\
+			MGDA & 0.0472 $\pm$ 0.0049 & -0.5174 $\pm$ 0.0245 & 0.0568 $\pm$ 0.0028 \\
+			Indep-DGP & 0.0784 $\pm$ 0.0086 & -0.3243 $\pm$ 0.0903 & 0.0899 $\pm$ 0.0166 \\
+			Indep-HetGP & 0.1507 $\pm$ 0.0110 & 0.5558 $\pm$ 0.0252 & 0.4972 $\pm$ 0.0244 \\
+			LMC-DGP & 0.0647 $\pm$ 0.0041 & -0.3337 $\pm$ 0.0402 & 0.0829 $\pm$ 0.0072 \\
+			\bottomrule
+		\end{tabular*}
+		}
+	\end{table}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{\textcolor{red}{Expanded local metrics for Task 2 ($y_2$) reported as mean $\pm$ 95\% confidence interval. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}
+		\label{tab:supp_task2_stats}
+		{\color{red}\small
+		\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
+			\toprule
+			\textbf{Method} & \textbf{RMSE} & \textbf{NLPD} & \textbf{QL} \\
+			\midrule
+			DA-DGP & 0.0382 $\pm$ 0.0043 & -0.8751 $\pm$ 0.0262 & 0.0278 $\pm$ 0.0014 \\
+			S-Atten (EQUAL) & 0.0460 $\pm$ 0.0049 & -0.5106 $\pm$ 0.0254 & 0.0577 $\pm$ 0.0029 \\
+			T-Atten & 0.0570 $\pm$ 0.0062 & -0.8360 $\pm$ 0.0343 & 0.0300 $\pm$ 0.0020 \\
+			Pure DGP & 0.0686 $\pm$ 0.0072 & -0.4897 $\pm$ 0.0294 & 0.0600 $\pm$ 0.0034 \\
+			DWA & 0.0487 $\pm$ 0.0057 & -0.3792 $\pm$ 0.0176 & 0.0747 $\pm$ 0.0026 \\
+			UW & 0.0464 $\pm$ 0.0047 & -0.5186 $\pm$ 0.0312 & 0.0569 $\pm$ 0.0035 \\
+			MGDA & 0.0484 $\pm$ 0.0057 & -0.5291 $\pm$ 0.0308 & 0.0557 $\pm$ 0.0034 \\
+			Indep-DGP & 0.0820 $\pm$ 0.0111 & -0.3620 $\pm$ 0.1219 & 0.0884 $\pm$ 0.0202 \\
+			Indep-HetGP & 0.0849 $\pm$ 0.0074 & 0.2639 $\pm$ 0.0356 & 0.2826 $\pm$ 0.0199 \\
+			LMC-DGP & 0.0655 $\pm$ 0.0065 & -0.3532 $\pm$ 0.0261 & 0.0789 $\pm$ 0.0041 \\
+			\bottomrule
+		\end{tabular*}
+		}
+	\end{table}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{\textcolor{red}{Expanded local metrics for Task 3 ($y_3$) reported as mean $\pm$ 95\% confidence interval. \textit{[Resp. to Comment \#4,\#6,\#7,\#11]}}}
+		\label{tab:supp_task3_stats}
+		{\color{red}\small
+		\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
+			\toprule
+			\textbf{Method} & \textbf{RMSE} & \textbf{NLPD} & \textbf{QL} \\
+			\midrule
+			DA-DGP & 0.1360 $\pm$ 0.0114 & -0.5255 $\pm$ 0.0595 & 0.0475 $\pm$ 0.0035 \\
+			S-Atten (EQUAL) & 0.1570 $\pm$ 0.0149 & -0.2874 $\pm$ 0.0481 & 0.0830 $\pm$ 0.0056 \\
+			T-Atten & 0.1703 $\pm$ 0.0142 & -0.3366 $\pm$ 0.0899 & 0.0588 $\pm$ 0.0054 \\
+			Pure DGP & 0.2070 $\pm$ 0.0166 & -0.1281 $\pm$ 0.0655 & 0.1019 $\pm$ 0.0081 \\
+			DWA & 0.1673 $\pm$ 0.0151 & -0.1859 $\pm$ 0.0382 & 0.1034 $\pm$ 0.0058 \\
+			UW & 0.1606 $\pm$ 0.0155 & -0.2816 $\pm$ 0.0533 & 0.0834 $\pm$ 0.0064 \\
+			MGDA & 0.1708 $\pm$ 0.0156 & -0.2555 $\pm$ 0.0566 & 0.0859 $\pm$ 0.0066 \\
+			Indep-DGP & 0.1882 $\pm$ 0.0208 & -0.0918 $\pm$ 0.1082 & 0.1374 $\pm$ 0.0282 \\
+			Indep-HetGP & 0.2824 $\pm$ 0.0160 & 0.4135 $\pm$ 0.0199 & 0.3500 $\pm$ 0.0158 \\
+			LMC-DGP & 0.1849 $\pm$ 0.0167 & -0.1248 $\pm$ 0.0433 & 0.1144 $\pm$ 0.0076 \\
+			\bottomrule
+		\end{tabular*}
+		}
+	\end{table}
+	
+	\clearpage
+	\section{\textcolor{red}{Sensitivity to Kernel Bandwidth $\sigma$}} \label{app:F}
+	\setcounter{equation}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	
+	\revSUPP{The kernel-bandwidth sensitivity analysis confirms that the default $\sigma=0.5$ lies in a stable near-optimal interval. Across all three tasks, $\sigma=0.3$--$1.0$ preserves similar local accuracy and calibration, whereas overly concentrated weighting ($\sigma=0.1$) and overly diffuse weighting ($\sigma=1.5$) both weaken the local fit, with the clearest deterioration appearing on Task 3.}{1,10}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/sigma_sensitivity/task1_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 1 ($y_1$)}}
+			\label{fig:sigma_sens_task1}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/sigma_sensitivity/task2_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 2 ($y_2$)}}
+			\label{fig:sigma_sens_task2}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/sigma_sensitivity/task3_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 3 ($y_3$)}}
+			\label{fig:sigma_sens_task3}
+		\end{subfigure}
+		
+		\caption{\textcolor{red}{Sensitivity of local RMSE, NLPD, and QL to the kernel bandwidth $\sigma$ for the three tasks. \textit{[Resp. to Comment \#1,\#10]}}}
+		\label{fig:sigma_sensitivity}
+	\end{figure}
+	
+	\clearpage
+	\section{\textcolor{red}{Depth/Complexity Sensitivity}} \label{app:G}
+	\setcounter{equation}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	
+	\revSUPP{The depth/complexity analysis supports 2L-D5 as the final default architecture for the 400-point numerical design. The narrow 2L-D2 configuration lacks capacity, especially on the most nonlinear task, whereas the deeper configurations 3L-D5, 4L-D5, and 5L-D5 all exhibit lower accuracy and poorer stability, indicating that additional depth is detrimental rather than beneficial in the present data regime.}{3}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/depth_complexity/task1_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 1 ($y_1$)}}
+			\label{fig:depth_sens_task1}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/depth_complexity/task2_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 2 ($y_2$)}}
+			\label{fig:depth_sens_task2}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/depth_complexity/task3_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 3 ($y_3$)}}
+			\label{fig:depth_sens_task3}
+		\end{subfigure}
+		
+		\caption{\textcolor{red}{Sensitivity of local RMSE, NLPD, and QL to the network depth/complexity configurations for the three tasks. \textit{[Resp. to Comment \#3]}}}
+		\label{fig:depth_sensitivity}
+	\end{figure}
+	
+	\clearpage
+	\section{\textcolor{red}{Training Sample Size Sensitivity}} \label{app:H}
+	\setcounter{equation}{0}
+	\setcounter{figure}{0}
+	\setcounter{table}{0}
+	
+	\revSUPP{The sample-size analysis shows a clear transition from insufficient to stable local surrogate fitting. Designs with 20 or 50 training points perform poorly, 100 points substantially improve the easier tasks, and the 200--400 range provides the most stable overall behavior, with the hardest task continuing to benefit most from the increase to 400 points.}{12}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/sample_size/task1_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 1 ($y_1$)}}
+			\label{fig:sample_sens_task1}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/sample_size/task2_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 2 ($y_2$)}}
+			\label{fig:sample_sens_task2}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\includegraphics[width=0.85\textwidth]{../fig/sensitivity/sample_size/task3_metrics_errorbars.pdf}
+			\caption{\textcolor{red}{Task 3 ($y_3$)}}
+			\label{fig:sample_sens_task3}
+		\end{subfigure}
+		
+		\caption{\textcolor{red}{Sensitivity of local RMSE, NLPD, and QL to the training sample size for the three tasks. \textit{[Resp. to Comment \#12]}}}
+		\label{fig:sample_size_sensitivity}
+	\end{figure}
+
+	
+	
+	\newpage
+\begin{thebibliography}{99}
+	
+	% 注意：\bibitem 后面的 [Titsias(2009)] 是必须的，natbib 靠它来生成 (Author, Year)
+	\bibitem[Titsias(2009)]{titsias2009variational}
+	Titsias, M. (2009). 
+	Variational Learning of Inducing Variables in Sparse Gaussian Processes. 
+	\textit{Artificial Intelligence and Statistics (AISTATS), PMLR}, 5, 567--574.
+	
+	% 注意：\bibitem 后面的 [Knoblauch et~al.(2019)] 是必须的
+	\bibitem[Knoblauch et~al.(2019)]{knoblauch2019generalized}
+	Knoblauch, J., Jewson, J., \& Damoulas, T. (2019). 
+	Generalized Variational Inference: Three arguments for deriving new Posteriors. 
+	\textit{arXiv preprint arXiv:1904.02063}.
+	
+\end{thebibliography}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
