@@ -113,31 +113,31 @@ Robust parameter design (RPD) for modern complex engineering systems is frequent
 
 \section{Introduction} \label{s:intro}
 
-Robust parameter design (RPD) serves as a cornerstone of modern industrial quality engineering. It aims to optimize controllable design factors to minimize the deviation of system output responses from target values while significantly reducing performance variations induced by uncontrollable noise factors \citep{Taguchi1986, Joseph2006, Montgomery2017, Hamada2021}. In advanced engineering applications such as aerospace, radar electronic countermeasures, and 5G/6G communication systems, product quality responses often exhibit highly nonlinear and multimodal characteristics \citep{Wang2020, Liu2025, Gnanasambandam2025, SongJ2025}. Taking orthogonal frequency division multiplexing (OFDM) as an example—a core physical layer technology in communication systems—despite its superior resistance to multipath fading, its practical deployment faces challenging multi-objective conflict problems. Specifically, increasing transmission power can improve the signal-to-noise ratio (SNR), thereby enhancing throughput and reducing the bit error rate (BER); however, this inevitably leads to a deterioration in the peak-to-average power ratio (PAPR) and a surge in energy consumption. This complex coupling relationship is governed by a series of intricate signal processing procedures, such as IFFT transformation, cyclic prefix insertion, and multipath channel convolution, resulting in high nonlinearity and typical “black-box” attributes. However, high-fidelity physical layer link simulations (involving steps such as random pilots and least squares channel estimation) are computationally expensive. A single link evaluation often requires millions of floating-point operations to resolve complex signal convolutions \citep{Song2025}. Furthermore, large-scale field testing is constrained by electromagnetic environments and prohibitive costs, leading to an extreme scarcity of high-quality samples available for modeling \citep{Ming2022, Sauer2022, Ghandwani2025}. Therefore, employing surrogate modeling to construct low-cost mathematical approximations of the real physical layer has become a key paradigm for addressing such optimization problems characterized by small sample sizes and multiple conflicting objectives \citep{Luo2022, LiY2025}.
+Robust parameter design (RPD) serves as a cornerstone of modern industrial quality engineering. It aims to optimize controllable design factors to minimize the deviation of system output responses from target values while significantly reducing performance variations induced by uncontrollable noise factors \citep{Taguchi1986, Joseph2006, Montgomery2017, Hamada2021}. In advanced engineering applications such as aerospace, radar electronic countermeasures, and 5G/6G communication systems, product quality responses often exhibit highly nonlinear and multimodal characteristics \citep{Wang2020, Liu2025, Gnanasambandam2025, SongJ2025}. Taking orthogonal frequency division multiplexing (OFDM) as an example—a core physical layer technology in communication systems—despite its superior resistance to multipath fading, its practical deployment faces challenging multi-objective conflict problems. Specifically, increasing transmission power can improve the signal-to-noise ratio (SNR), thereby enhancing throughput and reducing the bit error rate (BER); however, this inevitably leads to a deterioration in the peak-to-average power ratio (PAPR) and a surge in energy consumption. This complex coupling relationship is governed by a series of intricate signal processing procedures, such as IFFT transformation, cyclic prefix insertion, and multipath channel convolution, resulting in high nonlinearity and typical “black-box” attributes. \textcolor{red}{Moreover, practical OFDM quality is simultaneously perturbed by stochastic bit streams, fading-channel realizations, and additive white Gaussian noise (AWGN), so robust design must account for both mean performance and transmitted variance across noise realizations. In the present implementation, these noise sources are treated as exogenous simulator randomness rather than controllable design variables, and their transmitted variance is quantified through repeated post-optimization simulations.} However, high-fidelity physical layer link simulations (involving steps such as random pilots and least squares channel estimation) are computationally expensive. A single link evaluation often requires millions of floating-point operations to resolve complex signal convolutions \citep{Song2025}. Furthermore, large-scale field testing is constrained by electromagnetic environments and prohibitive costs, leading to an extreme scarcity of high-quality samples available for modeling \citep{Ming2022, Sauer2022, Ghandwani2025}. Therefore, employing surrogate modeling to construct low-cost mathematical approximations of the real physical layer has become a key paradigm for addressing such optimization problems characterized by \textcolor{red}{limited engineering samples, exogenous noise propagation assessment,} and multiple conflicting objectives \citep{Luo2022, LiY2025}.
 
-鲁棒参数设计（RPD）是现代工业质量工程的基石，其目标是优化可控设计因子，使系统输出响应相对于目标值的偏差最小化，同时显著降低不可控噪声因子引起的性能波动 \citep{Taguchi1986, Joseph2006, Montgomery2017, Hamada2021}。在航空航天、雷达电子对抗以及 5G/6G 通信系统等先进工程应用中，产品质量响应往往呈现高度非线性和多模态特征 \citep{Wang2020, Liu2025, Gnanasambandam2025, SongJ2025}。以通信系统核心物理层技术 orthogonal frequency division multiplexing（OFDM）为例，尽管其具有较强的抗多径衰落能力，但实际部署中仍面临棘手的多目标冲突问题。具体而言，提高发射功率可以改善 signal-to-noise ratio（SNR），从而提升吞吐量并降低 bit error rate（BER）；然而，这也不可避免地导致 peak-to-average power ratio（PAPR）恶化和能耗激增。这种复杂耦合关系由 IFFT 变换、循环前缀插入、多径信道卷积等一系列复杂信号处理过程共同决定，因此具有高度非线性和典型的“黑箱”属性。然而，高保真物理层链路仿真（涉及随机导频、最小二乘信道估计等步骤）计算成本高昂。单次链路评估通常需要数百万次浮点运算才能解析复杂信号卷积 \citep{Song2025}。此外，大规模外场测试受电磁环境和高昂成本制约，导致可用于建模的高质量样本极度稀缺 \citep{Ming2022, Sauer2022, Ghandwani2025}。因此，采用代理建模来构建真实物理层的低成本数学近似，已成为解决小样本、多冲突目标优化问题的关键范式 \citep{Luo2022, LiY2025}。
+鲁棒参数设计（RPD）是现代工业质量工程的基石，其目标是优化可控设计因子，使系统输出响应相对于目标值的偏差最小化，同时显著降低不可控噪声因子引起的性能波动 \citep{Taguchi1986, Joseph2006, Montgomery2017, Hamada2021}。在航空航天、雷达电子对抗以及 5G/6G 通信系统等先进工程应用中，产品质量响应往往呈现高度非线性和多模态特征 \citep{Wang2020, Liu2025, Gnanasambandam2025, SongJ2025}。以通信系统核心物理层技术 orthogonal frequency division multiplexing（OFDM）为例，尽管其具有较强的抗多径衰落能力，但实际部署中仍面临棘手的多目标冲突问题。具体而言，提高发射功率可以改善 signal-to-noise ratio（SNR），从而提升吞吐量并降低 bit error rate（BER）；然而，这也不可避免地导致 peak-to-average power ratio（PAPR）恶化和能耗激增。这种复杂耦合关系由 IFFT 变换、循环前缀插入、多径信道卷积等一系列复杂信号处理过程共同决定，因此具有高度非线性和典型的“黑箱”属性。\textcolor{red}{此外，实际 OFDM 质量会同时受到随机比特流、衰落信道 realization 以及 additive white Gaussian noise（AWGN）的扰动，因此鲁棒设计不仅需要关注平均性能，还需要显式考虑噪声 realization 间的传递方差。在当前实现中，这些噪声源被视为外生仿真随机性而非可控设计变量，其传递方差通过优化后重复仿真进行量化。}然而，高保真物理层链路仿真（涉及随机导频、最小二乘信道估计等步骤）计算成本高昂。单次链路评估通常需要数百万次浮点运算才能解析复杂信号卷积 \citep{Song2025}。此外，大规模外场测试受电磁环境和高昂成本制约，导致可用于建模的高质量样本极度稀缺 \citep{Ming2022, Sauer2022, Ghandwani2025}。因此，采用代理建模来构建真实物理层的低成本数学近似，已成为解决\textcolor{red}{有限工程样本、外生噪声传播评估与}多冲突目标优化问题的关键范式 \citep{Luo2022, LiY2025}。
 
-Among various surrogate models, Gaussian processes (GP) have become the preferred tool for addressing such small-sample regression problems due to their nonparametric flexibility and capability for uncertainty quantification (UQ) \citep{Williams2006, Deng2017, Joseph2019}. Unlike traditional parametric models, GPs utilize kernel functions to capture correlations among input variables, enabling the simultaneous prediction of response means and variances—a characteristic that inherently aligns with the ``mean-variance'' joint modeling requirement in robust parameter design \citep{Gramacy2020, Wang2025}. However, standard GPs typically rely on a single global stationary kernel, assuming uniform smoothness across the input space. This assumption limits their ability to capture multi-scale, abrupt, or non-stationary response surfaces \citep{Ko2022, Sauer2023, Tao2025}. Taking the OFDM communication system focused on in this paper as an example, influenced by the nonlinear coupling of carrier frequency offset drift and multipath effects, its BER response surface often exhibits drastic ``cliff-like'' abrupt changes, while the PAPR presents complex non-Gaussian distributions. Due to a lack of hierarchical feature extraction capabilities, single-layer (shallow) GPs struggle to accurately characterize such complex non-stationary interactions in high-dimensional spaces \citep{Zhai2022, Lin2024, WangX2025}. To overcome this limitation, deep Gaussian processes (DGP) have emerged \citep{Damianou2013}. By mapping the input space to a latent feature space through a multi-layer cascaded GP structure, DGPs possess strong capabilities for modeling non-stationary functions, demonstrating significant advantages in handling complex physical field simulations \citep{Muller2017, Ding2024}. 
+Among various surrogate models, Gaussian processes (GP) have become the preferred tool for addressing such \textcolor{red}{sample-efficient engineering regression} problems due to their nonparametric flexibility and capability for uncertainty quantification (UQ) \citep{Williams2006, Deng2017, Joseph2019}. Unlike traditional parametric models, GPs utilize kernel functions to capture correlations among input variables, enabling the simultaneous prediction of response means and variances—a characteristic that inherently aligns with the ``mean-variance'' joint modeling requirement in robust parameter design \citep{Gramacy2020, Wang2025}. However, standard GPs typically rely on a single global stationary kernel, assuming uniform smoothness across the input space. This assumption limits their ability to capture multi-scale, abrupt, or non-stationary response surfaces \citep{Ko2022, Sauer2023, Tao2025}. Taking the OFDM communication system focused on in this paper as an example, influenced by the nonlinear coupling of carrier frequency offset drift and multipath effects, its BER response surface often exhibits drastic ``cliff-like'' abrupt changes, while the PAPR presents complex non-Gaussian distributions. Due to a lack of hierarchical feature extraction capabilities, single-layer (shallow) GPs struggle to accurately characterize such complex non-stationary interactions in high-dimensional spaces \citep{Zhai2022, Lin2024, WangX2025}. To overcome this limitation, deep Gaussian processes (DGP) have emerged \citep{Damianou2013}. By mapping the input space to a latent feature space through a multi-layer cascaded GP structure, DGPs possess strong capabilities for modeling non-stationary functions, demonstrating significant advantages in handling complex physical field simulations \citep{Muller2017, Ding2024}. \textcolor{red}{At the same time, when the design space is only moderately sized, the necessity of a shared deep multi-output architecture should be justified against strong alternatives such as independent GP/DGP and heteroscedastic GP surrogates.} 
 
-在各种代理模型中，Gaussian processes（GP）凭借其非参数灵活性和 uncertainty quantification（UQ）能力，已成为处理此类小样本回归问题的首选工具 \citep{Williams2006, Deng2017, Joseph2019}。不同于传统参数模型，GP 利用核函数捕捉输入变量之间的相关性，能够同时预测响应均值与方差，这一特性天然契合鲁棒参数设计中“均值-方差”联合建模的需求 \citep{Gramacy2020, Wang2025}。然而，标准 GP 通常依赖单一全局平稳核，并假设输入空间各处具有一致平滑性。该假设限制了其捕捉多尺度、突变或非平稳响应曲面的能力 \citep{Ko2022, Sauer2023, Tao2025}。以本文关注的 OFDM 通信系统为例，受载波频偏漂移和多径效应非线性耦合影响，其 BER 响应曲面常呈现剧烈的“悬崖式”突变，而 PAPR 则表现出复杂的非 Gaussian 分布。由于缺乏层次化特征提取能力，单层（浅层）GP 难以准确刻画高维空间中的这类复杂非平稳交互 \citep{Zhai2022, Lin2024, WangX2025}。为突破这一局限，deep Gaussian processes（DGP）应运而生 \citep{Damianou2013}。DGP 通过多层级联 GP 结构将输入空间映射到潜在特征空间，具有较强的非平稳函数建模能力，在处理复杂物理场仿真时展现出显著优势 \citep{Muller2017, Ding2024}。
+在各种代理模型中，Gaussian processes（GP）凭借其非参数灵活性和 uncertainty quantification（UQ）能力，已成为处理此类\textcolor{red}{高样本效率工程回归}问题的首选工具 \citep{Williams2006, Deng2017, Joseph2019}。不同于传统参数模型，GP 利用核函数捕捉输入变量之间的相关性，能够同时预测响应均值与方差，这一特性天然契合鲁棒参数设计中“均值-方差”联合建模的需求 \citep{Gramacy2020, Wang2025}。然而，标准 GP 通常依赖单一全局平稳核，并假设输入空间各处具有一致平滑性。该假设限制了其捕捉多尺度、突变或非平稳响应曲面的能力 \citep{Ko2022, Sauer2023, Tao2025}。以本文关注的 OFDM 通信系统为例，受载波频偏漂移和多径效应非线性耦合影响，其 BER 响应曲面常呈现剧烈的“悬崖式”突变，而 PAPR 则表现出复杂的非 Gaussian 分布。由于缺乏层次化特征提取能力，单层（浅层）GP 难以准确刻画高维空间中的这类复杂非平稳交互 \citep{Zhai2022, Lin2024, WangX2025}。为突破这一局限，deep Gaussian processes（DGP）应运而生 \citep{Damianou2013}。DGP 通过多层级联 GP 结构将输入空间映射到潜在特征空间，具有较强的非平稳函数建模能力，在处理复杂物理场仿真时展现出显著优势 \citep{Muller2017, Ding2024}。\textcolor{red}{与此同时，当设计空间维度适中且样本覆盖相对充分时，共享式深层多输出结构的必要性还需要与独立 GP/DGP 以及异方差 GP 等强替代基线进行严格比较。}
 
-Nevertheless, existing DGP modeling frameworks still possess a core deficiency when dealing with robust parameter optimization tasks: their standard variational inference processes typically aim to maximize the global evidence lower bound (ELBO), essentially seeking to minimize the average fitting error across the entire input space. This ``averaging'' global loss function causes the model to tend towards smoothing global trends, often resulting in underfitting in the region of interest (ROI) that is critical for robust optimization \citep{Zhang2022}. Due to the lack of a mechanism to ``focus'' model capacity on key subspaces, limited computational resources are dispersed over low-performance regions irrelevant to optimization, severely limiting the potential for efficient robust optimization under extremely small sample conditions.
+Nevertheless, existing DGP modeling frameworks still possess a core deficiency when dealing with robust parameter optimization tasks: their standard variational inference processes typically aim to maximize the global evidence lower bound (ELBO), essentially seeking to minimize the average fitting error across the entire input space. This ``averaging'' global loss function causes the model to tend towards smoothing global trends, often resulting in underfitting in the region of interest (ROI) that is critical for robust optimization \citep{Zhang2022}. \textcolor{red}{Consequently, superior average prediction accuracy alone is insufficient for multi-objective RPD; the surrogate must also support reliable ROI-oriented trade-off exploration.} Due to the lack of a mechanism to ``focus'' model capacity on key subspaces, limited computational resources are dispersed over low-performance regions irrelevant to optimization, severely limiting the potential for efficient robust optimization \textcolor{red}{under finite-sample engineering settings}.
 
-然而，现有 DGP 建模框架在处理鲁棒参数优化任务时仍存在一个核心缺陷：其标准变分推断过程通常以最大化全局 evidence lower bound（ELBO）为目标，本质上是在整个输入空间内最小化平均拟合误差。这种“平均化”的全局损失函数会使模型倾向于平滑全局趋势，往往导致其在对鲁棒优化至关重要的 region of interest（ROI）内欠拟合 \citep{Zhang2022}。由于缺乏将模型容量“聚焦”到关键子空间的机制，有限计算资源被分散到与优化无关的低性能区域，严重限制了极小样本条件下高效鲁棒优化的潜力。
+然而，现有 DGP 建模框架在处理鲁棒参数优化任务时仍存在一个核心缺陷：其标准变分推断过程通常以最大化全局 evidence lower bound（ELBO）为目标，本质上是在整个输入空间内最小化平均拟合误差。这种“平均化”的全局损失函数会使模型倾向于平滑全局趋势，往往导致其在对鲁棒优化至关重要的 region of interest（ROI）内欠拟合 \citep{Zhang2022}。\textcolor{red}{因此，仅凭整体平均预测精度的提升，并不足以证明代理模型适合多目标 RPD；该模型还必须支持面向 ROI 的可靠 trade-off 探索。}由于缺乏将模型容量“聚焦”到关键子空间的机制，有限计算资源被分散到与优化无关的低性能区域，严重限制了\textcolor{red}{有限工程样本条件下}高效鲁棒优化的潜力。
 
 In light of the limitations inherent in traditional models that treat data indiscriminately, the attention mechanism—as a technique capable of dynamically filtering key information—has achieved significant success in deep learning and industrial intelligence in recent years \citep{Cho2024, Guo2025}. For instance, in fault diagnosis and remaining useful life (RUL) prediction tasks, models can effectively suppress redundant noise and enhance prediction accuracy by adaptively assigning weights to different feature channels or time steps \citep{Fan2025, Ma2025}. Inspired by these advancements, the academic community has recently begun attempting to introduce attention mechanisms into the Gaussian process domain: \cite{Schmidt2024} proposed a probabilistic attention method to improve deep multiple instance learning, while \cite{Nakamura2021} applied self-attention layers to sequence-to-sequence speech generation tasks. 
-However, existing integration methods are mostly confined to single-layer attention structures or specific classification and sequence tasks, and have not yet systematically incorporated multi-level attention mechanisms into the hierarchical variational inference framework of DGPs \citep{Booth2025}.  Although recent studies have explored transfer learning strategies \citep{Yao2026} and multi-task structural learning \citep{Yang2025} to enhance modeling efficiency,  particularly in the field of RPD, how to leverage attention weights to simultaneously address the dual challenges of ``sample-level focusing on small samples (Sample Selection)'' and ``task-level trade-offs for multi-objective conflicts (Task Balancing)'' remains systematically unexplored.
+However, existing integration methods are mostly confined to single-layer attention structures or specific classification and sequence tasks, and have not yet systematically incorporated multi-level attention mechanisms into the hierarchical variational inference framework of DGPs \citep{Booth2025}.  Although recent studies have explored transfer learning strategies \citep{Yao2026} and multi-task structural learning \citep{Yang2025} to enhance modeling efficiency,  particularly in the field of RPD, how to leverage attention weights to simultaneously address the dual challenges of ``\textcolor{red}{sample-level focusing on ROI-critical observations under limited data}'' and ``\textcolor{red}{task-level balancing for conflicting objectives and Pareto trade-offs}'' remains systematically unexplored.
 
-鉴于传统模型对数据一视同仁的固有限制，attention mechanism 作为一种能够动态筛选关键信息的技术，近年来在 deep learning 和工业智能领域取得了显著成功 \citep{Cho2024, Guo2025}。例如，在故障诊断和 remaining useful life（RUL）预测任务中，模型可以通过自适应地为不同特征通道或时间步分配权重，有效抑制冗余噪声并提高预测精度 \citep{Fan2025, Ma2025}。受这些进展启发，学术界近期开始尝试将注意力机制引入 Gaussian process 领域：\cite{Schmidt2024} 提出了一种概率注意力方法以改进 deep multiple instance learning，而 \cite{Nakamura2021} 则将 self-attention 层应用于 sequence-to-sequence 语音生成任务。然而，现有融合方法大多局限于单层注意力结构或特定分类、序列任务，尚未系统地将多层级注意力机制纳入 DGP 的层次变分推断框架 \citep{Booth2025}。尽管近期研究已探索 transfer learning 策略 \citep{Yao2026} 和多任务结构学习 \citep{Yang2025} 以提升建模效率，但特别是在 RPD 领域，如何利用注意力权重同时应对“小样本条件下的样本级聚焦（Sample Selection）”和“多目标冲突中的任务级权衡（Task Balancing）”这两类挑战，仍缺乏系统研究。
+鉴于传统模型对数据一视同仁的固有限制，attention mechanism 作为一种能够动态筛选关键信息的技术，近年来在 deep learning 和工业智能领域取得了显著成功 \citep{Cho2024, Guo2025}。例如，在故障诊断和 remaining useful life（RUL）预测任务中，模型可以通过自适应地为不同特征通道或时间步分配权重，有效抑制冗余噪声并提高预测精度 \citep{Fan2025, Ma2025}。受这些进展启发，学术界近期开始尝试将注意力机制引入 Gaussian process 领域：\cite{Schmidt2024} 提出了一种概率注意力方法以改进 deep multiple instance learning，而 \cite{Nakamura2021} 则将 self-attention 层应用于 sequence-to-sequence 语音生成任务。然而，现有融合方法大多局限于单层注意力结构或特定分类、序列任务，尚未系统地将多层级注意力机制纳入 DGP 的层次变分推断框架 \citep{Booth2025}。尽管近期研究已探索 transfer learning 策略 \citep{Yao2026} 和多任务结构学习 \citep{Yang2025} 以提升建模效率，但特别是在 RPD 领域，如何利用注意力权重同时应对“\textcolor{red}{有限数据下针对 ROI 关键样本的样本级聚焦（Sample Selection）}”和“\textcolor{red}{面向冲突目标与 Pareto 权衡的任务级平衡（Task Balancing）}”这两类挑战，仍缺乏系统研究。
 
-Driven by these needs, this paper proposes a novel framework named Dual-attention deep Gaussian process (DA-DGP). Unlike traditional multi-task Gaussian processes that rely on explicit task covariance matrices (e.g., the linear model of coregionalization, LMC), the proposed model utilizes deep structures to implicitly capture complex dependencies among outputs. This framework is specifically tailored for RPD problems characterized by small sample sizes, high-dimensional nonlinearities, and strongly conflicting objectives. The core philosophy is to synergize two attention mechanisms with varying granularities to intelligently guide and allocate limited modeling resources. The main contributions of this paper are summarized as follows:
+Driven by these needs, this paper proposes a novel framework named Dual-attention deep Gaussian process (DA-DGP). Unlike traditional multi-task Gaussian processes that rely on explicit task covariance matrices (e.g., the linear model of coregionalization, LMC), the proposed model utilizes deep structures to implicitly capture complex dependencies among outputs. This framework is specifically tailored for RPD problems characterized by \textcolor{red}{limited engineering samples}, high-dimensional nonlinearities, and strongly conflicting objectives. The core philosophy is to synergize two attention mechanisms with varying granularities to intelligently guide and allocate limited modeling resources. The main contributions of this paper are summarized as follows:
 
-在上述需求驱动下，本文提出一种新的框架，称为 Dual-attention deep Gaussian process（DA-DGP）。不同于依赖显式任务协方差矩阵的传统 multi-task Gaussian processes（例如 linear model of coregionalization，LMC），所提出模型利用深层结构隐式捕捉输出之间的复杂依赖关系。该框架专门面向小样本、高维非线性和强目标冲突特征明显的 RPD 问题。其核心思想是协同不同粒度的两类注意力机制，以智能引导并分配有限建模资源。本文主要贡献总结如下：
+在上述需求驱动下，本文提出一种新的框架，称为 Dual-attention deep Gaussian process（DA-DGP）。不同于依赖显式任务协方差矩阵的传统 multi-task Gaussian processes（例如 linear model of coregionalization，LMC），所提出模型利用深层结构隐式捕捉输出之间的复杂依赖关系。该框架专门面向\textcolor{red}{有限工程样本}、高维非线性和强目标冲突特征明显的 RPD 问题。其核心思想是协同不同粒度的两类注意力机制，以智能引导并分配有限建模资源。本文主要贡献总结如下：
 
 \begin{enumerate}[label=(\arabic*), wide, labelwidth=!, labelindent=0pt]
-	\item \textbf{Sample-level Attention:} To address the local optimization characteristics of RPD, a quality loss function is integrated into the kernel computation. This mechanism guides the model to automatically focus on the target ROI under extremely small sample conditions, effectively improving prediction accuracy in critical subspaces.
+	\item \textbf{Sample-level Attention:} To address the local optimization characteristics of RPD, \textcolor{red}{target-oriented Gaussian sample weights are injected into the variational data-fitting term rather than the kernel itself}. This mechanism guides the model to automatically focus on the target ROI under \textcolor{red}{limited training samples}, effectively improving prediction accuracy in critical subspaces.
 
-	\textbf{样本级注意力：} 针对 RPD 的局部优化特征，将质量损失函数融入核计算。该机制引导模型在极小样本条件下自动聚焦目标 ROI，从而有效提升关键子空间内的预测精度。
+	\textbf{样本级注意力：} 针对 RPD 的局部优化特征，\textcolor{red}{将目标导向的 Gaussian 样本权重注入变分数据拟合项，而不是直接修改核函数本身}。该机制引导模型在\textcolor{red}{有限训练样本条件下}自动聚焦目标 ROI，从而有效提升关键子空间内的预测精度。
 
 	\item \textbf{Task-level Attention:} To address the strong conflicts among multiple objectives, a bilevel optimization strategy based on meta-learning is designed. This mechanism adaptively learns the optimal weights for conflicting tasks based on validation set performance, overcoming the limitations of traditional static weighting methods.
 
@@ -147,14 +147,14 @@ Driven by these needs, this paper proposes a novel framework named Dual-attentio
 
 	\textbf{加权变分推断：} 推导了严格的加权变分 ELBO，将上述双注意力机制无缝融入 DGP 的端到端训练过程，实现模型参数与注意力权重的协同优化。
 
-	\item \textbf{Engineering Validation and Evaluation:} Through standard numerical benchmark functions and a high-dimensional 5G/6G OFDM communication link optimization case, the advantages of the proposed method in handling non-stationary responses, multi-objective conflicts, and small sample data are systematically validated.
+	\item \textbf{Engineering Validation and Evaluation:} Through standard numerical benchmark functions and a high-dimensional 5G/6G OFDM communication link optimization case \textcolor{red}{with explicit noise realizations}, the advantages of the proposed method in handling non-stationary responses, multi-objective conflicts, and \textcolor{red}{robust Pareto trade-offs are systematically validated against strong GP-specific baselines, ablation variants, sensitivity analyses, and representative BO methods}.
 
-	\textbf{工程验证与评估：} 通过标准数值基准函数和高维 5G/6G OFDM 通信链路优化案例，系统验证所提方法在处理非平稳响应、多目标冲突和小样本数据方面的优势。
+	\textbf{工程验证与评估：} 通过\textcolor{red}{具有显式噪声 realization 的}标准数值基准函数和高维 5G/6G OFDM 通信链路优化案例，系统验证所提方法在处理非平稳响应、多目标冲突和\textcolor{red}{鲁棒 Pareto 权衡方面的优势，并与强 GP 专用基线、消融变体、敏感性分析以及代表性 BO 方法进行比较}。
 \end{enumerate}
 
-The remainder of this paper is organized as follows: Section 2 briefly reviews the theoretical foundations of GPs and DGPs, elucidating the applicability of multi-output DGPs in handling high-dimensional non-stationary responses. Section 3 details the proposed DA-DGP framework, focusing on the construction of the sample-level attention for precisely locating the ROI and the task-level attention mechanism for balancing multi-objective conflicts; furthermore, the weighted ELBO and the multi-objective robust optimization model are derived. Section 4 validates the effectiveness and superiority of the proposed method in small-sample computer experiments through numerical benchmark tests and an engineering case study of a 5G/6G OFDM communication system. Finally, Section 5 concludes the paper and outlines future research directions.
+The remainder of this paper is organized as follows: Section 2 briefly reviews the theoretical foundations of GPs and DGPs, elucidating the applicability of multi-output DGPs in handling high-dimensional non-stationary responses. Section 3 details the proposed DA-DGP framework, focusing on the construction of the sample-level attention for precisely locating the ROI and the task-level attention mechanism for balancing multi-objective conflicts; furthermore, the weighted ELBO and the multi-objective robust optimization model are derived. Section 4 \textcolor{red}{presents numerical and engineering validation, including strong GP-specific baselines, ablation studies, sensitivity analyses, and robust Pareto/BO comparisons}. Finally, Section 5 concludes the paper and outlines future research directions.
 
-本文其余部分安排如下：第 2 节简要回顾 GPs 和 DGPs 的理论基础，阐明 multi-output DGPs 在处理高维非平稳响应方面的适用性。第 3 节详细介绍所提出的 DA-DGP 框架，重点讨论用于精准定位 ROI 的样本级注意力构建，以及用于平衡多目标冲突的任务级注意力机制；此外，还推导加权 ELBO 和多目标鲁棒优化模型。第 4 节通过数值基准测试和 5G/6G OFDM 通信系统工程案例，在小样本计算机实验中验证所提方法的有效性与优越性。最后，第 5 节总结全文并展望未来研究方向。
+本文其余部分安排如下：第 2 节简要回顾 GPs 和 DGPs 的理论基础，阐明 multi-output DGPs 在处理高维非平稳响应方面的适用性。第 3 节详细介绍所提出的 DA-DGP 框架，重点讨论用于精准定位 ROI 的样本级注意力构建，以及用于平衡多目标冲突的任务级注意力机制；此外，还推导加权 ELBO 和多目标鲁棒优化模型。第 4 节\textcolor{red}{给出数值案例与工程案例验证，包括强 GP 专用基线、消融实验、敏感性分析以及鲁棒 Pareto/BO 比较}。最后，第 5 节总结全文并展望未来研究方向。
 
 \section{Theoretical Backgrounds} \label{sec:background}
 
@@ -170,15 +170,15 @@ Gaussian Process（GP）为潜在函数 $f$ 赋予先验分布，并假设任意
 \begin{equation}
 	f(\mathbf{x}) \sim \mathcal{GP}(0, k(\mathbf{x}, \mathbf{x}')).
 \end{equation}
-To capture the non-linear correlations with different sensitivities across input dimensions, we employ the anisotropic Squared Exponential (SE) kernel with Automatic Relevance Determination (ARD):
+To capture the non-linear correlations with different sensitivities across input dimensions, \textcolor{red}{the current implementation of both case studies and all GP-family baselines employs the anisotropic Mat\'ern-5/2 kernel with Automatic Relevance Determination (ARD):}
 
-为捕捉输入维度间具有不同敏感性的非线性相关关系，本文采用带有 Automatic Relevance Determination（ARD）的各向异性 Squared Exponential（SE）核：
+为捕捉输入维度间具有不同敏感性的非线性相关关系，\textcolor{red}{当前两个案例及全部 GP 家族基线的实现均采用带有 Automatic Relevance Determination（ARD）的各向异性 Mat\'ern-5/2 核：}
 \begin{equation}
-	k(\mathbf{x}, \mathbf{x}') = \sigma_f^2 \exp \left( - \frac{1}{2} (\mathbf{x} - \mathbf{x}')^T \mathbf{L}^{-1} (\mathbf{x} - \mathbf{x}') \right) + \sigma_n^2 \delta_{ij},
+	k(\mathbf{x}, \mathbf{x}') = \sigma_f^2 \textcolor{red}{\left( 1 + \sqrt{5}r(\mathbf{x}, \mathbf{x}') + \frac{5}{3}r^2(\mathbf{x}, \mathbf{x}') \right)\exp \left( - \sqrt{5}r(\mathbf{x}, \mathbf{x}') \right)} + \sigma_n^2 \delta_{ij},
 \end{equation}
-where $\sigma_f^2$ is the signal variance, $\mathbf{L} = \text{diag}(l_1^2, \ldots, l_d^2)$ contains the characteristic length-scales for each dimension, and $\delta_{ij}$ is the Kronecker delta function.
+where $\sigma_f^2$ is the signal variance, $\mathbf{L} = \text{diag}(l_1^2, \ldots, l_d^2)$ contains the characteristic length-scales for each dimension, \textcolor{red}{$r(\mathbf{x}, \mathbf{x}') = \sqrt{(\mathbf{x} - \mathbf{x}')^T \mathbf{L}^{-1} (\mathbf{x} - \mathbf{x}')}$}, and $\delta_{ij}$ is the Kronecker delta function.
 
-其中，$\sigma_f^2$ 为信号方差，$\mathbf{L} = \text{diag}(l_1^2, \ldots, l_d^2)$ 包含各维度的特征长度尺度，$\delta_{ij}$ 为 Kronecker delta function。
+其中，$\sigma_f^2$ 为信号方差，$\mathbf{L} = \text{diag}(l_1^2, \ldots, l_d^2)$ 包含各维度的特征长度尺度，\textcolor{red}{$r(\mathbf{x}, \mathbf{x}') = \sqrt{(\mathbf{x} - \mathbf{x}')^T \mathbf{L}^{-1} (\mathbf{x} - \mathbf{x}')}$}，$\delta_{ij}$ 为 Kronecker delta function。
 
 Conditioned on the dataset $\mathcal{D}$, the posterior predictive distribution at a new test point $\mathbf{x}_*$ follows a Gaussian distribution $p(f_* | \mathbf{X}, \mathbf{y}, \mathbf{x}_*) \sim \mathcal{N}(\mu_*(\mathbf{x}_*), \sigma_*^2(\mathbf{x}_*))$, with moments given by:
 
@@ -213,9 +213,9 @@ where the first term represents the expected log-likelihood (model fit) and the 
 
 
 \subsection{Multi-output Deep Gaussian Process Framework} \label{s:sec2.3}
-To overcome the limitations of stationary kernels in single-layer GPs, the DGP frameworkis employed \cite{Li2025}. This architecture hierarchically stacks sparse GP modules to capture complex non-stationary features while preserving Bayesian uncertainty. For the multi-objective nature of RPD, a multi-output structure is constructed (Figure \ref{fig:1}).
+To overcome the limitations of stationary kernels in single-layer GPs, the DGP frameworkis employed \cite{Li2025}. This architecture hierarchically stacks sparse GP modules to capture complex non-stationary features while preserving Bayesian uncertainty. For the multi-objective nature of RPD, a multi-output structure is constructed (Figure \ref{fig:1}). \textcolor{red}{In the experiments of this paper, the default surrogate adopts two stochastic GP layers (one hidden layer and one output layer), while deeper variants are examined later only for sensitivity analysis rather than as the default architecture.}
 
-为克服单层 GP 中平稳核的局限，本文采用 DGP 框架 \cite{Li2025}。该结构以层次化方式堆叠 sparse GP 模块，在保留 Bayesian uncertainty 的同时捕捉复杂非平稳特征。针对 RPD 的多目标性质，本文构建了 multi-output 结构（Figure \ref{fig:1}）。
+为克服单层 GP 中平稳核的局限，本文采用 DGP 框架 \cite{Li2025}。该结构以层次化方式堆叠 sparse GP 模块，在保留 Bayesian uncertainty 的同时捕捉复杂非平稳特征。针对 RPD 的多目标性质，本文构建了 multi-output 结构（Figure \ref{fig:1}）。\textcolor{red}{在本文实验中，默认代理模型采用两层随机 GP 结构（一个隐藏层加一个输出层），而更深的结构仅在后文作为敏感性分析对象出现，并不作为默认架构。}
 
 \begin{figure}[htbp]
 	\centering
@@ -241,9 +241,9 @@ where $\mathbf{F}^l$ denotes the matrix of function values at the $l$-th layer. 
 	p({\bf{Y}},\{ {{\bf{F}}^l},{{\bf{U}}^l}\} _{l = 1}^L) = p({\bf{Y}}|{{\bf{F}}^L})\prod\limits_{l = 1}^L p ({{\bf{F}}^l}|{{\bf{U}}^l},{{\bf{F}}^{l - 1}},{{\bf{Z}}^{l - 1}})p({{\bf{U}}^l};{{\bf{Z}}^{l - 1}}).
 \end{equation}
 
-Unlike the Linear Model of Coregionalization (LMC), this deep architecture implicitly captures nonlinear task correlations via shared latent representations. Since exact inference is intractable, variational inference is utilized. A layer-wise factorized variational posterior is specified to maintain the Markov property:
+Unlike the Linear Model of Coregionalization (LMC), this deep architecture implicitly captures nonlinear task correlations via shared latent representations. \textcolor{red}{This shared-latent construction should also be distinguished from independent GP/DGP surrogates: LMC imposes explicit coregionalization at the output level, whereas independent surrogates remove parameter sharing across tasks altogether.} Since exact inference is intractable, variational inference is utilized. A layer-wise factorized variational posterior is specified to maintain the Markov property:
 
-不同于 Linear Model of Coregionalization（LMC），该深层结构通过共享潜在表征隐式捕捉非线性任务相关性。由于精确推断不可解，本文采用 variational inference。为保持 Markov property，指定逐层分解的变分后验：
+不同于 Linear Model of Coregionalization（LMC），该深层结构通过共享潜在表征隐式捕捉非线性任务相关性。\textcolor{red}{这种共享潜在表示的构造还需要与独立 GP/DGP 代理加以区分：LMC 在输出层施加显式 coregionalization，而独立代理则完全取消任务间参数共享。}由于精确推断不可解，本文采用 variational inference。为保持 Markov property，指定逐层分解的变分后验：
 \begin{equation}
 	q(\{ {{\bf{F}}^l},{{\bf{U}}^l}\} _{l = 1}^L) = \prod\limits_{l = 1}^L p ({{\bf{F}}^l}|{{\bf{U}}^l},{{\bf{F}}^{l - 1}},{{\bf{Z}}^{l - 1}})q({{\bf{U}}^l}){\rm{ }},
 \end{equation}
@@ -288,9 +288,9 @@ The standard ELBO (Eq. 9) employs an equal-weight summation strategy, which inev
 
 标准 ELBO（Eq. 9）采用等权求和策略，这不可避免地稀释了来自 RPD 关键 ROI 的拟合信号。为缓解这一问题，本文引入一种软样本级注意力机制作为可微特征过滤器。通过重构 likelihood 项，该机制促使模型优先关注接近潜在最优解的数据子集，从而提高局部预测精度。
 
-Specifically, consider a multi-task learning problem with $p$ response variables, where $y_{k}^{*}$ denotes the ideal target value predefined for the $k$-th task ($k \in \{1, \ldots, p\}$). Given the training dataset $\mathcal{D}=\{(\mathbf{x}_{i}, \mathbf{y}_{i})\}_{i=1}^{N}$ with observation vectors $\mathbf{y}_{i}=[y_{i,1}, \ldots, y_{i,p}]^{T}$, we quantify the relevance of sample $i$ to task $k$ using a Gaussian Radial Basis Function (RBF) kernel. This maps the Euclidean distance between the observation and the target to an attention score in $(0, 1]$. Consequently, the raw attention weight $s_{i,k}$ is defined as:
+Specifically, consider a multi-task learning problem with $p$ response variables, where $y_{k}^{*}$ denotes the ideal target value predefined for the $k$-th task ($k \in \{1, \ldots, p\}$). \textcolor{red}{In the actual implementation, these are training-stage attention targets used to localize informative ROI samples for surrogate fitting; they are allowed to differ from the downstream optimization targets introduced later in Section 3.3.} Given the training dataset $\mathcal{D}=\{(\mathbf{x}_{i}, \mathbf{y}_{i})\}_{i=1}^{N}$ with observation vectors $\mathbf{y}_{i}=[y_{i,1}, \ldots, y_{i,p}]^{T}$, we quantify the relevance of sample $i$ to task $k$ using a Gaussian Radial Basis Function (RBF) kernel. This maps the Euclidean distance between the observation and the target to an attention score in $(0, 1]$. Consequently, the raw attention weight $s_{i,k}$ is defined as:
 
-具体而言，考虑一个具有 $p$ 个响应变量的 multi-task learning 问题，其中 $y_{k}^{*}$ 表示第 $k$ 个任务（$k \in \{1, \ldots, p\}$）预先设定的理想目标值。给定训练数据集 $\mathcal{D}=\{(\mathbf{x}_{i}, \mathbf{y}_{i})\}_{i=1}^{N}$，其观测向量为 $\mathbf{y}_{i}=[y_{i,1}, \ldots, y_{i,p}]^{T}$，本文使用 Gaussian Radial Basis Function（RBF）kernel 来量化样本 $i$ 与任务 $k$ 的相关性。该方法将观测值与目标值之间的 Euclidean distance 映射为 $(0, 1]$ 内的注意力得分。因此，原始注意力权重 $s_{i,k}$ 定义为：
+具体而言，考虑一个具有 $p$ 个响应变量的 multi-task learning 问题，其中 $y_{k}^{*}$ 表示第 $k$ 个任务（$k \in \{1, \ldots, p\}$）预先设定的理想目标值。\textcolor{red}{在实际实现中，这些量是训练阶段用于定位信息性 ROI 样本的注意力目标，它们允许与 Section 3.3 中后续优化阶段使用的工程目标不同。}给定训练数据集 $\mathcal{D}=\{(\mathbf{x}_{i}, \mathbf{y}_{i})\}_{i=1}^{N}$，其观测向量为 $\mathbf{y}_{i}=[y_{i,1}, \ldots, y_{i,p}]^{T}$，本文使用 Gaussian Radial Basis Function（RBF）kernel 来量化样本 $i$ 与任务 $k$ 的相关性。该方法将观测值与目标值之间的 Euclidean distance 映射为 $(0, 1]$ 内的注意力得分。因此，原始注意力权重 $s_{i,k}$ 定义为：
 \begin{equation}
 	{{s}_{i,k}}=\exp \left( -\frac{\|{{y}_{i,k}}-y_{k}^{*}{{\|}^{2}}}{2\sigma _{k}^{2}} \right),
 \end{equation}
@@ -298,9 +298,9 @@ where $\|\cdot\|$ denotes the Euclidean norm and $\sigma_{k}$ controls the kerne
 
 其中，$\|\cdot\|$ 表示 Euclidean norm，$\sigma_{k}$ 控制 kernel bandwidth。该参数调节注意力衰减速率：较小的 $\sigma_{k}$ 会使模型尖锐聚焦于目标附近区域，而较大的取值则会扩大感受范围以获得更广覆盖。
 
-In practice, hyperparameters are specified based on domain knowledge rather than black-box optimization. The target $y_{k}^{*}$ is directly derived from design specifications (e.g., nominal values or theoretical bounds). The bandwidth $\sigma_{k}$ is determined via a data-driven heuristic, typically $\sigma_{k}=0.5 \cdot \text{std}(\mathbf{y}_{k})$, to ensure attention activation within the effective engineering range. To maintain numerical stability and scale consistency with the standard ELBO, the raw weights are normalized:
+In practice, hyperparameters are specified explicitly for each case rather than black-box optimized. The target $y_{k}^{*}$ is directly derived from design specifications or ROI preferences. \textcolor{red}{When outputs are standardized before training, the configured target values and bandwidths are mapped to the standardized output space before attention weights are computed. When the engineering target is not uniquely prescribed, neighboring candidate targets can be examined through sensitivity analysis to assess the robustness of ROI localization.} The bandwidth $\sigma_{k}$ \textcolor{red}{is configured per case and kept fixed during training rather than jointly learned}. \textcolor{red}{This transparent design matches the current code path in both case studies; treating $\sigma_{k}$ as a learnable parameter is left for future work, while the numerical sensitivity study later in the paper shows that fixed choices remain stable over a practically useful range.} To maintain numerical stability and scale consistency with the standard ELBO, the raw weights are normalized:
 
-在实践中，超参数基于领域知识指定，而非依赖黑箱优化。目标 $y_{k}^{*}$ 直接由设计规范（例如名义值或理论边界）给出。带宽 $\sigma_{k}$ 通过数据驱动启发式规则确定，通常取 $\sigma_{k}=0.5 \cdot \text{std}(\mathbf{y}_{k})$，以确保注意力在有效工程范围内被激活。为保持数值稳定性并与标准 ELBO 的尺度一致，本文对原始权重进行归一化：
+在实践中，超参数按案例显式设定，而非依赖黑箱优化。目标 $y_{k}^{*}$ 直接由设计规范或 ROI 偏好给出。\textcolor{red}{当训练前对输出进行了标准化时，所配置的目标值和带宽会先映射到标准化输出空间，再据此计算注意力权重。当工程目标并非唯一给定时，还可以通过邻近候选目标的敏感性分析来评估 ROI 定位的稳健性。}带宽 $\sigma_{k}$ \textcolor{red}{按案例配置并在训练过程中保持固定，而不是联合学习}。\textcolor{red}{这种透明设定与两个案例当前代码路径保持一致；将 $\sigma_{k}$ 设为可学习参数可作为未来工作，而本文后续数值敏感性分析表明固定设定在实际可用范围内仍具有较好的稳定性。}为保持数值稳定性并与标准 ELBO 的尺度一致，本文对原始权重进行归一化：
 \begin{equation}
 	{{\tilde{s}}_{i,k}}=\frac{{{s}_{i,k}}}{\sum\limits_{j=1}^{N}{{{s}_{j,k}}}}\cdot N  \qquad .
 \end{equation}
@@ -360,9 +360,9 @@ On this basis, the optimization process is formalized as a nested bilevel struct
 \begin{equation}
 	{{\mathcal{L}}_{\text{meta}}}({{\boldsymbol{\theta }}^{*}}(\boldsymbol{\lambda }))=\sum\limits_{k=1}^{p}{{{\pi }_{k}}}\cdot {{{\mathcal{L}}'}_{k}}({{\boldsymbol{\theta }}^{*}}(\boldsymbol{\lambda });{{\mathcal{D}}_{\text{val}}}),
 \end{equation}
-where $\pi_k$ ($\sum \pi_k = 1$) encodes the static engineering preference on the validation set, typically defaulting to $1/p$ for unbiased fitting. A critical distinction exists between $\pi_k$ and the dynamic training weights $\boldsymbol{\lambda}$: while $\boldsymbol{\lambda}$ adaptively modulates the optimization trajectory, $\pi_k$ defines the target equilibrium on the Pareto frontier. With $\boldsymbol{\theta}^*(\boldsymbol{\lambda}) = \arg \min_{\boldsymbol{\theta}} \mathcal{L}_{\text{train}}(\boldsymbol{\theta}, \boldsymbol{\lambda})$ representing the inner-loop solution, the global bilevel optimization objective is formulated as:
+where $\pi_k$ ($\sum \pi_k = 1$) encodes the static engineering preference on the validation set, typically defaulting to $1/p$ for unbiased fitting. \textcolor{red}{In the current implementation, the same per-task weighted ELBO structure is also evaluated on the full validation split, and the two case studies include all tasks in the primary-task set, so $\pi_k = 1/p$.} A critical distinction exists between $\pi_k$ and the dynamic training weights $\boldsymbol{\lambda}$: while $\boldsymbol{\lambda}$ adaptively modulates the optimization trajectory, $\pi_k$ defines the target equilibrium on the Pareto frontier. With $\boldsymbol{\theta}^*(\boldsymbol{\lambda}) = \arg \min_{\boldsymbol{\theta}} \mathcal{L}_{\text{train}}(\boldsymbol{\theta}, \boldsymbol{\lambda})$ representing the inner-loop solution, the global bilevel optimization objective is formulated as:
 
-其中，$\pi_k$（$\sum \pi_k = 1$）编码验证集上的静态工程偏好，通常默认为 $1/p$ 以实现无偏拟合。$\pi_k$ 与动态训练权重 $\boldsymbol{\lambda}$ 之间存在关键区别：$\boldsymbol{\lambda}$ 自适应调节优化轨迹，而 $\pi_k$ 定义 Pareto frontier 上的目标平衡点。令 $\boldsymbol{\theta}^*(\boldsymbol{\lambda}) = \arg \min_{\boldsymbol{\theta}} \mathcal{L}_{\text{train}}(\boldsymbol{\theta}, \boldsymbol{\lambda})$ 表示内循环解，则全局双层优化目标可写为：
+其中，$\pi_k$（$\sum \pi_k = 1$）编码验证集上的静态工程偏好，通常默认为 $1/p$ 以实现无偏拟合。\textcolor{red}{在当前实现中，同样的按任务加权 ELBO 结构也会在完整验证集上被评估，并且两个案例都将全部任务纳入 primary-task 集合，因此 $\pi_k = 1/p$。}$\pi_k$ 与动态训练权重 $\boldsymbol{\lambda}$ 之间存在关键区别：$\boldsymbol{\lambda}$ 自适应调节优化轨迹，而 $\pi_k$ 定义 Pareto frontier 上的目标平衡点。令 $\boldsymbol{\theta}^*(\boldsymbol{\lambda}) = \arg \min_{\boldsymbol{\theta}} \mathcal{L}_{\text{train}}(\boldsymbol{\theta}, \boldsymbol{\lambda})$ 表示内循环解，则全局双层优化目标可写为：
 \begin{equation}
 	\begin{aligned}
 		& \min_{\boldsymbol{\lambda}} \mathcal{L}_{\text{meta}}(\boldsymbol{\theta}^*(\boldsymbol{\lambda})) \\
@@ -376,9 +376,9 @@ where $\pi_k$ ($\sum \pi_k = 1$) encodes the static engineering preference on th
 \begin{equation}
 	\boldsymbol{{\theta }'}(\boldsymbol{\lambda })=\boldsymbol{\theta }-\alpha {{\nabla }_{\boldsymbol{\theta }}}{{\mathcal{L}}_{\text{train}}}(\boldsymbol{\theta },\boldsymbol{\lambda }).
 \end{equation}
-where $\alpha$ denotes the inner-loop learning rate. At this point, the difficulty of solving Equation (20) transforms into computing the gradient of the meta-objective function with respect to weights $\boldsymbol{\lambda}$. According to the chain rule, this gradient depends on the sensitivity of the updated virtual parameters $\boldsymbol{\theta}'$ to $\boldsymbol{\lambda}$:
+where $\alpha$ denotes the inner-loop learning rate. \textcolor{red}{In the current implementation, the real model is first updated on the training batch, and $\boldsymbol{\theta}'$ is then realized on a copied model as an Adam-style virtual look-ahead step that reuses the current optimizer state; it is used only for meta-gradient computation rather than being committed as the real parameter value.} At this point, the difficulty of solving Equation (20) transforms into computing the gradient of the meta-objective function with respect to weights $\boldsymbol{\lambda}$. According to the chain rule, this gradient depends on the sensitivity of the updated virtual parameters $\boldsymbol{\theta}'$ to $\boldsymbol{\lambda}$:
 
-其中，$\alpha$ 表示内循环学习率。此时，求解 Equation (20) 的难点转化为计算 meta-objective function 关于权重 $\boldsymbol{\lambda}$ 的梯度。根据 chain rule，该梯度取决于更新后的虚拟参数 $\boldsymbol{\theta}'$ 对 $\boldsymbol{\lambda}$ 的敏感性：
+其中，$\alpha$ 表示内循环学习率。\textcolor{red}{在当前实现中，真实模型会先在训练 batch 上完成一次参数更新，而 $\boldsymbol{\theta}'$ 则在复制模型上通过复用当前优化器状态的 Adam 风格虚拟前瞻步构造出来；它仅用于计算 meta-gradient，而不会被直接提交为真实参数值。}此时，求解 Equation (20) 的难点转化为计算 meta-objective function 关于权重 $\boldsymbol{\lambda}$ 的梯度。根据 chain rule，该梯度取决于更新后的虚拟参数 $\boldsymbol{\theta}'$ 对 $\boldsymbol{\lambda}$ 的敏感性：
 \begin{equation}
 	{{\nabla }_{\boldsymbol{\lambda }}}{{\mathcal{L}}_{\text{meta}}}={{\nabla }_{{\boldsymbol{{\theta }'}}}}{{\mathcal{L}}_{\text{meta}}}\cdot \frac{\partial \boldsymbol{{\theta }'}}{\partial \boldsymbol{\lambda }}.
 \end{equation}
@@ -416,9 +416,9 @@ where $\beta$ denotes the meta-learning rate, and $\hat{\nabla}_{\boldsymbol{\la
 
 \textbf{算法流程。} 所提方法通过交替更新组织一个耦合的动态优化循环。在内循环中，模型参数 $\boldsymbol{\theta}$ 基于加权训练损失进行优化，以利用局部数据特征。与此同时，外循环利用验证反馈计算 meta-gradients，动态修正任务权重 $\boldsymbol{\lambda}$，以防止过拟合并自主导航 Pareto frontier。
 
-Despite the overhead of bilevel optimization, the computational cost remains feasible for RPD (typically $N<1000$), as it is dominated by the inherent complexity of GP inference. To ensure numerical stability, the implementation incorporates: (i) gradient clipping (threshold 1.0) to prevent explosion; (ii) decoupled learning rates ($\eta_{\theta} \gg \eta_{\lambda}$) to establish a stable ``fast-parameter, slow-weight'' dynamic; and (iii) Softmax activation to enforce weight non-negativity. The complete procedure is summarized in Algorithm \ref{alg:da_dgp}.
+Despite the overhead of bilevel optimization, the computational cost remains feasible for RPD (typically $N<1000$), as it is dominated by the inherent complexity of GP inference. \textcolor{red}{For the shared sparse variational DGP backbone, the dominant per-batch cost remains the standard sparse-DGP term of order $B M^2 + M^3$, where $B$ is the batch size and $M$ is the number of inducing points. Relative to ordinary shared DGP training, DA-DGP mainly incurs an additional constant-factor overhead from one virtual gradient step, one validation backward pass, and a finite-difference Hessian-vector approximation; later engineering experiments compare this extra cost empirically with Equal, MGDA, and Indep-DGP baselines.} To ensure numerical stability, the implementation incorporates: (i) gradient clipping (threshold 1.0) to prevent explosion; (ii) decoupled learning rates ($\eta_{\theta} \gg \eta_{\lambda}$) to establish a stable ``fast-parameter, slow-weight'' dynamic; and (iii) Softmax activation to enforce weight non-negativity. The complete procedure is summarized in Algorithm \ref{alg:da_dgp}.
 
-尽管 bilevel optimization 会带来额外开销，但其计算成本对于 RPD 仍然可行（通常 $N<1000$），因为总体开销主要由 GP inference 的固有复杂度主导。为确保数值稳定性，实现中包含：（i）gradient clipping（阈值 1.0）以防止梯度爆炸；（ii）解耦学习率（$\eta_{\theta} \gg \eta_{\lambda}$）以建立稳定的“快参数、慢权重”动态；（iii）Softmax activation 以强制权重非负。完整流程总结于 Algorithm \ref{alg:da_dgp}。
+尽管 bilevel optimization 会带来额外开销，但其计算成本对于 RPD 仍然可行（通常 $N<1000$），因为总体开销主要由 GP inference 的固有复杂度主导。\textcolor{red}{对于共享式稀疏变分 DGP 主干而言，每个 batch 的主导计算量仍然是标准 sparse-DGP 的 $B M^2 + M^3$ 项，其中 $B$ 为 batch size，$M$ 为 inducing points 数量。相较于普通共享 DGP 训练，DA-DGP 的额外代价主要来自一次虚拟梯度更新、一次验证集反向传播以及一次 finite-difference Hessian-vector 近似；后续工程实验会把这部分额外开销与 Equal、MGDA 和 Indep-DGP 基线做实证比较。}为确保数值稳定性，实现中包含：（i）gradient clipping（阈值 1.0）以防止梯度爆炸；（ii）解耦学习率（$\eta_{\theta} \gg \eta_{\lambda}$）以建立稳定的“快参数、慢权重”动态；（iii）Softmax activation 以强制权重非负。完整流程总结于 Algorithm \ref{alg:da_dgp}。
 
 \begin{algorithm}[!h]
 	\caption{DA-DGP modeling workflow.}
@@ -428,8 +428,8 @@ Despite the overhead of bilevel optimization, the computational cost remains fea
 %		\hrule
 		\vspace{0.5\baselineskip}
 	\begin{algorithmic}[1] % [1] 表示显示行号
-		\Require Training set $\mathcal{D}_{\text{train}}$; Validation set $\mathcal{D}_{\text{val}}$; Number of tasks $p$; Target optimal values $\{y_{k}^{*}\}_{k=1}^{p}$; Gaussian kernel bandwidths $\{\sigma _{k}\}_{k=1}^{p}$; Validation preference weights $\{\pi _{k}\}_{k=1}^{p}$; Learning rates $\alpha, \beta$; Gradient clipping thresholds $\tau_{\text{in}}, \tau_{\text{out}}$; Finite difference perturbation step $\epsilon$; Maximum iterations $T$.\\
-		\textbf{输入：}训练集 $\mathcal{D}_{\text{train}}$；验证集 $\mathcal{D}_{\text{val}}$；任务数量 $p$；目标最优值 $\{y_{k}^{*}\}_{k=1}^{p}$；Gaussian kernel bandwidths $\{\sigma _{k}\}_{k=1}^{p}$；验证偏好权重 $\{\pi _{k}\}_{k=1}^{p}$；学习率 $\alpha, \beta$；梯度裁剪阈值 $\tau_{\text{in}}, \tau_{\text{out}}$；finite difference 扰动步长 $\epsilon$；最大迭代次数 $T$。
+		\Require Training set $\mathcal{D}_{\text{train}}$; Validation set $\mathcal{D}_{\text{val}}$; Number of tasks $p$; \textcolor{red}{Sample-attention target values} $\{y_{k}^{*}\}_{k=1}^{p}$; Gaussian kernel bandwidths $\{\sigma _{k}\}_{k=1}^{p}$; Validation preference weights $\{\pi _{k}\}_{k=1}^{p}$; Learning rates $\alpha, \beta$; Gradient clipping thresholds $\tau_{\text{in}}, \tau_{\text{out}}$; Finite difference perturbation step $\epsilon$; Maximum iterations $T$.\\
+		\textbf{输入：}训练集 $\mathcal{D}_{\text{train}}$；验证集 $\mathcal{D}_{\text{val}}$；任务数量 $p$；\textcolor{red}{样本注意力目标值} $\{y_{k}^{*}\}_{k=1}^{p}$；Gaussian kernel bandwidths $\{\sigma _{k}\}_{k=1}^{p}$；验证偏好权重 $\{\pi _{k}\}_{k=1}^{p}$；学习率 $\alpha, \beta$；梯度裁剪阈值 $\tau_{\text{in}}, \tau_{\text{out}}$；finite difference 扰动步长 $\epsilon$；最大迭代次数 $T$。
 		\Ensure Trained model parameters $\boldsymbol{\theta}^*$; Final task weights $\mathbf{w}^*$.\\
 		\textbf{输出：}训练后的模型参数 $\boldsymbol{\theta}^*$；最终任务权重 $\mathbf{w}^*$。
 		
@@ -448,16 +448,20 @@ Despite the overhead of bilevel optimization, the computational cost remains fea
 		\State \textit{// Main Optimization Loop}
 		\State \textit{// 主优化循环}
 		\For{$t = 1$ to $T$}
-		\State \textit{// Inner Loop: Virtual Update}
-		\State \textit{// 内循环：虚拟更新}
+		\State \textit{// Inner Loop: Real Update}
+		\State \textit{// 内循环：真实更新}
 		\State Compute task weights: $\mathbf{w} \gets \text{softmax}(\boldsymbol{\lambda})$
 		\State 计算任务权重：$\mathbf{w} \gets \text{softmax}(\boldsymbol{\lambda})$
 		\State Compute weighted training loss: $\mathcal{L}_{\text{train}} \gets \sum_{k=1}^{p} w_{k} \cdot \mathcal{L}'_{k}(\boldsymbol{\theta})$ \Comment{Refer to Eq. (18)}
 		\State 计算加权训练损失：$\mathcal{L}_{\text{train}} \gets \sum_{k=1}^{p} w_{k} \cdot \mathcal{L}'_{k}(\boldsymbol{\theta})$ \Comment{见 Eq. (18)}
 		\State Compute gradient and clip: $g_{\boldsymbol{\theta}} \gets \text{Clip}(\nabla_{\boldsymbol{\theta}} \mathcal{L}_{\text{train}}, \tau_{\text{in}})$
 		\State 计算并裁剪梯度：$g_{\boldsymbol{\theta}} \gets \text{Clip}(\nabla_{\boldsymbol{\theta}} \mathcal{L}_{\text{train}}, \tau_{\text{in}})$
-		\State Perform virtual parameter update: $\boldsymbol{\theta}' \gets \boldsymbol{\theta} - \alpha \cdot g_{\boldsymbol{\theta}}$
-		\State 执行虚拟参数更新：$\boldsymbol{\theta}' \gets \boldsymbol{\theta} - \alpha \cdot g_{\boldsymbol{\theta}}$
+		\State \textcolor{red}{Perform real Adam-style parameter update: $\boldsymbol{\theta} \gets \text{AdamStep}(\boldsymbol{\theta}, g_{\boldsymbol{\theta}}, \alpha)$}
+		\State \textcolor{red}{执行真实 Adam 风格参数更新：$\boldsymbol{\theta} \gets \text{AdamStep}(\boldsymbol{\theta}, g_{\boldsymbol{\theta}}, \alpha)$}
+		\State \textit{// Virtual Look-ahead for Meta Update}
+		\State \textit{// 用于 Meta 更新的虚拟前瞻}
+		\State \textcolor{red}{Construct virtual look-ahead copy: $\boldsymbol{\theta}' \gets \text{VirtualAdamStep}(\boldsymbol{\theta}, \mathcal{L}_{\text{train}}, \alpha)$}
+		\State \textcolor{red}{构造虚拟前瞻副本：$\boldsymbol{\theta}' \gets \text{VirtualAdamStep}(\boldsymbol{\theta}, \mathcal{L}_{\text{train}}, \alpha)$}
 		
 		\State \textit{// Outer Loop: Meta Update (Based on Validation Feedback)}
 		\State \textit{// 外循环：Meta 更新（基于验证反馈）}
@@ -473,9 +477,8 @@ Despite the overhead of bilevel optimization, the computational cost remains fea
 		\State Update meta-parameters: $\boldsymbol{\lambda} \gets \boldsymbol{\lambda} - \beta \cdot g_{\boldsymbol{\lambda}}$
 		\State 更新 meta-parameters：$\boldsymbol{\lambda} \gets \boldsymbol{\lambda} - \beta \cdot g_{\boldsymbol{\lambda}}$
 		
-		\State \textit{// Execute Real Parameter Update}
-		\State \textit{// 执行真实参数更新}
-		\State $\boldsymbol{\theta} \gets \boldsymbol{\theta}'$
+		\State \textcolor{red}{Retain the previously updated real parameters $\boldsymbol{\theta}$; discard $\boldsymbol{\theta}'$ after computing the meta-gradient}
+		\State \textcolor{red}{保留前面已更新的真实参数 $\boldsymbol{\theta}$；在完成 meta-gradient 计算后丢弃 $\boldsymbol{\theta}'$}
 		\EndFor
 		
 		\State \Return $\boldsymbol{\theta}^* = \boldsymbol{\theta}$, $\mathbf{w}^* = \text{softmax}(\boldsymbol{\lambda})$
@@ -486,28 +489,28 @@ Despite the overhead of bilevel optimization, the computational cost remains fea
 \end{algorithm}
 
 \subsection{Multi-Objective Robust Optimization Model} \label{s:sec3.3}
-Following model training, the objective shifts to robust parameter optimization. To simultaneously minimize bias and variance, a multivariate expected quality loss is formulated based on Taguchi's quadratic loss framework \citep{Taguchi1986}. Leveraging the probabilistic posterior $y_{k}(\mathbf{x})\sim\mathcal{N}(\mu_{k}(\mathbf{x}),\sigma _{k}^{2}(\mathbf{x}))$ provided by DA-DGP, the classic loss function is generalized to the expected quality loss (EQL) for the $k$-th task \citep{Tan2012, Jiang2021}:
+Following model training, the objective shifts to robust parameter optimization. To simultaneously minimize bias and variance, a multivariate expected quality loss is formulated based on Taguchi's quadratic loss framework \citep{Taguchi1986}. \textcolor{red}{To distinguish this stage from the training-stage attention targets in Section 3.1, let $t_k$ denote the engineering target used by the downstream optimizer.} Leveraging the probabilistic posterior $y_{k}(\mathbf{x})\sim\mathcal{N}(\mu_{k}(\mathbf{x}),\sigma _{k}^{2}(\mathbf{x}))$ provided by DA-DGP, the classic loss function is generalized to the expected quality loss (EQL) for the $k$-th task \citep{Tan2012, Jiang2021}:
 
-模型训练完成后，目标转向鲁棒参数优化。为同时最小化 bias 和 variance，本文基于 Taguchi quadratic loss 框架 \citep{Taguchi1986} 构建多变量 expected quality loss。利用 DA-DGP 提供的概率后验 $y_{k}(\mathbf{x})\sim\mathcal{N}(\mu_{k}(\mathbf{x}),\sigma _{k}^{2}(\mathbf{x}))$，经典损失函数被推广为第 $k$ 个任务的 expected quality loss（EQL）\citep{Tan2012, Jiang2021}：
+模型训练完成后，目标转向鲁棒参数优化。为同时最小化 bias 和 variance，本文基于 Taguchi quadratic loss 框架 \citep{Taguchi1986} 构建多变量 expected quality loss。\textcolor{red}{为与 Section 3.1 中训练阶段的注意力目标相区分，这里记 $t_k$ 为下游优化器使用的工程目标。}利用 DA-DGP 提供的概率后验 $y_{k}(\mathbf{x})\sim\mathcal{N}(\mu_{k}(\mathbf{x}),\sigma _{k}^{2}(\mathbf{x}))$，经典损失函数被推广为第 $k$ 个任务的 expected quality loss（EQL）\citep{Tan2012, Jiang2021}：
 \begin{equation}
-	E[{L_k}({\bf{x}})] = {C_k}\left[ {{{({\mu _k}({\bf{x}}) - y_k^*)}^2} + \sigma _k^2({\bf{x}})} \right].
+	E[{L_k}({\bf{x}})] = {C_k}\left[ {{{({\mu _k}({\bf{x}}) - \textcolor{red}{t_k})}^2} + \sigma _k^2({\bf{x}})} \right].
 \end{equation}
 
-Equation (27) embodies robust design principles by simultaneously minimizing posterior mean deviation and variance. For multi-objective optimization, individual losses are aggregated into a global multivariate EQL metric using importance weights $\gamma_k$:
+Equation (27) embodies robust design principles by simultaneously minimizing posterior mean deviation and variance. \textcolor{red}{For clarity, the variance term $\sigma _k^2(\mathbf{x})$ in Equation (27) denotes the posterior uncertainty of the surrogate itself at design point $\mathbf{x}$, rather than the empirical transmitted variance generated by repeated physical noise realizations. In applications such as OFDM, when stochastic bits, fading channels, and AWGN are explicitly simulated, the transmitted variance across repeated realizations is evaluated separately and later combined with mean deviation for robust Pareto analysis.} For multi-objective optimization, individual losses are aggregated into a global multivariate EQL metric using importance weights $\gamma_k$:
 
-Equation (27) 通过同时最小化后验均值偏差和方差体现鲁棒设计原则。对于 multi-objective optimization，使用重要性权重 $\gamma_k$ 将各个损失聚合为全局多变量 EQL 指标：
+Equation (27) 通过同时最小化后验均值偏差和方差体现鲁棒设计原则。\textcolor{red}{需要明确的是，Equation (27) 中的方差项 $\sigma _k^2(\mathbf{x})$ 表示设计点 $\mathbf{x}$ 处代理模型自身的后验不确定性，而不是由重复物理噪声 realization 生成的经验传递方差。在 OFDM 这类应用中，当随机比特、衰落信道和 AWGN 被显式仿真时，跨 realization 的传递方差将被单独评估，并在后文与均值偏差一起用于鲁棒 Pareto 分析。}对于 multi-objective optimization，使用重要性权重 $\gamma_k$ 将各个损失聚合为全局多变量 EQL 指标：
 \begin{equation}
-	J({\bf{x}}) = \sum\limits_{k = 1}^p {{\gamma _k}} E[{L_k}({\bf{x}})] = \sum\limits_{k = 1}^p {{\gamma _k}} {C_k}\left[ {{{({\mu _k}({\bf{x}}) - y_k^*)}^2} + \sigma _k^2({\bf{x}})} \right].
+J({\bf{x}}) = \sum\limits_{k = 1}^p {{\gamma _k}} E[{L_k}({\bf{x}})] = \sum\limits_{k = 1}^p {{\gamma _k}} {C_k}\left[ {{{({\mu _k}({\bf{x}}) - \textcolor{red}{t_k})}^2} + \sigma _k^2({\bf{x}})} \right].
 \end{equation}
-Distinct from the dynamic training weights, $\gamma_{k}$ ($\sum\gamma_{k}=1$) represent static engineering priorities derived from cost or quality requirements. The RPD problem is thus cast as a constrained optimization within the design space $\Omega$:
+Distinct from the dynamic training weights, $\gamma_{k}$ ($\sum\gamma_{k}=1$) represent static engineering priorities derived from cost or quality requirements. \textcolor{red}{Equation (28) is therefore a scalar preference model; when a genuine multi-objective search is desired, the optimizer can act directly on the vector of taskwise quality losses instead of collapsing them into a single weighted sum.} The RPD problem is thus cast as a constrained optimization within the design space $\Omega$:
 
-不同于动态训练权重，$\gamma_{k}$（$\sum\gamma_{k}=1$）表示由成本或质量需求导出的静态工程优先级。因此，RPD 问题被表述为设计空间 $\Omega$ 内的约束优化问题：
+不同于动态训练权重，$\gamma_{k}$（$\sum\gamma_{k}=1$）表示由成本或质量需求导出的静态工程优先级。\textcolor{red}{因此，Equation (28) 对应的是标量化偏好模型；当需要进行真正的多目标搜索时，优化器也可以直接作用于按任务分解的质量损失向量，而不必先将其压缩为单一加权和。}因此，RPD 问题被表述为设计空间 $\Omega$ 内的约束优化问题：
 \begin{equation}
 	{{\bf{x}}^*} = \mathop {\arg \min }\limits_{{\bf{x}} \in \Omega } J({\bf{x}}).
 \end{equation}
-Given the non-convex nature of $J(\mathbf{x})$, a Genetic Algorithm (GA) is employed to identify the optimal process parameters $\mathbf{x}^{*}$ that minimize the global quality loss.
+\textcolor{red}{When a fixed scalar preference is desired, any non-convex optimizer such as a Genetic Algorithm (GA) can be used to solve Equation (29). In the present OFDM engineering implementation, however, the surrogate-assisted search is carried out by NSGA-II directly on the three taskwise objectives $({\mu _k}(\mathbf{x}) - t_k)^2 + \sigma _k^2(\mathbf{x})$ to generate candidate Pareto sets; these candidates are then re-evaluated under repeated stochastic bit/channel/AWGN realizations to estimate empirical robust means and transmitted variances, which are subsequently used for four-objective robust Pareto analysis.}
 
-鉴于 $J(\mathbf{x})$ 的非凸性质，本文采用 Genetic Algorithm（GA）识别使全局质量损失最小化的最优工艺参数 $\mathbf{x}^{*}$。
+\textcolor{red}{当需要固定的标量偏好时，可使用 Genetic Algorithm（GA）等非凸优化器求解 Equation (29)。然而，在当前 OFDM 工程实现中，代理辅助搜索并不是对标量化目标直接做 GA，而是由 NSGA-II 直接作用于三个按任务分解的目标 $({\mu _k}(\mathbf{x}) - t_k)^2 + \sigma _k^2(\mathbf{x})$ 以生成候选 Pareto 解集；随后再在重复的随机比特/信道/AWGN realization 下对这些候选点进行重评估，从而估计经验稳健均值与传递方差，并进一步用于四目标鲁棒 Pareto 分析。}
 
 \section{Numerical and Engineering Validation} \label{s:sec4}
 \subsection{Numerical Example} \label{s:sec4.1}
@@ -529,14 +532,13 @@ These responses represent escalating levels of complexity: $y_1$ serves as a smo
 
 这些响应代表逐渐递增的复杂度水平：$y_1$ 作为平滑且可分离的基线；$y_2$ 引入变量交互和局部不可微性；$y_3$ 则表现出显著非凸性和复杂耦合。这种结构异质性对标准固定权重优化构成挑战，因此可作为检验所提 multi-attention 机制的严格 testbed。优化目标设定为 $\mathbf{T}=[0, 1.5, 0.8]^T$。
 
-\textbf{Evaluation Metrics and Baselines.} To comprehensively assess model performance, three metrics are employed: Root Mean Square Error (RMSE) to measure point prediction accuracy; Negative Log Predictive Density (NLPD) to evaluate the calibration quality of the probabilistic distributions; and Quality Loss (QL) to quantify the achievement of RPD goals by aggregating deviation and variance.
-For comparative analysis, four representative baselines are selected: (i) EQUAL: The standard uniform weighting strategy \citep{Zhang2007}; (ii) UW: Uncertainty Weighting, which balances tasks via homoscedastic uncertainty \citep{Kendall2018}; (iii) DWA: Dynamic Weight Averaging, based on loss descent rates \citep{Liu2019}; and (iv) MGDA: Multi-Objective Gradient Descent, which seeks Pareto-descent directions \citep{Sener2018}. Additionally, two ablation variants are evaluated to isolate component contributions: T-Atten (retaining only task-level attention) and S-Atten (retaining only sample-level attention). Note that the latter is mathematically equivalent to the EQUAL baseline in this framework.
+\textbf{Evaluation Metrics and Baselines.} To assess both \textcolor{red}{local predictive fidelity near the target region} and \textcolor{red}{probabilistic calibration}, three metrics are reported on the \textcolor{red}{ROI-filtered test subset}: Root Mean Square Error (RMSE), Negative Log Predictive Density (NLPD), and Quality Loss (QL). The ROI is defined by \textcolor{red}{$|y_k-T_k|\leq 0.3$ for $k=1,2,3$}, so the evaluation focuses on \textcolor{red}{target-relevant local performance rather than global test-domain averages}. The comparison includes \textcolor{red}{ten methods}: the proposed \textcolor{red}{DA-DGP}; the optimization baselines \textcolor{red}{DWA, UW, and MGDA \citep{Liu2019,Kendall2018,Sener2018}}; the ablation chain \textcolor{red}{T-Atten, S-Atten (Equal), and Pure DGP}; and the strong GP-family baselines \textcolor{red}{LMC-DGP, Indep-DGP, and Indep-HetGP}. Here, \textcolor{red}{T-Atten keeps only task-level dynamic weighting}, \textcolor{red}{S-Atten (Equal) keeps sample-level attention but replaces meta-learned task weights with uniform coefficients}, and \textcolor{red}{Pure DGP removes both attention modules}.
 
-\textbf{评估指标与基线方法。} 为全面评估模型性能，本文采用三个指标：Root Mean Square Error（RMSE）用于衡量点预测精度；Negative Log Predictive Density（NLPD）用于评估概率分布的校准质量；Quality Loss（QL）通过聚合偏差和方差来量化 RPD 目标的实现程度。对比分析中选择四类代表性基线：（i）EQUAL：标准均匀加权策略 \citep{Zhang2007}；（ii）UW：Uncertainty Weighting，通过 homoscedastic uncertainty 平衡任务 \citep{Kendall2018}；（iii）DWA：Dynamic Weight Averaging，基于损失下降速率 \citep{Liu2019}；（iv）MGDA：Multi-Objective Gradient Descent，用于寻找 Pareto-descent directions \citep{Sener2018}。此外，为隔离组件贡献，还评估两个消融变体：T-Atten（仅保留任务级注意力）和 S-Atten（仅保留样本级注意力）。需要注意的是，在本文框架中，后者在数学上等价于 EQUAL 基线。
+\textbf{评估指标与基线方法。} 为同时评估\textcolor{red}{目标区域附近的局部预测精度}与\textcolor{red}{概率校准能力}，本文在\textcolor{red}{经过 ROI 筛选的测试子集}上报告三个指标：Root Mean Square Error（RMSE）、Negative Log Predictive Density（NLPD）和 Quality Loss（QL）。其中，ROI 定义为\textcolor{red}{$|y_k-T_k|\leq 0.3,\ k=1,2,3$}，因此这里衡量的是\textcolor{red}{与目标相关的局部性能，而不是全测试域平均表现}。对比对象共\textcolor{red}{10 种方法}：所提\textcolor{red}{DA-DGP}；优化基线\textcolor{red}{DWA、UW 和 MGDA \citep{Liu2019,Kendall2018,Sener2018}}；消融链\textcolor{red}{T-Atten、S-Atten（Equal）和 Pure DGP}；以及强 GP 家族基线\textcolor{red}{LMC-DGP、Indep-DGP 和 Indep-HetGP}。其中，\textcolor{red}{T-Atten 仅保留任务级动态加权}，\textcolor{red}{S-Atten（Equal）保留样本级注意力但将元学习任务权重替换为均匀系数}，\textcolor{red}{Pure DGP 则同时移除两类注意力模块}。
 
-\textbf{Experimental Setup.} Latin Hypercube Sampling (LHS) is employed to generate $N=400$ training samples. Figure 3 validates the training stability and mechanism effectiveness by monitoring the convergence trajectories of three key components: the dynamic task weights (reflecting adaptive multi-task balancing), alongside the output scales $\sigma_f^2$ and ARD length-scales $l$ (confirming the capture of intrinsic data structures).
+\textbf{Experimental Setup.} The benchmark uses \textcolor{red}{400 LHS training samples}, \textcolor{red}{400 independent validation samples}, and \textcolor{red}{100000 test samples}. The default surrogate is a \textcolor{red}{2-layer multi-output DGP} with \textcolor{red}{hidden dimension 5} and \textcolor{red}{128 inducing points}. All statistics in this subsection are summarized over \textcolor{red}{20 independent runs}. Figure 3 examines training stability by tracking \textcolor{red}{the dynamic task weights}, \textcolor{red}{the output scales $\sigma_f^2$}, and \textcolor{red}{the ARD length-scales $l$}.
 
-\textbf{实验设置。} 本文采用 Latin Hypercube Sampling（LHS）生成 $N=400$ 个训练样本。Figure 3 通过监测三个关键组成部分的收敛轨迹来验证训练稳定性和机制有效性：动态任务权重（反映自适应 multi-task balancing）、输出尺度 $\sigma_f^2$ 以及 ARD 长度尺度 $l$（确认模型对内在数据结构的捕捉能力）。
+\textbf{实验设置。} 该基准案例采用\textcolor{red}{400 个 LHS 训练样本}、\textcolor{red}{400 个独立验证样本}和\textcolor{red}{100000 个测试样本}。默认代理模型为\textcolor{red}{两层 multi-output DGP}，其\textcolor{red}{隐藏维度为 5}，并使用\textcolor{red}{128 个 inducing points}。本小节全部统计结果均基于\textcolor{red}{20 次独立运行}汇总得到。Figure 3 通过跟踪\textcolor{red}{动态任务权重}、\textcolor{red}{输出尺度 $\sigma_f^2$}和\textcolor{red}{ARD 长度尺度 $l$}来检验训练稳定性。
 
 \begin{figure}[htb]
 	\centering
@@ -575,137 +577,100 @@ For comparative analysis, four representative baselines are selected: (i) EQUAL:
 
 
 
-Figures 3(a)-(b) depict the evolution of output scales ($\sigma_f^2$) and length-scales ($l$). The transition from initial fluctuations (exploration) to asymptotic convergence confirms the effective maximization of the log-marginal likelihood. Consequently, the stabilized parameters accurately characterize the inferred function smoothness and signal variance for each objective.
-Figure 3(c) illustrates the dynamic weighting process. The rapid divergence in early training reflects the identification of task difficulty: weights for the complex Task 3 increase significantly, while those for the simple Task 1 decline. The resulting stable hierarchy (Task 3 > Task 2 > Task 1) mirrors the analytical complexity defined in Section 4.1. This confirms the mechanism's ability to adaptively reallocate resources and mitigate gradient dominance by simple tasks. Quantitative performance metrics (RMSE, NLPD, QL) averaged over 20 independent runs are detailed in Tables 1-3 (refer to Appendix D for visual comparisons).
+Figures 3(a)-(b) depict \textcolor{red}{an initial exploration stage followed by stable convergence} of the output scales ($\sigma_f^2$) and ARD length-scales ($l$), indicating that the variational training process reaches \textcolor{red}{a consistent local optimum across runs}. Figure 3(c) shows that \textcolor{red}{Task 3 consistently receives the largest dynamic weight}, while \textcolor{red}{Tasks 1 and 2 retain smaller but nonzero shares}; the averaged terminal weights are approximately \textcolor{red}{0.421 for Task 3}, \textcolor{red}{0.304 for Task 1}, and \textcolor{red}{0.275 for Task 2}. This pattern indicates that \textcolor{red}{the meta-learning layer identifies the most difficult objective and reallocates training emphasis accordingly}, without collapsing the remaining tasks. Quantitative local metrics averaged over \textcolor{red}{20 independent runs} are summarized in Tables 1-3.
 
-Figures 3(a)-(b) 展示了输出尺度（$\sigma_f^2$）和长度尺度（$l$）的演化过程。从初始波动（探索）到渐近收敛的转变表明 log-marginal likelihood 得到了有效最大化。因此，稳定后的参数能够准确刻画各目标所推断函数的平滑性和信号方差。Figure 3(c) 展示了动态加权过程。训练早期的快速分化反映了模型对任务难度的识别：复杂 Task 3 的权重显著增加，而简单 Task 1 的权重下降。最终形成的稳定层级（Task 3 > Task 2 > Task 1）与 Section 4.1 中定义的解析复杂度一致。这确认了该机制能够自适应重新分配资源，并缓解简单任务造成的梯度主导。20 次独立运行平均得到的定量性能指标（RMSE、NLPD、QL）见 Tables 1-3（可视化比较见 Appendix D）。
+Figures 3(a)-(b) 展示了输出尺度（$\sigma_f^2$）和 ARD 长度尺度（$l$）\textcolor{red}{先探索、后稳定收敛}的演化轨迹，说明变分训练过程在不同运行中能够达到\textcolor{red}{一致的局部最优状态}。Figure 3(c) 表明，\textcolor{red}{Task 3 始终获得最大的动态权重}，而\textcolor{red}{Task 1 与 Task 2 保持较小但非零的权重份额}；其平均最终权重约为\textcolor{red}{Task 3: 0.421}、\textcolor{red}{Task 1: 0.304}和\textcolor{red}{Task 2: 0.275}。这一模式说明\textcolor{red}{元学习层能够识别最困难的目标，并据此重新分配训练关注度}，同时又不会使其余任务被完全忽略。基于\textcolor{red}{20 次独立运行}得到的局部定量指标汇总见 Tables 1-3。
 
 
 \begin{table}[htbp]
 	\centering
-	\caption{Statistical results of metrics for Task 1 ($y_1$).}
-	\caption*{Task 1（$y_1$）各指标的统计结果。}
+	\small
+	\caption{\textcolor{red}{Mean $\pm$ std} of \textcolor{red}{local metrics} for Task 1 ($y_1$) \textcolor{red}{over 20 independent runs}.}
+	\caption*{\textcolor{red}{20 次独立运行下} Task 1（$y_1$）\textcolor{red}{局部指标的均值 $\pm$ 标准差}。}
 	\label{tab:results_task1}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{\textcolor{red}{Method}} & \textbf{\textcolor{red}{RMSE}} & \textbf{\textcolor{red}{NLPD}} & \textbf{\textcolor{red}{QL}} \\
 		\midrule
-		\multirow{6}{*}{RMSE} 
-		& Max    & 0.0769 & 0.0756 & 0.1051 & 0.0786 & 0.0806 & 0.0687 \\
-		& Min    & 0.0181 & 0.0185 & 0.0237 & 0.0170 & 0.0233 & 0.0170 \\
-		& Median & 0.0311 & 0.0409 & 0.0443 & 0.0416 & 0.0488 & 0.0393 \\
-		& Mean   & 0.0353 & 0.0422 & 0.0508 & 0.0436 & 0.0471 & 0.0404 \\
-		& Q1     & 0.0246 & 0.0325 & 0.0343 & 0.0307 & 0.0338 & 0.0348 \\
-		& Q3     & 0.0383 & 0.0486 & 0.0648 & 0.0541 & 0.0554 & 0.0433 \\
-		\midrule
-		\multirow{6}{*}{NLPD} 
-		& Max    & -0.6971 & -0.4063 & -0.3736 & -0.4340 & -0.4108 & -0.7590 \\
-		& Min    & -0.9025 & -0.5316 & -0.5211 & -0.6073 & -0.5165 & -0.8846 \\
-		& Median & -0.8094 & -0.4742 & -0.4503 & -0.5071 & -0.4725 & -0.8226 \\
-		& Mean   & -0.8097 & -0.4772 & -0.4550 & -0.5133 & -0.4720 & -0.8197 \\
-		& Q1     & -0.8527 & -0.5112 & -0.4758 & -0.5537 & -0.4896 & -0.8440 \\
-		& Q3     & -0.7757 & -0.4544 & -0.4408 & -0.4692 & -0.4556 & -0.7973 \\
-		\midrule
-		\multirow{6}{*}{QL}    
-		& Max    & 0.0390 & 0.0706 & 0.0749 & 0.0669 & 0.0699 & 0.0349 \\
-		& Min    & 0.0262 & 0.0550 & 0.0561 & 0.0472 & 0.0566 & 0.0271 \\
-		& Median & 0.0315 & 0.0616 & 0.0646 & 0.0577 & 0.0617 & 0.0307 \\
-		& Mean   & 0.0316 & 0.0614 & 0.0641 & 0.0573 & 0.0620 & 0.0309 \\
-		& Q1     & 0.0289 & 0.0572 & 0.0614 & 0.0526 & 0.0598 & 0.0294 \\
-		& Q3     & 0.0336 & 0.0641 & 0.0658 & 0.0623 & 0.0639 & 0.0321 \\
+		\textcolor{red}{DA-DGP} & \textcolor{red}{\textbf{0.0384 $\pm$ 0.0124}} & \textcolor{red}{\textbf{-0.8517 $\pm$ 0.0403}} & \textcolor{red}{\textbf{0.0290 $\pm$ 0.0023}} \\
+		\textcolor{red}{T-Atten} & \textcolor{red}{0.0451 $\pm$ 0.0123} & \textcolor{red}{-0.8466 $\pm$ 0.0606} & \textcolor{red}{0.0294 $\pm$ 0.0034} \\
+		\textcolor{red}{S-Atten (Equal)} & \textcolor{red}{0.0451 $\pm$ 0.0129} & \textcolor{red}{-0.4888 $\pm$ 0.0426} & \textcolor{red}{0.0600 $\pm$ 0.0050} \\
+		\textcolor{red}{Pure DGP} & \textcolor{red}{0.0537 $\pm$ 0.0128} & \textcolor{red}{-0.4913 $\pm$ 0.0527} & \textcolor{red}{0.0598 $\pm$ 0.0062} \\
+		\textcolor{red}{DWA} & \textcolor{red}{0.0483 $\pm$ 0.0104} & \textcolor{red}{-0.3742 $\pm$ 0.0268} & \textcolor{red}{0.0754 $\pm$ 0.0040} \\
+		\textcolor{red}{UW} & \textcolor{red}{0.0460 $\pm$ 0.0136} & \textcolor{red}{-0.5056 $\pm$ 0.0597} & \textcolor{red}{0.0582 $\pm$ 0.0070} \\
+		\textcolor{red}{MGDA} & \textcolor{red}{0.0472 $\pm$ 0.0112} & \textcolor{red}{-0.5174 $\pm$ 0.0558} & \textcolor{red}{0.0568 $\pm$ 0.0064} \\
+		\textcolor{red}{LMC-DGP} & \textcolor{red}{0.0647 $\pm$ 0.0092} & \textcolor{red}{-0.3337 $\pm$ 0.0917} & \textcolor{red}{0.0829 $\pm$ 0.0164} \\
+		\textcolor{red}{Indep-DGP} & \textcolor{red}{0.0784 $\pm$ 0.0196} & \textcolor{red}{-0.3243 $\pm$ 0.2060} & \textcolor{red}{0.0899 $\pm$ 0.0379} \\
+		\textcolor{red}{Indep-HetGP} & \textcolor{red}{0.1507 $\pm$ 0.0252} & \textcolor{red}{0.5558 $\pm$ 0.0575} & \textcolor{red}{0.4972 $\pm$ 0.0557} \\
 		\bottomrule
 	\end{tabular*}
 \end{table}
 
 \begin{table}[htbp]
 	\centering
-	\caption{Statistical results of metrics for Task 2 ($y_2$).}
-	\caption*{Task 2（$y_2$）各指标的统计结果。}
+	\small
+	\caption{\textcolor{red}{Mean $\pm$ std} of \textcolor{red}{local metrics} for Task 2 ($y_2$) \textcolor{red}{over 20 independent runs}.}
+	\caption*{\textcolor{red}{20 次独立运行下} Task 2（$y_2$）\textcolor{red}{局部指标的均值 $\pm$ 标准差}。}
 	\label{tab:results_task2}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{\textcolor{red}{Method}} & \textbf{\textcolor{red}{RMSE}} & \textbf{\textcolor{red}{NLPD}} & \textbf{\textcolor{red}{QL}} \\
 		\midrule
-		\multirow{6}{*}{RMSE} 
-		& Max    & 0.0541 & 0.0781 & 0.0723 & 0.0915 & 0.0686 & 0.0618 \\
-		& Min    & 0.0215 & 0.0142 & 0.0233 & 0.0209 & 0.0223 & 0.0271 \\
-		& Median & 0.0333 & 0.0404 & 0.0426 & 0.0416 & 0.0414 & 0.0390 \\
-		& Mean   & 0.0358 & 0.0417 & 0.0448 & 0.0470 & 0.0437 & 0.0414 \\
-		& Q1     & 0.0309 & 0.0338 & 0.0338 & 0.0358 & 0.0370 & 0.0323 \\
-		& Q3     & 0.0415 & 0.0507 & 0.0543 & 0.0535 & 0.0518 & 0.0497 \\
-		\midrule
-		\multirow{6}{*}{NLPD} 
-		& Max    & -0.6849 & -0.3897 & -0.3714 & -0.3936 & -0.4221 & -0.7430 \\
-		& Min    & -0.8923 & -0.5612 & -0.5475 & -0.5965 & -0.5543 & -0.8812 \\
-		& Median & -0.8097 & -0.4910 & -0.4744 & -0.4984 & -0.4791 & -0.8196 \\
-		& Mean   & -0.8181 & -0.4894 & -0.4680 & -0.5006 & -0.4813 & -0.8189 \\
-		& Q1     & -0.8638 & -0.5282 & -0.4922 & -0.5330 & -0.5013 & -0.8461 \\
-		& Q3     & -0.7858 & -0.4547 & -0.4396 & -0.4785 & -0.4535 & -0.7928 \\
-		\midrule
-		\multirow{6}{*}{QL}    
-		& Max    & 0.0404 & 0.0730 & 0.0756 & 0.0720 & 0.0684 & 0.0360 \\
-		& Min    & 0.0267 & 0.0517 & 0.0532 & 0.0483 & 0.0525 & 0.0273 \\
-		& Median & 0.0315 & 0.0596 & 0.0616 & 0.0586 & 0.0611 & 0.0308 \\
-		& Mean   & 0.0312 & 0.0600 & 0.0626 & 0.0587 & 0.0609 & 0.0310 \\
-		& Q1     & 0.0283 & 0.0553 & 0.0595 & 0.0547 & 0.0584 & 0.0293 \\
-		& Q3     & 0.0330 & 0.0640 & 0.0660 & 0.0611 & 0.0643 & 0.0325 \\
+		\textcolor{red}{DA-DGP} & \textcolor{red}{\textbf{0.0382 $\pm$ 0.0097}} & \textcolor{red}{\textbf{-0.8751 $\pm$ 0.0597}} & \textcolor{red}{\textbf{0.0278 $\pm$ 0.0033}} \\
+		\textcolor{red}{T-Atten} & \textcolor{red}{0.0570 $\pm$ 0.0142} & \textcolor{red}{-0.8360 $\pm$ 0.0782} & \textcolor{red}{0.0300 $\pm$ 0.0045} \\
+		\textcolor{red}{S-Atten (Equal)} & \textcolor{red}{0.0460 $\pm$ 0.0112} & \textcolor{red}{-0.5106 $\pm$ 0.0580} & \textcolor{red}{0.0577 $\pm$ 0.0065} \\
+		\textcolor{red}{Pure DGP} & \textcolor{red}{0.0686 $\pm$ 0.0165} & \textcolor{red}{-0.4897 $\pm$ 0.0671} & \textcolor{red}{0.0600 $\pm$ 0.0078} \\
+		\textcolor{red}{DWA} & \textcolor{red}{0.0487 $\pm$ 0.0130} & \textcolor{red}{-0.3792 $\pm$ 0.0401} & \textcolor{red}{0.0747 $\pm$ 0.0059} \\
+		\textcolor{red}{UW} & \textcolor{red}{0.0464 $\pm$ 0.0107} & \textcolor{red}{-0.5186 $\pm$ 0.0712} & \textcolor{red}{0.0569 $\pm$ 0.0080} \\
+		\textcolor{red}{MGDA} & \textcolor{red}{0.0484 $\pm$ 0.0130} & \textcolor{red}{-0.5291 $\pm$ 0.0703} & \textcolor{red}{0.0557 $\pm$ 0.0077} \\
+		\textcolor{red}{LMC-DGP} & \textcolor{red}{0.0655 $\pm$ 0.0149} & \textcolor{red}{-0.3532 $\pm$ 0.0595} & \textcolor{red}{0.0789 $\pm$ 0.0093} \\
+		\textcolor{red}{Indep-DGP} & \textcolor{red}{0.0820 $\pm$ 0.0252} & \textcolor{red}{-0.3620 $\pm$ 0.2781} & \textcolor{red}{0.0884 $\pm$ 0.0461} \\
+		\textcolor{red}{Indep-HetGP} & \textcolor{red}{0.0849 $\pm$ 0.0169} & \textcolor{red}{0.2639 $\pm$ 0.0812} & \textcolor{red}{0.2826 $\pm$ 0.0455} \\
 		\bottomrule
 	\end{tabular*}
 \end{table}
 
 \begin{table}[htbp]
 	\centering
-	\caption{Statistical results of metrics for Task 3 ($y_3$).}
-	\caption*{Task 3（$y_3$）各指标的统计结果。}
+	\small
+	\caption{\textcolor{red}{Mean $\pm$ std} of \textcolor{red}{local metrics} for Task 3 ($y_3$) \textcolor{red}{over 20 independent runs}.}
+	\caption*{\textcolor{red}{20 次独立运行下} Task 3（$y_3$）\textcolor{red}{局部指标的均值 $\pm$ 标准差}。}
 	\label{tab:results_task3}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{\textcolor{red}{Method}} & \textbf{\textcolor{red}{RMSE}} & \textbf{\textcolor{red}{NLPD}} & \textbf{\textcolor{red}{QL}} \\
 		\midrule
-		\multirow{6}{*}{RMSE} 
-		& Max    & 0.2187 & 0.2317 & 0.2141 & 0.2372 & 0.2313 & 0.2065 \\
-		& Min    & 0.0668 & 0.0837 & 0.0644 & 0.1062 & 0.0963 & 0.0878 \\
-		& Median & 0.1158 & 0.1417 & 0.1394 & 0.1528 & 0.1369 & 0.1562 \\
-		& Mean   & 0.1282 & 0.1448 & 0.1423 & 0.1584 & 0.1450 & 0.1517 \\
-		& Q1     & 0.1072 & 0.1110 & 0.1162 & 0.1316 & 0.1247 & 0.1114 \\
-		& Q3     & 0.1499 & 0.1670 & 0.1599 & 0.1815 & 0.1619 & 0.1850 \\
-		\midrule
-		\multirow{6}{*}{NLPD} 
-		& Max    & -0.0603 & -0.0445 & -0.1034 & -0.0194 & -0.0432 & -0.1349 \\
-		& Min    & -0.8055 & -0.4302 & -0.4300 & -0.4290 & -0.4248 & -0.7164 \\
-		& Median & -0.5628 & -0.3421 & -0.3106 & -0.3040 & -0.3093 & -0.4198 \\
-		& Mean   & -0.5289 & -0.2975 & -0.2951 & -0.2758 & -0.2989 & -0.4234 \\
-		& Q1     & -0.6540 & -0.3641 & -0.3433 & -0.3353 & -0.3587 & -0.6364 \\
-		& Q3     & -0.4457 & -0.2455 & -0.2616 & -0.2305 & -0.2775 & -0.2711 \\
-		\midrule
-		\multirow{6}{*}{QL}    
-		& Max    & 0.0804 & 0.1078 & 0.1073 & 0.1135 & 0.1143 & 0.0771 \\
-		& Min    & 0.0313 & 0.0668 & 0.0672 & 0.0662 & 0.0670 & 0.0368 \\
-		& Median & 0.0477 & 0.0779 & 0.0816 & 0.0815 & 0.0813 & 0.0567 \\
-		& Mean   & 0.0496 & 0.0824 & 0.0836 & 0.0846 & 0.0828 & 0.0559 \\
-		& Q1     & 0.0411 & 0.0742 & 0.0781 & 0.0776 & 0.0756 & 0.0419 \\
-		& Q3     & 0.0557 & 0.0924 & 0.0895 & 0.0888 & 0.0863 & 0.0665 \\
+		\textcolor{red}{DA-DGP} & \textcolor{red}{\textbf{0.1360 $\pm$ 0.0260}} & \textcolor{red}{\textbf{-0.5255 $\pm$ 0.1358}} & \textcolor{red}{\textbf{0.0475 $\pm$ 0.0080}} \\
+		\textcolor{red}{T-Atten} & \textcolor{red}{0.1703 $\pm$ 0.0324} & \textcolor{red}{-0.3366 $\pm$ 0.2050} & \textcolor{red}{0.0588 $\pm$ 0.0124} \\
+		\textcolor{red}{S-Atten (Equal)} & \textcolor{red}{0.1570 $\pm$ 0.0340} & \textcolor{red}{-0.2874 $\pm$ 0.1099} & \textcolor{red}{0.0830 $\pm$ 0.0129} \\
+		\textcolor{red}{Pure DGP} & \textcolor{red}{0.2070 $\pm$ 0.0378} & \textcolor{red}{-0.1281 $\pm$ 0.1495} & \textcolor{red}{0.1019 $\pm$ 0.0185} \\
+		\textcolor{red}{DWA} & \textcolor{red}{0.1673 $\pm$ 0.0345} & \textcolor{red}{-0.1859 $\pm$ 0.0871} & \textcolor{red}{0.1034 $\pm$ 0.0133} \\
+		\textcolor{red}{UW} & \textcolor{red}{0.1606 $\pm$ 0.0354} & \textcolor{red}{-0.2816 $\pm$ 0.1217} & \textcolor{red}{0.0834 $\pm$ 0.0146} \\
+		\textcolor{red}{MGDA} & \textcolor{red}{0.1708 $\pm$ 0.0355} & \textcolor{red}{-0.2555 $\pm$ 0.1291} & \textcolor{red}{0.0859 $\pm$ 0.0151} \\
+		\textcolor{red}{LMC-DGP} & \textcolor{red}{0.1849 $\pm$ 0.0380} & \textcolor{red}{-0.1248 $\pm$ 0.0989} & \textcolor{red}{0.1144 $\pm$ 0.0174} \\
+		\textcolor{red}{Indep-DGP} & \textcolor{red}{0.1882 $\pm$ 0.0475} & \textcolor{red}{-0.0918 $\pm$ 0.2469} & \textcolor{red}{0.1374 $\pm$ 0.0643} \\
+		\textcolor{red}{Indep-HetGP} & \textcolor{red}{0.2824 $\pm$ 0.0365} & \textcolor{red}{0.4135 $\pm$ 0.0453} & \textcolor{red}{0.3500 $\pm$ 0.0360} \\
 		\bottomrule
 	\end{tabular*}
 \end{table}
 
 
 
-Based on the experimental data presented in Tables 1-3, the proposed DA-DGP demonstrates significant statistical advantages across three core metrics: RMSE, NLPD, and QL. Regarding prediction accuracy (RMSE), DA-DGP maintains the lowest average RMSE across all tasks, demonstrating its superior fitting capability. Specifically, in the high-complexity Task 3, compared to the DWA strategy, DA-DGP reduces the mean RMSE by approximately 11.5\% and the median by 18.2\%. This result strongly indicates that by assigning higher weights to difficult tasks via the task-level attention mechanism, the model successfully overcomes the common gradient dominance effect in multi-task learning, significantly enhancing the capture accuracy of non-stationary response surfaces. Notably, T-Atten outperforms EQUAL in simpler tasks (reducing Task 1 RMSE by 20.5\%), validating dynamic task balancing. However, its inferiority to DA-DGP in complex Task 3 (0.1517 vs. 0.1282) confirms sample-level attention is critical for capturing high-dimensional nonlinearities. Furthermore, DA-DGP achieves the smallest interquartile range (IQR) on Tasks 1 and 2, implying a more concentrated distribution of prediction errors and demonstrating strong robustness and stability across different training set partitions.
+Based on Tables 1-3, \textcolor{red}{DA-DGP attains the best mean performance on RMSE, NLPD, and QL for all three tasks}. The ablation chain is particularly informative: \textcolor{red}{T-Atten remains close to DA-DGP on Task 1 and Task 2}, but \textcolor{red}{its gap widens on the more nonlinear Task 3} (RMSE \textcolor{red}{0.1703} vs. \textcolor{red}{0.1360}; QL \textcolor{red}{0.0588} vs. \textcolor{red}{0.0475}), indicating that \textcolor{red}{sample-level attention becomes essential once task complexity and response heterogeneity increase}. In contrast, \textcolor{red}{S-Atten (Equal) and Pure DGP deteriorate substantially in NLPD and QL}, showing that \textcolor{red}{task balancing and ROI-oriented sample reweighting are both necessary}. Among the strong GP-family baselines, \textcolor{red}{LMC-DGP is the most competitive}, yet it still remains behind DA-DGP on every task, while \textcolor{red}{Indep-DGP and Indep-HetGP further lose accuracy and calibration}, especially on Task 3.
 
-基于 Tables 1-3 所示实验数据，所提出的 DA-DGP 在 RMSE、NLPD 和 QL 三个核心指标上均展现出显著统计优势。在预测精度（RMSE）方面，DA-DGP 在所有任务上保持最低平均 RMSE，体现出更优的拟合能力。具体而言，在高复杂度 Task 3 中，相较于 DWA 策略，DA-DGP 将平均 RMSE 降低约 11.5\%，将中位数降低 18.2\%。这一结果有力说明，通过任务级注意力机制为困难任务分配更高权重，模型成功克服了 multi-task learning 中常见的梯度主导效应，显著提升了对非平稳响应曲面的捕捉精度。值得注意的是，T-Atten 在简单任务上优于 EQUAL（Task 1 RMSE 降低 20.5\%），验证了动态任务平衡的有效性。然而，其在复杂 Task 3 上劣于 DA-DGP（0.1517 vs. 0.1282），表明样本级注意力对于捕捉高维非线性至关重要。此外，DA-DGP 在 Tasks 1 和 2 上取得最小 interquartile range（IQR），意味着预测误差分布更加集中，并显示出不同训练集划分下的强鲁棒性与稳定性。
+基于 Tables 1-3，\textcolor{red}{DA-DGP 在三个任务的 RMSE、NLPD 和 QL 上均取得最优平均表现}。其中，消融链给出了最直接的证据：\textcolor{red}{T-Atten 在 Task 1 和 Task 2 上已接近 DA-DGP}，但在\textcolor{red}{非线性更强的 Task 3 上差距明显扩大}（RMSE 为\textcolor{red}{0.1703} 对比 \textcolor{red}{0.1360}；QL 为\textcolor{red}{0.0588} 对比 \textcolor{red}{0.0475}），说明\textcolor{red}{随着任务复杂度和响应异质性升高，样本级注意力变得不可或缺}。相较之下，\textcolor{red}{S-Atten（Equal）和 Pure DGP 在 NLPD 与 QL 上明显退化}，表明\textcolor{red}{任务平衡与面向 ROI 的样本重加权缺一不可}。在强 GP 家族基线中，\textcolor{red}{LMC-DGP 的竞争力最强}，但其在所有任务上仍落后于 DA-DGP，而\textcolor{red}{Indep-DGP 与 Indep-HetGP 在精度和校准上进一步退化}，尤其是在 Task 3 上更为明显。
 
-Regarding uncertainty quantification quality (NLPD), DA-DGP exhibits the most prominent advantage in this metric, which measures the quality of probabilistic predictions. Its average NLPD values for the three tasks improve to -0.81, -0.82, and -0.53, respectively (lower is better), significantly outperforming baselines such as MGDA and UW. This precision at the distributional level is attributed to the synergy between the deep structure of the multi-output DGP and the ARD mechanism. This enables the model not only to accurately predict the mean but also to output reasonable confidence intervals based on local data density, effectively avoiding the risks of overfitting or underfitting.
+From the uncertainty perspective, \textcolor{red}{DA-DGP preserves the lowest NLPD across the three tasks}, which means that \textcolor{red}{its predictive variances are better aligned with the local residual structure inside the ROI}. From the design-goal perspective, \textcolor{red}{its QL values remain the smallest for all tasks}, implying that \textcolor{red}{the proposed dual-attention mechanism improves both local bias control and uncertainty management}. Therefore, the numerical example supports \textcolor{red}{the combination of shared deep representation, adaptive task weighting, and target-oriented sample attention} as the most reliable configuration for this heterogeneous benchmark.
 
-在 uncertainty quantification 质量（NLPD）方面，DA-DGP 在该概率预测质量指标上展现出最突出的优势。三个任务的平均 NLPD 分别提升至 -0.81、-0.82 和 -0.53（越低越好），显著优于 MGDA 和 UW 等基线方法。这种分布层面的精度源于 multi-output DGP 深层结构与 ARD 机制之间的协同作用。该协同使模型不仅能够准确预测均值，还能基于局部数据密度输出合理置信区间，从而有效避免过拟合或欠拟合风险。
+从不确定性角度看，\textcolor{red}{DA-DGP 在三个任务上均保持最低 NLPD}，这意味着\textcolor{red}{其预测方差与 ROI 内局部残差结构的匹配程度更高}。从设计目标实现角度看，\textcolor{red}{其 QL 在所有任务上同样最小}，说明\textcolor{red}{所提双注意力机制同时改善了局部偏差控制与不确定性管理}。因此，该数值案例支持\textcolor{red}{“共享深层表示 + 自适应任务加权 + 面向目标的样本注意力”}作为处理异质多响应基准问题的最可靠配置。
 
-Regarding the achievement of robust design goals (QL), QL serves as the core metric for measuring the comprehensive performance of RPD. DA-DGP achieves the lowest mean and median QL across most tasks, with an IQR of only 0.0047 in Tasks 1 and 2, which is far lower than that of the comparative methods. This implies that the method is capable of minimizing both bias and variance simultaneously, achieving precise locking of the ROI. Even in the worst-case scenario (Max QL), DA-DGP maintains a lower loss upper bound, proving the focusing capability of the sample-level attention mechanism on critical regions under small sample conditions. This provides a highly reliable surrogate modeling foundation for subsequent parameter optimization.
+\textbf{\textcolor{red}{Sensitivity Analyses.}} \textcolor{red}{Additional sensitivity experiments on the Gaussian bandwidth, architectural depth, and sample size all support the adopted default configuration.} \textcolor{red}{Detailed tables, taskwise error-bar plots, and discussion are provided in Appendix E of the Supplementary Materials.}
 
-在鲁棒设计目标实现（QL）方面，QL 是衡量 RPD 综合性能的核心指标。DA-DGP 在多数任务上取得最低平均 QL 和中位 QL，在 Tasks 1 和 2 上的 IQR 仅为 0.0047，远低于对比方法。这意味着该方法能够同时最小化 bias 和 variance，实现对 ROI 的精准锁定。即使在最坏情形（Max QL）下，DA-DGP 也保持较低的损失上界，证明了样本级注意力机制在小样本条件下对关键区域的聚焦能力。这为后续参数优化提供了高度可靠的代理建模基础。
+\textbf{\textcolor{red}{敏感性分析。}} \textcolor{red}{针对高斯带宽、网络深度和样本量的额外敏感性实验均支持正文采用的默认配置。} \textcolor{red}{更详细的统计表、分任务误差棒图及分析见 Supplementary Materials 的 Appendix E。}
 
-In summary, the experimental results confirm the superiority of DA-DGP in handling high-dimensional heterogeneity. By synergizing local sample attention with global task weighting, the proposed mechanism optimizes the bias-variance trade-off, consistently outperforming baselines in RMSE, NLPD, and QL. These findings establish a robust algorithmic foundation for the subsequent case study: RPD of a 5G/6G OFDM communication system.
+In summary, \textcolor{red}{the experimental results confirm the superiority of DA-DGP in handling high-dimensional heterogeneity}. By synergizing \textcolor{red}{local sample attention} with \textcolor{red}{global task weighting}, the proposed mechanism optimizes the \textcolor{red}{bias-variance trade-off}, \textcolor{red}{consistently outperforming the considered baselines in RMSE, NLPD, and QL}. These findings establish \textcolor{red}{a robust algorithmic foundation} for the subsequent case study: \textcolor{red}{RPD of a 5G/6G OFDM communication system}.
 
-综上，实验结果证实了 DA-DGP 在处理高维异质性方面的优越性。通过协同局部样本注意力和全局任务加权，所提机制优化了 bias-variance trade-off，并在 RMSE、NLPD 和 QL 上持续优于基线方法。这些发现为后续 5G/6G OFDM 通信系统 RPD 案例研究奠定了稳健算法基础。
+综上，\textcolor{red}{实验结果证实了 DA-DGP 在处理高维异质性方面的优越性}。通过协同\textcolor{red}{局部样本注意力}和\textcolor{red}{全局任务加权}，所提机制优化了\textcolor{red}{bias-variance trade-off}，并在\textcolor{red}{RMSE、NLPD 和 QL 上持续优于所比较的基线方法}。这些发现为后续案例研究\textcolor{red}{5G/6G OFDM 通信系统的 RPD}奠定了\textcolor{red}{稳健的算法基础}。
 
 
 \subsection{Robust Parameter Design for OFDM Systems}\label{s:sec5.1}
@@ -942,11 +907,11 @@ To visually validate effectiveness in a realistic environment, the optimal param
 		\caption{EQUAL} % 注意：您之前问过 S-Atten 是否等于 EQUAL，如果这里要对应消融实验，可以改为 "EQUAL (S-Atten)"
 		\label{fig:const_equal}
 	\end{subfigure}
-	
+		
 	% --- 强制换行并增加垂直间距 ---
 	\par\bigskip 
 	% 或者使用 \vspace{1em} 来精确控制距离
-	
+		
 	% --- 第二行：3 张图 (MGDA, UW, T-Atten) ---
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
@@ -968,7 +933,7 @@ To visually validate effectiveness in a realistic environment, the optimal param
 		\caption{T-Atten}
 		\label{fig:T-Atten}
 	\end{subfigure}
-	
+		
 	\caption{Constellation diagrams for each method.}
 	\caption*{各方法的星座图。}
 	\label{fig:constellation_diagrams}

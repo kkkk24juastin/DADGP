@@ -266,6 +266,156 @@
 		\label{fig:performance_curves}
 	\end{figure}
 
+	\newpage
+	\section{Sensitivity Analyses for the Numerical Example} \label{app:E}
+	\setcounter{equation}{0}
+	
+	This appendix reports the detailed sensitivity analyses referenced in Section 4.1 of the main paper. We consider three factors: the Gaussian bandwidth used in sample-level attention, the surrogate depth/hidden complexity, and the available training sample size. All statistics are aggregated over 20 independent runs, and the figures below visualize taskwise error bars for RMSE, NLPD, and QL.
+	
+	本附录给出正文 Section 4.1 引用的详细敏感性分析结果。我们考察三个因素：样本级注意力中的 Gaussian bandwidth、代理模型的深度/隐藏复杂度，以及可用训练样本量。所有统计量均基于 20 次独立运行汇总得到，下列图表进一步展示了各任务在 RMSE、NLPD 和 QL 上的误差棒结果。
+	
+	\subsection{Bandwidth Sensitivity} \label{app:E1}
+	The bandwidth study confirms that moderate kernels are preferable. Averaged over three tasks, $\sigma=0.5$ yields the best QL (\textbf{0.034774}), while $\sigma=0.3$ attains the best RMSE (\textbf{0.069403}) and remains very close to $\sigma=0.5$. In contrast, $\sigma=0.1$ degrades both RMSE and QL, indicating over-localization of the training signal. Hence, the default choice $\sigma=0.5$ provides the most balanced overall behavior.
+	
+	带宽敏感性结果表明，中等带宽更为合适。在三个任务平均意义下，$\sigma=0.5$ 取得最佳 QL（\textbf{0.034774}），而 $\sigma=0.3$ 取得最佳 RMSE（\textbf{0.069403}），且与 $\sigma=0.5$ 非常接近。相比之下，$\sigma=0.1$ 会同时恶化 RMSE 和 QL，说明训练信号被过度局部化。因此，默认设定 $\sigma=0.5$ 在综合表现上最为均衡。
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Average sensitivity summary for Gaussian bandwidth.}
+		\caption*{Gaussian 带宽的平均敏感性汇总。}
+		\label{tab:sigma_sensitivity_avg}
+		\begin{tabular}{lccc}
+			\toprule
+			Condition & Avg. RMSE & Avg. NLPD & Avg. QL \\
+			\midrule
+			$\sigma=0.1$ & 0.090653 & -0.611964 & 0.044973 \\
+			$\sigma=0.3$ & \textbf{0.069403} & -0.734488 & 0.035847 \\
+			$\sigma=0.5$ & 0.070831 & \textbf{-0.750523} & \textbf{0.034774} \\
+			$\sigma=0.7$ & 0.075690 & -0.737188 & 0.035506 \\
+			$\sigma=1.0$ & 0.078762 & -0.731904 & 0.035760 \\
+			$\sigma=1.5$ & 0.082363 & -0.717340 & 0.036645 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sigma_sensitivity/task1_metrics_errorbars.pdf}
+			\caption{Task 1}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sigma_sensitivity/task2_metrics_errorbars.pdf}
+			\caption{Task 2}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sigma_sensitivity/task3_metrics_errorbars.pdf}
+			\caption{Task 3}
+		\end{subfigure}
+		\caption{Taskwise error-bar plots for Gaussian bandwidth sensitivity.}
+		\caption*{Gaussian 带宽敏感性的分任务误差棒图。}
+		\label{fig:sigma_sensitivity}
+	\end{figure}
+	
+	\subsection{Depth and Hidden Complexity Sensitivity} \label{app:E2}
+	The depth study shows that the default configuration is not only simpler but also clearly superior. The 2L-D5 model achieves the best average RMSE (\textbf{0.070808}), NLPD (\textbf{-0.751518}), and QL (\textbf{0.034732}). Shallower 2L-D2 underfits, while deeper 3L-D5, 4L-D5, and 5L-D5 rapidly deteriorate, suggesting that the current 5-dimensional benchmark with 400 training samples does not benefit from additional depth.
+	
+	深度与隐藏复杂度敏感性表明，默认配置不仅更简单，而且性能也显著更优。2L-D5 在平均 RMSE（\textbf{0.070808}）、NLPD（\textbf{-0.751518}）和 QL（\textbf{0.034732}）上均为最佳。较浅的 2L-D2 存在欠拟合，而更深的 3L-D5、4L-D5 和 5L-D5 则迅速恶化，说明当前 5 维、400 样本的基准问题并不能从额外深度中获益。
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Average sensitivity summary for depth and hidden complexity.}
+		\caption*{深度与隐藏复杂度的平均敏感性汇总。}
+		\label{tab:depth_sensitivity_avg}
+		\begin{tabular}{lccc}
+			\toprule
+			Condition & Avg. RMSE & Avg. NLPD & Avg. QL \\
+			\midrule
+			2L-D2 & 0.246244 & 0.084328 & 0.185969 \\
+			2L-D5 & \textbf{0.070808} & \textbf{-0.751518} & \textbf{0.034732} \\
+			3L-D5 & 0.291672 & 0.405546 & 0.282074 \\
+			4L-D5 & 0.460090 & 0.774311 & 0.650473 \\
+			5L-D5 & 0.706363 & 1.235559 & 1.192501 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/depth_complexity/task1_metrics_errorbars.pdf}
+			\caption{Task 1}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/depth_complexity/task2_metrics_errorbars.pdf}
+			\caption{Task 2}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/depth_complexity/task3_metrics_errorbars.pdf}
+			\caption{Task 3}
+		\end{subfigure}
+		\caption{Taskwise error-bar plots for depth and hidden-complexity sensitivity.}
+		\caption*{深度与隐藏复杂度敏感性的分任务误差棒图。}
+		\label{fig:depth_sensitivity}
+	\end{figure}
+	
+	\subsection{Sample Size Sensitivity} \label{app:E3}
+	The sample-size experiment highlights a strong finite-sample effect. Performance improves monotonically as the training size grows from 20 to 400. In particular, the average QL drops from 1.439658 at $n=20$ to \textbf{0.034749} at $n=400$, and the average RMSE drops from 0.592939 to \textbf{0.070777}. The pronounced gain from $n=200$ to $n=400$ further indicates that 400 samples are not excessive for this heterogeneous benchmark.
+	
+	样本量敏感性实验揭示了明显的有限样本效应。随着训练样本量从 20 增加到 400，性能呈单调改善趋势。特别是，平均 QL 从 $n=20$ 时的 1.439658 降至 $n=400$ 时的 \textbf{0.034749}，平均 RMSE 也从 0.592939 降至 \textbf{0.070777}。其中从 $n=200$ 到 $n=400$ 的显著跃迁进一步说明，对于该异质基准问题而言，400 个样本并不冗余。
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Average sensitivity summary for training sample size.}
+		\caption*{训练样本量的平均敏感性汇总。}
+		\label{tab:sample_sensitivity_avg}
+		\begin{tabular}{lccc}
+			\toprule
+			Condition & Avg. RMSE & Avg. NLPD & Avg. QL \\
+			\midrule
+			$n=20$ & 0.592939 & 1.128905 & 1.439658 \\
+			$n=50$ & 0.444696 & 0.992585 & 1.129003 \\
+			$n=100$ & 0.403108 & 0.950088 & 1.033113 \\
+			$n=200$ & 0.200731 & 0.304830 & 0.285129 \\
+			$n=400$ & \textbf{0.070777} & \textbf{-0.751240} & \textbf{0.034749} \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sample_size/task1_metrics_errorbars.pdf}
+			\caption{Task 1}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sample_size/task2_metrics_errorbars.pdf}
+			\caption{Task 2}
+		\end{subfigure}
+		
+		\begin{subfigure}[b]{0.9\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sample_size/task3_metrics_errorbars.pdf}
+			\caption{Task 3}
+		\end{subfigure}
+		\caption{Taskwise error-bar plots for sample-size sensitivity.}
+		\caption*{训练样本量敏感性的分任务误差棒图。}
+		\label{fig:sample_sensitivity}
+	\end{figure}
+
 	
 	
 	\newpage

@@ -285,10 +285,4 @@ Zhang, C., Yang, Y., Bramerdorfer, G., Bianchi, N., Zhao, J., Qu, J., and
   for permanent magnet synchronous machines.
 \newblock {\em IEEE Transactions on Energy Conversion}, 37(3):1520--1532.
 
-\bibitem[Zhang and Li, 2007]{Zhang2007}
-Zhang, Q. and Li, H. (2007).
-\newblock {MOEA/D}: A multiobjective evolutionary algorithm based on
-  decomposition.
-\newblock {\em IEEE Transactions on Evolutionary Computation}, 11(6):712--731.
-
 \end{thebibliography}
