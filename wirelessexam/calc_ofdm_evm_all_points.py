@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Compute true OFDM EVM for every candidate point of every method.
+计算每种方法所有候选点的真实 OFDM EVM。
 
-Inputs:
+输入:
     result/robust_simulation_<method>.xlsx, sheet all_candidates
 
-Outputs:
+输出:
     result/ofdm_evm_all_points.xlsx
 
-The Python script owns file IO and orchestration. MATLAB Engine is used only to
-reuse the current OFDM simulator (`ofdm_link_quality_ex.m`) through the
-batch helper `evaluate_ofdm_evm_batch.m`.
+Python 脚本负责文件 IO 与流程编排。MATLAB Engine 仅用于通过批量辅助函数
+`evaluate_ofdm_evm_batch.m` 复用当前 OFDM 仿真器 `ofdm_link_quality_ex.m`。
 """
 
 from __future__ import annotations
@@ -34,7 +33,7 @@ from config import BASE_DIR
 
 
 # ---------------------------------------------------------------------------
-# Explicit run configuration. Edit these values directly.
+# 显式运行配置。直接修改这些值。
 # ---------------------------------------------------------------------------
 METHOD_ORDER = [
     "dadgp",

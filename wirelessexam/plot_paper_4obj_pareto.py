@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Generate standalone paper figures for robust four-objective Pareto analysis.
+为稳健四目标 Pareto 分析生成论文用独立图件。
 
-This script intentionally avoids radar charts, bar charts, lollipop charts, and
-line-based parallel-coordinate plots. The outputs focus on Pareto geometry,
-objective-space embeddings, attainment maps, design-space maps, and uncertainty
-structure.
+本脚本有意避免雷达图、柱状图、棒棒糖图以及基于折线的平行坐标图。输出重点
+放在 Pareto 几何结构、目标空间嵌入、attainment map、设计空间映射和不确定性
+结构上。
 
-Inputs:
+输入:
     result/robust_simulation_<method>.xlsx, sheet all_candidates
     result/robust_pareto_13methods_indicators.xlsx
 
-Outputs:
+输出:
     fig/paper_4obj_pareto/*.pdf
 """
 

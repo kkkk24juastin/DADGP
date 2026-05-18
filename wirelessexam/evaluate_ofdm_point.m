@@ -1,11 +1,11 @@
 function [throughputMbps, ber, paprDb, energyPerBit, energyEfficiency] = evaluate_ofdm_point( ...
     x1, x2, x3, x4, modulationOrder, simulationSeed, simConfig)
 % EVALUATE_OFDM_POINT
-% Thin MATLAB Engine friendly wrapper around ofdm_link_quality_ex.
+% 面向 MATLAB Engine 的轻量封装，用于调用 ofdm_link_quality_ex。
 %
-% Returns the four engineering objectives used by the Python Pareto analysis:
-% throughput, BER, PAPR, and energy efficiency. The energy model is kept
-% identical to analyze_real_simulation_pareto.py and robust analysis scripts.
+% 返回 Python Pareto 分析使用的四个工程目标：throughput、BER、PAPR 和
+% energy efficiency。能耗模型与 analyze_real_simulation_pareto.py 及稳健分析
+% 脚本保持一致。
 
 if nargin < 5 || isempty(modulationOrder)
     modulationOrder = 16;

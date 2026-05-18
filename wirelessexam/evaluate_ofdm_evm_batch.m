@@ -1,9 +1,9 @@
 function metricsMatrix = evaluate_ofdm_evm_batch( ...
     x1, x2, x3, x4, modulationOrder, simulationSeed, simConfig)
 % EVALUATE_OFDM_EVM_BATCH
-% Batch-friendly helper for Python MATLAB Engine calls.
+% 面向 Python MATLAB Engine 调用的批量评估辅助函数。
 %
-% Returns one row per candidate:
+% 每个候选点返回一行:
 %   [evm_rms, ber, papr_dB, throughput_mbps, snr_dB]
 
 if nargin < 5 || isempty(modulationOrder)

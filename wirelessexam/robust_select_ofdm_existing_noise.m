@@ -1,23 +1,20 @@
 % ROBUST_SELECT_OFDM_EXISTING_NOISE
-% Robust simulation for OFDM Pareto candidates using the existing stochastic
-% simulator only.
+% 仅使用现有随机仿真器，对 OFDM Pareto 候选点进行稳健仿真。
 %
-% Stage 1 is unchanged: `moo/<method>.xlsx` contains the surrogate-assisted
-% NSGA-II Pareto candidates.
-% This script only runs each candidate over multiple rngseed realizations of
-% the existing OFDM simulator randomness (bits, channel taps, AWGN), then
-% exports empirical mean/variance columns. Robust loss calculation, Pareto
-% filtering, robust-best selection, and ranking are handled by the Python
-% analysis script.
+% 第一阶段保持不变：`moo/<method>.xlsx` 保存代理模型辅助 NSGA-II 得到的
+% Pareto 候选点。
+% 本脚本只针对每个候选点，在多个 rngseed 下重复运行现有 OFDM 仿真器中的
+% 随机因素（比特序列、信道抽头、AWGN），并导出经验均值/方差列。稳健损失
+% 计算、Pareto 筛选、稳健最优点选择和排序由 Python 分析脚本负责。
 %
-% Directly edit the User Config section below.
-% `SELECTED_METHODS = {}` scans all method files in INPUT_MOO_DIR.
-% `SELECTED_METHODS = {'dadgp'}` updates one method.
+% 直接修改下方用户配置区域。
+% `SELECTED_METHODS = {}` 表示扫描 INPUT_MOO_DIR 下的全部方法文件。
+% `SELECTED_METHODS = {'dadgp'}` 表示只更新一个方法。
 
 clearvars;
 clc;
 
-%% -------------------- Path Setup ---------------------
+%% -------------------- 路径设置 ---------------------
 scriptPath = mfilename('fullpath');
 if isempty(scriptPath)
     projectDir = pwd;
@@ -25,7 +22,7 @@ else
     projectDir = fileparts(scriptPath);
 end
 
-%% -------------------- User Config --------------------
+%% -------------------- 用户配置 --------------------
 SELECTED_METHODS = {'bo_qparego', 'bo_qehvi', 'bo_qnehvi'};
 INPUT_MOO_DIR = fullfile(projectDir, 'moo');
 OUTPUT_RESULT_DIR = fullfile(projectDir, 'result');
@@ -37,7 +34,7 @@ INPUT_SHEET_NAME = 'results';
 ALL_CANDIDATES_SHEET_NAME = 'all_candidates';
 METADATA_SHEET_NAME = 'metadata';
 
-%% -------------------- Resolve Config -----------------
+%% -------------------- 配置解析 -----------------
 selectedMethods = normalize_method_list(SELECTED_METHODS);
 inputMooDir = char(string(INPUT_MOO_DIR));
 outputResultDir = char(string(OUTPUT_RESULT_DIR));
@@ -68,13 +65,13 @@ else
     fprintf('Selected methods: %s\n', strjoin(selectedMethods, ', '));
 end
 
-%% -------------------- Load Inputs --------------------
+%% -------------------- 输入加载 --------------------
 inputSpecs = load_input_specs(inputFiles, INPUT_SHEET_NAME);
 if isempty(inputSpecs)
     error('No processable Pareto candidates were found in the input files.');
 end
 
-%% -------------------- Robust Simulation ---------------
+%% -------------------- 稳健仿真 ---------------
 totalCandidates = 0;
 
 for specIdx = 1:numel(inputSpecs)
@@ -118,7 +115,7 @@ fprintf('\nFinished robust simulation.\n');
 fprintf('Methods covered: %d\n', numel(inputSpecs));
 fprintf('Total evaluated candidates: %d\n', totalCandidates);
 
-%% -------------------- Local Functions ----------------
+%% -------------------- 本地函数 ----------------
 function values = normalize_method_list(value)
     if isempty(value)
         values = {};

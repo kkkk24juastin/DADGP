@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Post-process robust OFDM simulation workbooks.
+对稳健 OFDM 仿真工作簿进行后处理。
 
-Pipeline boundary:
-1. robust_select_ofdm_existing_noise.m only runs repeated OFDM simulations and
-   exports empirical mean/variance columns.
-2. This script computes robust quality losses, robust Pareto flags, robust
-   best rows, and ranks.
+流程边界:
+1. robust_select_ofdm_existing_noise.m 只负责重复运行 OFDM 仿真，并导出
+   经验均值/方差列。
+2. 本脚本负责计算稳健质量损失、稳健 Pareto 标记、稳健最优行和排序。
 
-Default input:
+默认输入:
     result/robust_simulation_<method>.xlsx, sheet all_candidates
 
-Default output:
+默认输出:
     result/robust_selection_<method>.xlsx
 """
 
@@ -32,8 +31,8 @@ from config import BASE_DIR, MOO_TARGET_VALUES, VALID_METHODS
 
 RESULT_DIR = BASE_DIR / "result"
 
-# SELECTED_METHODS = None scans all VALID_METHODS.
-# Example: SELECTED_METHODS = ["dadgp"]
+# SELECTED_METHODS = None 表示扫描全部 VALID_METHODS。
+# 示例: SELECTED_METHODS = ["dadgp"]
 SELECTED_METHODS: list[str] | None = None
 INPUT_RESULT_DIR = RESULT_DIR
 OUTPUT_RESULT_DIR = RESULT_DIR

@@ -1,30 +1,30 @@
 
 function [metrics, aux] = ofdm_link_quality_ex(Ptx_dBm, d_m, tauRMS_ns, cfo_ppm, M, rngseed, simConfig)
-% Extended OFDM link: supports M-QAM and returns multiple metrics.
-% Inputs:
-%   Ptx_dBm, d_m, tauRMS_ns, cfo_ppm: same meaning as before
-%   M: modulation order (e.g., 4, 16, 64)  -> QPSK/16QAM/64QAM
-%   rngseed: random seed for the current realization
-%   simConfig: optional struct for CFR / goodput shaping parameters
-% Outputs:
-%   metrics: struct with fields
-%       .ber           : uncoded bit error rate
-%       .thr_mbps      : effective throughput / goodput (Mbps)
+% 扩展版 OFDM 链路：支持 M-QAM，并返回多种链路质量指标。
+% 输入:
+%   Ptx_dBm, d_m, tauRMS_ns, cfo_ppm: 含义与原脚本一致
+%   M: 调制阶数（例如 4、16、64）-> QPSK/16QAM/64QAM
+%   rngseed: 当前随机实现的随机种子
+%   simConfig: 可选结构体，用于 CFR / goodput 整形参数
+% 输出:
+%   metrics: 结构体字段包括
+%       .ber           : 未编码误码率
+%       .thr_mbps      : 有效吞吐量 / goodput (Mbps)
 %       .snr_dB        : SNR (dB)
-%       .evm_rms       : RMS EVM (linear)
-%       .papr_dB       : PAPR of CFR-processed OFDM waveform (dB)
-%   aux: struct with useful arrays for plotting / diagnostics
-%       .rxDataSymEQ   : equalized data symbols
-%       .txDataSym     : transmitted data symbols
-%       .tx_time       : CFR-processed time-domain OFDM (w/CP) vector
-%       .fs            : sampling rate
-%       .freq_axis     : normalized frequency for PSD
-%       .used_idx      : used subcarrier indices
-%       .Y_used        : received freq symbols
-%       .quality_score : smooth link-quality score
-%       .tx_stress     : smooth TX stress score
-%       .clip_ratio_dB : adaptive CFR clipping ratio
-%       .raw_rate_mbps : uncoded OFDM payload rate before goodput shaping
+%       .evm_rms       : RMS EVM（线性值）
+%       .papr_dB       : CFR 处理后 OFDM 波形的 PAPR (dB)
+%   aux: 用于绘图 / 诊断的辅助数组
+%       .rxDataSymEQ   : 均衡后的数据符号
+%       .txDataSym     : 发送数据符号
+%       .tx_time       : CFR 处理后的含 CP 时域 OFDM 向量
+%       .fs            : 采样率
+%       .freq_axis     : PSD 使用的归一化频率轴
+%       .used_idx      : 已用子载波索引
+%       .Y_used        : 接收频域符号
+%       .quality_score : 平滑链路质量得分
+%       .tx_stress     : 平滑发射端压力得分
+%       .clip_ratio_dB : 自适应 CFR 削波比
+%       .raw_rate_mbps : goodput 整形前的未编码 OFDM 载荷速率
 %
 if nargin < 6 || isempty(rngseed)
     rngseed = 42;

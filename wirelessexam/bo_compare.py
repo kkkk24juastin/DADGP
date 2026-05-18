@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Three-quality-loss Bayesian optimization candidate generation for the OFDM case.
+面向 OFDM 案例的三质量损失 Bayesian optimization 候选点生成脚本。
 
-Default pipeline:
+默认流程:
     python bo_compare.py
 
-Outputs one MOO-style workbook per BO method under moo/.
-The script is intentionally configured by editing constants below, matching the
-style used by the other experiment scripts in this repository.
+在 moo/ 下为每种 BO 方法输出一个 MOO 风格工作簿。
+本脚本有意采用“直接修改下方常量”的配置方式，以保持与仓库中其他实验脚本一致。
 """
 
 from __future__ import annotations
@@ -64,7 +63,7 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 # ---------------------------------------------------------------------------
-# Explicit run configuration. Edit these values directly.
+# 显式运行配置。直接修改这些值。
 # ---------------------------------------------------------------------------
 SELECTED_METHODS: list[str] | None = None
 BO_METHODS = ["bo_qparego", "bo_qehvi", "bo_qnehvi"]

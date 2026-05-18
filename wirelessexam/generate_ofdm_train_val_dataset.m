@@ -29,7 +29,7 @@ clearvars -except ...
     outputDataDirOverride;
 clc;
 
-%% -------------------- User Config --------------------
+%% -------------------- 用户配置 --------------------
 nTrain = 400;
 nVal = 400;
 modulationOrder = 16;
@@ -55,7 +55,7 @@ end
 lowerBounds = [5.0, 50.0, 50.0, 0.0];
 upperBounds = [30.0, 500.0, 500.0, 10.0];
 
-%% -------------------- Path Setup ---------------------
+%% -------------------- 路径设置 ---------------------
 scriptPath = mfilename('fullpath');
 if isempty(scriptPath)
     projectDir = pwd;
@@ -75,13 +75,13 @@ end
 trainFile = fullfile(dataDir, 'train.xlsx');
 valFile = fullfile(dataDir, 'val.xlsx');
 
-%% -------------------- Sample Inputs ------------------
+%% -------------------- 输入采样 ------------------
 rng(xTrainSeed, 'twister');
 XTrain = latin_hypercube_uniform(nTrain, lowerBounds, upperBounds);
 rng(xValSeed, 'twister');
 XVal = latin_hypercube_uniform(nVal, lowerBounds, upperBounds);
 
-%% -------------------- Run Simulations ----------------
+%% -------------------- 运行仿真 ----------------
 YTrain = simulate_dataset( ...
     XTrain, ...
     modulationOrder, ...
@@ -95,7 +95,7 @@ YVal = simulate_dataset( ...
     'val' ...
 );
 
-%% -------------------- Save Splits --------------------
+%% -------------------- 保存数据划分 --------------------
 trainTable = array2table( ...
     [XTrain, YTrain], ...
     'VariableNames', {'x1', 'x2', 'x3', 'x4', 'y1', 'y2', 'y3'} ...
@@ -116,7 +116,7 @@ print_dataset_summary('train', trainTable);
 print_dataset_summary('val', valTable);
 print_cross_split_summary(trainTable, valTable);
 
-%% -------------------- Local Functions ----------------
+%% -------------------- 本地函数 ----------------
 function X = latin_hypercube_uniform(nSamples, lowerBounds, upperBounds)
 % 使用不依赖 Statistics Toolbox 的简易 LHS 采样。
 % 依赖外部已经设定好的 RNG 状态，这样 train/val 可以在同一个 seed 下独立采样。

@@ -1,24 +1,22 @@
 % PLOT_OFDM_CONSTELLATION_COMPARISON
-% Draw equalized OFDM constellation diagrams for the selected candidate of
-% each configured method.
+% 为每个配置方法的选定候选点绘制均衡后的 OFDM 星座图。
 %
-% The selected operating point is what differs across methods. The OFDM
-% waveform generation, channel, equalization, modulation order, and RNG seed
-% are kept identical for a fair visual comparison.
-% Selection rule:
-%   1) Keep candidates with throughput >= threshold.
-%   2) Minimize EVM inside the feasible set.
-%   3) Break ties by BER, PAPR, throughput, and index.
-% Each method is saved as an independent figure, not as a single tiled grid.
+% 不同方法之间只改变所选工作点。为保证可视化比较公平，OFDM 波形生成、
+% 信道、均衡、调制阶数和 RNG 种子均保持一致。
+% 选择规则:
+%   1) 保留 throughput >= threshold 的候选点。
+%   2) 在可行集合内最小化 EVM。
+%   3) 依次用 BER、PAPR、throughput 和索引打破平局。
+% 每种方法保存为独立图，而不是合并为一个 tiled grid。
 %
-% Directly edit the User Config section below.
-% `SELECTED_METHODS = {}` scans all available method files in INPUT_MOO_DIR.
-% By default, robust simulation workbooks are preferred when available.
+% 直接修改下方用户配置区域。
+% `SELECTED_METHODS = {}` 表示扫描 INPUT_MOO_DIR 下全部可用方法文件。
+% 默认优先使用稳健仿真工作簿（如果存在）。
 
 clearvars;
 clc;
 
-%% -------------------- Path Setup ---------------------
+%% -------------------- 路径设置 ---------------------
 scriptPath = mfilename('fullpath');
 if isempty(scriptPath)
     projectDir = pwd;
@@ -26,7 +24,7 @@ else
     projectDir = fileparts(scriptPath);
 end
 
-%% -------------------- User Config --------------------
+%% -------------------- 用户配置 --------------------
 SELECTED_METHODS = { ...
     'dadgp', ...
     'baseline_equal', ...
@@ -50,9 +48,9 @@ MODULATION_ORDER = 16;
 SIMULATION_SEED = 42;
 SIM_CONFIG = [];
 
-% Options:
-%   'robust_if_available' : use result/robust_simulation_<method>.xlsx first
-%   'moo_only'            : use moo/<method>.xlsx
+% 选项:
+%   'robust_if_available' : 优先使用 result/robust_simulation_<method>.xlsx
+%   'moo_only'            : 使用 moo/<method>.xlsx
 CANDIDATE_SOURCE = 'robust_if_available';
 
 MOO_SHEET_NAME = 'results';
@@ -62,13 +60,13 @@ MIN_THROUGHPUT_FOR_EVM_SELECTION_MBPS = 5.44;
 
 MAX_SYMBOLS_PER_FIGURE = Inf;
 ERROR_AXIS_LIMIT = 4.0;
-% Use a tighter circle so tail outliers do not wash out the main spread.
+% 使用更紧的圆形坐标范围，避免尾部离群点淹没主体分布。
 ERROR_CIRCLE_QUANTILE = 0.90;
 ERROR_MARKER_SIZE = 6.5;
 ERROR_MARKER_ALPHA = 0.28;
 EXPORT_BASENAME_PREFIX = 'ofdm_error_constellation_13methods';
 
-%% -------------------- Resolve Config -----------------
+%% -------------------- 配置解析 -----------------
 selectedMethods = normalize_method_list(SELECTED_METHODS);
 inputMooDir = char(string(INPUT_MOO_DIR));
 inputResultDir = char(string(INPUT_RESULT_DIR));
@@ -106,7 +104,7 @@ fprintf('Simulation seed: %d\n', simulationSeed);
 fprintf('Throughput floor for EVM selection: %.2f Mbps\n', throughputFloorMbps);
 fprintf('Selected methods: %s\n', strjoin({methodSpecs.methodName}, ', '));
 
-%% -------------------- Select + Simulate --------------
+%% -------------------- 选择并仿真 --------------
 for specIdx = 1:numel(methodSpecs)
     spec = methodSpecs(specIdx);
     [selectedRow, selectionScore, selectionInfo] = select_representative_candidate( ...
@@ -173,7 +171,7 @@ for specIdx = 1:numel(methodSpecs)
     fprintf('  %s\n', figurePathPdf);
 end
 
-%% -------------------- Local Functions ----------------
+%% -------------------- 本地函数 ----------------
 function values = normalize_method_list(value)
     if isempty(value)
         values = {};

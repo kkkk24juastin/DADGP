@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Plot per-run robust Pareto indicator boxplots across methods.
+绘制不同方法逐次运行的稳健 Pareto 指标箱线图。
 
-Inputs:
+输入:
     result/robust_simulation_<method>.xlsx, sheet all_candidates
 
-Outputs:
+输出:
     fig/robust_pareto_indicator_boxplots.png
     fig/robust_pareto_indicator_boxplots.pdf
 """
