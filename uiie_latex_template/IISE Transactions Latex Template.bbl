@@ -27,6 +27,25 @@ Damianou, A. and Lawrence, N.~D. (2013).
 \newblock In {\em Proceedings of the 16th International Conference on
   Artificial Intelligence and Statistics (AISTATS)}. PMLR.
 
+\bibitem[Daulton et~al., 2020]{Daulton2020}
+Daulton, S., Balandat, M., and Bakshy, E. (2020).
+\newblock Differentiable expected hypervolume improvement for parallel
+  multi-objective {Bayesian} optimization.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~33, pages 9851--9864.
+
+\bibitem[Daulton et~al., 2021]{Daulton2021}
+Daulton, S., Balandat, M., and Bakshy, E. (2021).
+\newblock Parallel {Bayesian} optimization of multiple noisy objectives with
+  expected hypervolume improvement.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~34, pages 2187--2200.
+
+\bibitem[Deb et~al., 2002]{Deb2002}
+Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. (2002).
+\newblock A fast and elitist multiobjective genetic algorithm: {NSGA-II}.
+\newblock {\em IEEE Transactions on Evolutionary Computation}, 6(2):182--197.
+
 \bibitem[Deng et~al., 2017]{Deng2017}
 Deng, X., Lin, C.~D., Liu, K.~W., et~al. (2017).
 \newblock Additive {Gaussian} process for computer models with qualitative and

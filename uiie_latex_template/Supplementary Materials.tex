@@ -416,8 +416,42 @@
 		\label{fig:sample_sensitivity}
 	\end{figure}
 
-	
-	
+
+
+	\newpage
+	\section{Wall-clock Training Time and Time Complexity} \label{app:F}
+
+	This appendix reports the detailed wall-clock training time and asymptotic time-complexity order of the Gaussian process surrogate methods evaluated in Section~4.2 of the main paper. All methods are trained for $500$ epochs on the OFDM dataset with $N=400$ training samples, $B=128$, $H=5$, $M=128$, $T=3$ and $L=3$, on a single workstation equipped with an NVIDIA RTX~2060 GPU, PyTorch~2.11+cu130 and Python~3.10. Table~\ref{tab:training_time_appendix} aggregates the total wall-clock time, the per-epoch time, the trainable-parameter count, and the asymptotic per-epoch order for each method.
+
+	本附录给出正文 Section~4.2 中各高斯过程代理方法的 wall-clock 训练耗时与渐近时间复杂度。所有方法在 OFDM 数据集上训练 $500$ epochs，使用 $N=400$ 训练样本、$B=128$、$H=5$、$M=128$、$T=3$、$L=3$，硬件为一块 NVIDIA RTX~2060 GPU，软件栈为 PyTorch~2.11+cu130、Python~3.10。Table~\ref{tab:training_time_appendix} 汇总各方法的总耗时、单 epoch 耗时、可训练参数量以及单 epoch 的渐近阶。
+
+	\begin{table}[!h]
+		\centering
+		\caption{Wall-clock training time of all Gaussian process surrogate methods on the OFDM dataset ($500$ epochs, NVIDIA RTX~2060, PyTorch~2.11+cu130).}
+		\caption*{在 OFDM 数据集上各高斯过程代理方法的 wall-clock 训练耗时（$500$ epochs，NVIDIA RTX~2060，PyTorch~2.11+cu130）。}
+		\label{tab:training_time_appendix}
+		\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}
+			\toprule
+			\textbf{Method} & \textbf{Total (s)} & \textbf{s/epoch} & \textbf{Params (K)} & \textbf{Asymptotic order} \\
+			\midrule
+			DA-DGP            & $397.79$ & $0.7956$ & $136.6$ & $\mathcal{O}(4\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			No Sample Attn    & $387.78$ & $0.7756$ & $136.6$ & $\mathcal{O}(4\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			MGDA              & $164.87$ & $0.3297$ & $136.6$ & $\mathcal{O}(T\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			Indep-DGP         & $163.40$ & $0.3268$ & $306.9$ & $\mathcal{O}(T\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			DWA               & $109.25$ & $0.2185$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			LMC-DGP           & $103.35$ & $0.2067$ & $136.7$ & $\mathcal{O}(E\lceil N/B\rceil(H+L)(BM^{2}\!+\!M^{3}))$\\
+			Equal             & $100.57$ & $0.2011$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			Pure DGP          & $\phantom{0}99.56$ & $0.1991$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			UW                & $\phantom{0}96.04$ & $0.1921$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
+			Indep-HetGP       & $\phantom{00}10.51$ & $0.0210$ & $0.021$ & $\mathcal{O}(E\,T\,N^{3})$\\
+			\bottomrule
+		\end{tabular*}
+	\end{table}
+
+	The constant factor in the per-epoch order of DA-DGP and No Sample Attn arises from the inner virtual update, the unrolled validation backward, and two finite-difference Hessian--vector evaluations introduced by the bilevel optimisation; the gradient-balancing baseline (MGDA) and the independent-task baseline (Indep-DGP) instead scale linearly in the number of tasks $T$. The heteroscedastic exact GP (Indep-HetGP) bypasses the variational machinery and is dominated by the dense $N\times N$ Cholesky factorisation, which remains affordable because $N=400$ is small. These numbers verify that the additional wall-clock overhead of DA-DGP is a small constant factor amortised over a single training pass, in exchange for the robust Pareto frontier reported in Table~7 of the main paper.
+
+	DA-DGP 与 No Sample Attn 的单 epoch 阶中的常数因子源自 bilevel 优化引入的内层虚拟更新、验证 unrolled 反向传播以及两次 finite-difference Hessian--vector 近似；梯度均衡基线（MGDA）和独立任务基线（Indep-DGP）则随任务数 $T$ 线性增长。异方差 exact GP（Indep-HetGP）不经过变分机制，其代价由 $N\times N$ Cholesky 分解主导，因 $N=400$ 较小而仍可接受。综上，DA-DGP 多出的 wall-clock 开销只是一次性训练中的小常数因子，所换得的是正文 Table~7 中的鲁棒 Pareto 前沿。
+
 	\newpage
 \begin{thebibliography}{99}
 	

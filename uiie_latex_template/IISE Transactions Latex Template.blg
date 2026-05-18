@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: IISE Transactions Latex Template.aux
 The style file: apalike.bst
 Database file #1: IISE-Trans.bib
-You've used 47 entries,
+You've used 50 entries,
             1935 wiz_defined-function locations,
-            778 strings with 12131 characters,
-and the built_in function-call counts, 20330 in all, are:
-= -- 1994
-> -- 905
-< -- 22
-+ -- 317
-- -- 308
-* -- 1825
-:= -- 3497
-add.period$ -- 144
-call.type$ -- 47
-change.case$ -- 383
-chr.to.int$ -- 44
-cite$ -- 47
-duplicate$ -- 725
-empty$ -- 1405
-format.name$ -- 373
-if$ -- 3950
+            796 strings with 12630 characters,
+and the built_in function-call counts, 21986 in all, are:
+= -- 2165
+> -- 964
+< -- 26
++ -- 339
+- -- 328
+* -- 1958
+:= -- 3747
+add.period$ -- 153
+call.type$ -- 50
+change.case$ -- 408
+chr.to.int$ -- 47
+cite$ -- 50
+duplicate$ -- 797
+empty$ -- 1525
+format.name$ -- 396
+if$ -- 4301
 int.to.chr$ -- 4
 int.to.str$ -- 0
-missing$ -- 52
-newline$ -- 238
-num.names$ -- 141
-pop$ -- 350
+missing$ -- 55
+newline$ -- 253
+num.names$ -- 150
+pop$ -- 379
 preamble$ -- 1
-purify$ -- 388
+purify$ -- 413
 quote$ -- 0
-skip$ -- 517
+skip$ -- 577
 stack$ -- 0
-substring$ -- 1506
-swap$ -- 86
-text.length$ -- 7
+substring$ -- 1649
+swap$ -- 113
+text.length$ -- 11
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 272
+type$ -- 290
 warning$ -- 0
-while$ -- 169
+while$ -- 183
 width$ -- 0
-write$ -- 613
+write$ -- 654

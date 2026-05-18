@@ -147,12 +147,12 @@ Driven by these needs, this paper proposes a novel framework named Dual-attentio
 
 	\textbf{加权变分推断：} 推导了严格的加权变分 ELBO，将上述双注意力机制无缝融入 DGP 的端到端训练过程，实现模型参数与注意力权重的协同优化。
 
-	\item \textbf{Engineering Validation and Evaluation:} Through standard numerical benchmark functions and a high-dimensional 5G/6G OFDM communication link optimization case \textcolor{red}{with explicit noise realizations}, the advantages of the proposed method in handling non-stationary responses, multi-objective conflicts, and \textcolor{red}{robust Pareto trade-offs are systematically validated against strong GP-specific baselines, ablation variants, sensitivity analyses, and representative BO methods}.
+	\item \textbf{Engineering Validation and Evaluation:} Through standard numerical benchmark functions and a high-dimensional 5G/6G OFDM communication link optimization case \textcolor{red}{with explicit noise realizations}, the advantages of the proposed method in handling non-stationary responses, multi-objective conflicts, and \textcolor{red}{robust Pareto trade-offs are systematically validated against strong Gaussian process surrogate baselines, ablation variants, sensitivity analyses, and representative BO methods}.
 
 	\textbf{工程验证与评估：} 通过\textcolor{red}{具有显式噪声 realization 的}标准数值基准函数和高维 5G/6G OFDM 通信链路优化案例，系统验证所提方法在处理非平稳响应、多目标冲突和\textcolor{red}{鲁棒 Pareto 权衡方面的优势，并与强 GP 专用基线、消融变体、敏感性分析以及代表性 BO 方法进行比较}。
 \end{enumerate}
 
-The remainder of this paper is organized as follows: Section 2 briefly reviews the theoretical foundations of GPs and DGPs, elucidating the applicability of multi-output DGPs in handling high-dimensional non-stationary responses. Section 3 details the proposed DA-DGP framework, focusing on the construction of the sample-level attention for precisely locating the ROI and the task-level attention mechanism for balancing multi-objective conflicts; furthermore, the weighted ELBO and the multi-objective robust optimization model are derived. Section 4 \textcolor{red}{presents numerical and engineering validation, including strong GP-specific baselines, ablation studies, sensitivity analyses, and robust Pareto/BO comparisons}. Finally, Section 5 concludes the paper and outlines future research directions.
+The remainder of this paper is organized as follows: Section 2 briefly reviews the theoretical foundations of GPs and DGPs, elucidating the applicability of multi-output DGPs in handling high-dimensional non-stationary responses. Section 3 details the proposed DA-DGP framework, focusing on the construction of the sample-level attention for precisely locating the ROI and the task-level attention mechanism for balancing multi-objective conflicts; furthermore, the weighted ELBO and the multi-objective robust optimization model are derived. Section 4 \textcolor{red}{presents numerical and engineering validation, including strong Gaussian process surrogate baselines, ablation studies, sensitivity analyses, and robust Pareto/BO comparisons}. Finally, Section 5 concludes the paper and outlines future research directions.
 
 本文其余部分安排如下：第 2 节简要回顾 GPs 和 DGPs 的理论基础，阐明 multi-output DGPs 在处理高维非平稳响应方面的适用性。第 3 节详细介绍所提出的 DA-DGP 框架，重点讨论用于精准定位 ROI 的样本级注意力构建，以及用于平衡多目标冲突的任务级注意力机制；此外，还推导加权 ELBO 和多目标鲁棒优化模型。第 4 节\textcolor{red}{给出数值案例与工程案例验证，包括强 GP 专用基线、消融实验、敏感性分析以及鲁棒 Pareto/BO 比较}。最后，第 5 节总结全文并展望未来研究方向。
 
@@ -170,9 +170,9 @@ Gaussian Process（GP）为潜在函数 $f$ 赋予先验分布，并假设任意
 \begin{equation}
 	f(\mathbf{x}) \sim \mathcal{GP}(0, k(\mathbf{x}, \mathbf{x}')).
 \end{equation}
-To capture the non-linear correlations with different sensitivities across input dimensions, \textcolor{red}{the current implementation of both case studies and all GP-family baselines employs the anisotropic Mat\'ern-5/2 kernel with Automatic Relevance Determination (ARD):}
+To capture the non-linear correlations with different sensitivities across input dimensions, \textcolor{red}{the current implementation of both case studies and all Gaussian process surrogate baselines employs the anisotropic Mat\'ern-5/2 kernel with Automatic Relevance Determination (ARD):}
 
-为捕捉输入维度间具有不同敏感性的非线性相关关系，\textcolor{red}{当前两个案例及全部 GP 家族基线的实现均采用带有 Automatic Relevance Determination（ARD）的各向异性 Mat\'ern-5/2 核：}
+为捕捉输入维度间具有不同敏感性的非线性相关关系，\textcolor{red}{当前两个案例及全部高斯过程代理基线的实现均采用带有 Automatic Relevance Determination（ARD）的各向异性 Mat\'ern-5/2 核：}
 \begin{equation}
 	k(\mathbf{x}, \mathbf{x}') = \sigma_f^2 \textcolor{red}{\left( 1 + \sqrt{5}r(\mathbf{x}, \mathbf{x}') + \frac{5}{3}r^2(\mathbf{x}, \mathbf{x}') \right)\exp \left( - \sqrt{5}r(\mathbf{x}, \mathbf{x}') \right)} + \sigma_n^2 \delta_{ij},
 \end{equation}
@@ -532,9 +532,9 @@ These responses represent escalating levels of complexity: $y_1$ serves as a smo
 
 这些响应代表逐渐递增的复杂度水平：$y_1$ 作为平滑且可分离的基线；$y_2$ 引入变量交互和局部不可微性；$y_3$ 则表现出显著非凸性和复杂耦合。这种结构异质性对标准固定权重优化构成挑战，因此可作为检验所提 multi-attention 机制的严格 testbed。优化目标设定为 $\mathbf{T}=[0, 1.5, 0.8]^T$。
 
-\textbf{Evaluation Metrics and Baselines.} To assess both \textcolor{red}{local predictive fidelity near the target region} and \textcolor{red}{probabilistic calibration}, three metrics are reported on the \textcolor{red}{ROI-filtered test subset}: Root Mean Square Error (RMSE), Negative Log Predictive Density (NLPD), and Quality Loss (QL). The ROI is defined by \textcolor{red}{$|y_k-T_k|\leq 0.3$ for $k=1,2,3$}, so the evaluation focuses on \textcolor{red}{target-relevant local performance rather than global test-domain averages}. The comparison includes \textcolor{red}{ten methods}: the proposed \textcolor{red}{DA-DGP}; the optimization baselines \textcolor{red}{DWA, UW, and MGDA \citep{Liu2019,Kendall2018,Sener2018}}; the ablation chain \textcolor{red}{T-Atten, S-Atten (Equal), and Pure DGP}; and the strong GP-family baselines \textcolor{red}{LMC-DGP, Indep-DGP, and Indep-HetGP}. Here, \textcolor{red}{T-Atten keeps only task-level dynamic weighting}, \textcolor{red}{S-Atten (Equal) keeps sample-level attention but replaces meta-learned task weights with uniform coefficients}, and \textcolor{red}{Pure DGP removes both attention modules}.
+\textbf{Evaluation Metrics and Baselines.} To assess both \textcolor{red}{local predictive fidelity near the target region} and \textcolor{red}{probabilistic calibration}, three metrics are reported on the \textcolor{red}{ROI-filtered test subset}: Root Mean Square Error (RMSE), Negative Log Predictive Density (NLPD), and Quality Loss (QL). The ROI is defined by \textcolor{red}{$|y_k-T_k|\leq 0.3$ for $k=1,2,3$}, so the evaluation focuses on \textcolor{red}{target-relevant local performance rather than global test-domain averages}. The comparison includes \textcolor{red}{ten methods}: the proposed \textcolor{red}{DA-DGP}; the optimization baselines \textcolor{red}{DWA, UW, and MGDA \citep{Liu2019,Kendall2018,Sener2018}}; the ablation chain \textcolor{red}{T-Atten, S-Atten (Equal), and Pure DGP}; and the strong Gaussian process surrogate baselines \textcolor{red}{LMC-DGP, Indep-DGP, and Indep-HetGP}. Here, \textcolor{red}{T-Atten keeps only task-level dynamic weighting}, \textcolor{red}{S-Atten (Equal) keeps sample-level attention but replaces meta-learned task weights with uniform coefficients}, and \textcolor{red}{Pure DGP removes both attention modules}.
 
-\textbf{评估指标与基线方法。} 为同时评估\textcolor{red}{目标区域附近的局部预测精度}与\textcolor{red}{概率校准能力}，本文在\textcolor{red}{经过 ROI 筛选的测试子集}上报告三个指标：Root Mean Square Error（RMSE）、Negative Log Predictive Density（NLPD）和 Quality Loss（QL）。其中，ROI 定义为\textcolor{red}{$|y_k-T_k|\leq 0.3,\ k=1,2,3$}，因此这里衡量的是\textcolor{red}{与目标相关的局部性能，而不是全测试域平均表现}。对比对象共\textcolor{red}{10 种方法}：所提\textcolor{red}{DA-DGP}；优化基线\textcolor{red}{DWA、UW 和 MGDA \citep{Liu2019,Kendall2018,Sener2018}}；消融链\textcolor{red}{T-Atten、S-Atten（Equal）和 Pure DGP}；以及强 GP 家族基线\textcolor{red}{LMC-DGP、Indep-DGP 和 Indep-HetGP}。其中，\textcolor{red}{T-Atten 仅保留任务级动态加权}，\textcolor{red}{S-Atten（Equal）保留样本级注意力但将元学习任务权重替换为均匀系数}，\textcolor{red}{Pure DGP 则同时移除两类注意力模块}。
+\textbf{评估指标与基线方法。} 为同时评估\textcolor{red}{目标区域附近的局部预测精度}与\textcolor{red}{概率校准能力}，本文在\textcolor{red}{经过 ROI 筛选的测试子集}上报告三个指标：Root Mean Square Error（RMSE）、Negative Log Predictive Density（NLPD）和 Quality Loss（QL）。其中，ROI 定义为\textcolor{red}{$|y_k-T_k|\leq 0.3,\ k=1,2,3$}，因此这里衡量的是\textcolor{red}{与目标相关的局部性能，而不是全测试域平均表现}。对比对象共\textcolor{red}{10 种方法}：所提\textcolor{red}{DA-DGP}；优化基线\textcolor{red}{DWA、UW 和 MGDA \citep{Liu2019,Kendall2018,Sener2018}}；消融链\textcolor{red}{T-Atten、S-Atten（Equal）和 Pure DGP}；以及强高斯过程代理基线\textcolor{red}{LMC-DGP、Indep-DGP 和 Indep-HetGP}。其中，\textcolor{red}{T-Atten 仅保留任务级动态加权}，\textcolor{red}{S-Atten（Equal）保留样本级注意力但将元学习任务权重替换为均匀系数}，\textcolor{red}{Pure DGP 则同时移除两类注意力模块}。
 
 \textbf{Experimental Setup.} The benchmark uses \textcolor{red}{400 LHS training samples}, \textcolor{red}{400 independent validation samples}, and \textcolor{red}{100000 test samples}. The default surrogate is a \textcolor{red}{2-layer multi-output DGP} with \textcolor{red}{hidden dimension 5} and \textcolor{red}{128 inducing points}. All statistics in this subsection are summarized over \textcolor{red}{20 independent runs}. Figure 3 examines training stability by tracking \textcolor{red}{the dynamic task weights}, \textcolor{red}{the output scales $\sigma_f^2$}, and \textcolor{red}{the ARD length-scales $l$}.
 
@@ -656,9 +656,9 @@ Figures 3(a)-(b) 展示了输出尺度（$\sigma_f^2$）和 ARD 长度尺度（$
 
 
 
-Based on Tables 1-3, \textcolor{red}{DA-DGP attains the best mean performance on RMSE, NLPD, and QL for all three tasks}. The ablation chain is particularly informative: \textcolor{red}{T-Atten remains close to DA-DGP on Task 1 and Task 2}, but \textcolor{red}{its gap widens on the more nonlinear Task 3} (RMSE \textcolor{red}{0.1703} vs. \textcolor{red}{0.1360}; QL \textcolor{red}{0.0588} vs. \textcolor{red}{0.0475}), indicating that \textcolor{red}{sample-level attention becomes essential once task complexity and response heterogeneity increase}. In contrast, \textcolor{red}{S-Atten (Equal) and Pure DGP deteriorate substantially in NLPD and QL}, showing that \textcolor{red}{task balancing and ROI-oriented sample reweighting are both necessary}. Among the strong GP-family baselines, \textcolor{red}{LMC-DGP is the most competitive}, yet it still remains behind DA-DGP on every task, while \textcolor{red}{Indep-DGP and Indep-HetGP further lose accuracy and calibration}, especially on Task 3.
+Based on Tables 1-3, \textcolor{red}{DA-DGP attains the best mean performance on RMSE, NLPD, and QL for all three tasks}. The ablation chain is particularly informative: \textcolor{red}{T-Atten remains close to DA-DGP on Task 1 and Task 2}, but \textcolor{red}{its gap widens on the more nonlinear Task 3} (RMSE \textcolor{red}{0.1703} vs. \textcolor{red}{0.1360}; QL \textcolor{red}{0.0588} vs. \textcolor{red}{0.0475}), indicating that \textcolor{red}{sample-level attention becomes essential once task complexity and response heterogeneity increase}. In contrast, \textcolor{red}{S-Atten (Equal) and Pure DGP deteriorate substantially in NLPD and QL}, showing that \textcolor{red}{task balancing and ROI-oriented sample reweighting are both necessary}. Among the strong Gaussian process surrogate baselines, \textcolor{red}{LMC-DGP is the most competitive}, yet it still remains behind DA-DGP on every task, while \textcolor{red}{Indep-DGP and Indep-HetGP further lose accuracy and calibration}, especially on Task 3.
 
-基于 Tables 1-3，\textcolor{red}{DA-DGP 在三个任务的 RMSE、NLPD 和 QL 上均取得最优平均表现}。其中，消融链给出了最直接的证据：\textcolor{red}{T-Atten 在 Task 1 和 Task 2 上已接近 DA-DGP}，但在\textcolor{red}{非线性更强的 Task 3 上差距明显扩大}（RMSE 为\textcolor{red}{0.1703} 对比 \textcolor{red}{0.1360}；QL 为\textcolor{red}{0.0588} 对比 \textcolor{red}{0.0475}），说明\textcolor{red}{随着任务复杂度和响应异质性升高，样本级注意力变得不可或缺}。相较之下，\textcolor{red}{S-Atten（Equal）和 Pure DGP 在 NLPD 与 QL 上明显退化}，表明\textcolor{red}{任务平衡与面向 ROI 的样本重加权缺一不可}。在强 GP 家族基线中，\textcolor{red}{LMC-DGP 的竞争力最强}，但其在所有任务上仍落后于 DA-DGP，而\textcolor{red}{Indep-DGP 与 Indep-HetGP 在精度和校准上进一步退化}，尤其是在 Task 3 上更为明显。
+基于 Tables 1-3，\textcolor{red}{DA-DGP 在三个任务的 RMSE、NLPD 和 QL 上均取得最优平均表现}。其中，消融链给出了最直接的证据：\textcolor{red}{T-Atten 在 Task 1 和 Task 2 上已接近 DA-DGP}，但在\textcolor{red}{非线性更强的 Task 3 上差距明显扩大}（RMSE 为\textcolor{red}{0.1703} 对比 \textcolor{red}{0.1360}；QL 为\textcolor{red}{0.0588} 对比 \textcolor{red}{0.0475}），说明\textcolor{red}{随着任务复杂度和响应异质性升高，样本级注意力变得不可或缺}。相较之下，\textcolor{red}{S-Atten（Equal）和 Pure DGP 在 NLPD 与 QL 上明显退化}，表明\textcolor{red}{任务平衡与面向 ROI 的样本重加权缺一不可}。在强高斯过程代理基线中，\textcolor{red}{LMC-DGP 的竞争力最强}，但其在所有任务上仍落后于 DA-DGP，而\textcolor{red}{Indep-DGP 与 Indep-HetGP 在精度和校准上进一步退化}，尤其是在 Task 3 上更为明显。
 
 From the uncertainty perspective, \textcolor{red}{DA-DGP preserves the lowest NLPD across the three tasks}, which means that \textcolor{red}{its predictive variances are better aligned with the local residual structure inside the ROI}. From the design-goal perspective, \textcolor{red}{its QL values remain the smallest for all tasks}, implying that \textcolor{red}{the proposed dual-attention mechanism improves both local bias control and uncertainty management}. Therefore, the numerical example supports \textcolor{red}{the combination of shared deep representation, adaptive task weighting, and target-oriented sample attention} as the most reliable configuration for this heterogeneous benchmark.
 
@@ -674,9 +674,9 @@ In summary, \textcolor{red}{the experimental results confirm the superiority of 
 
 
 \subsection{Robust Parameter Design for OFDM Systems}\label{s:sec5.1}
-To validate the proposed framework on complex engineering systems, this section presents a case study on the OFDM system, a core 5G/6G physical layer technology. System performance is constrained by strongly conflicting objectives: increasing transmission power improves SNR—enhancing Throughput and reducing BER—but inevitably degrades PAPR and energy consumption. Furthermore, the nonlinear coupling between multipath fading channels and Carrier Frequency Offset (CFO) induces highly non-stationary and heterogeneous response surfaces.
+To validate the proposed framework on complex engineering systems, this section presents a case study on the OFDM system, a core 5G/6G physical layer technology. System performance is constrained by strongly conflicting objectives: increasing transmission power improves SNR—enhancing Throughput and reducing BER—but inevitably degrades PAPR and energy consumption. Furthermore, the nonlinear coupling between multipath fading channels and Carrier Frequency Offset (CFO) induces highly non-stationary and heterogeneous response surfaces, \textcolor{red}{and the link is simultaneously perturbed by random bit streams, Rayleigh channel realisations and additive white Gaussian noise (AWGN); the surrogate must therefore represent both the epistemic uncertainty of the response surface and the transmitted variance across noise realisations.}% [#2]
 
-为在复杂工程系统中验证所提框架，本节以 OFDM 系统这一 5G/6G 核心物理层技术为案例开展研究。系统性能受到强冲突目标的约束：提高发射功率会改善 SNR，从而提升 Throughput 并降低 BER，但也不可避免地恶化 PAPR 并增加能耗。此外，多径衰落信道与 Carrier Frequency Offset（CFO）之间的非线性耦合会诱导高度非平稳且异质的响应曲面。
+为在复杂工程系统中验证所提框架，本节以 OFDM 系统这一 5G/6G 核心物理层技术为案例开展研究。系统性能受到强冲突目标的约束：提高发射功率会改善 SNR，从而提升 Throughput 并降低 BER，但也不可避免地恶化 PAPR 并增加能耗。多径衰落信道与 Carrier Frequency Offset（CFO）之间的非线性耦合会诱导高度非平稳且异质的响应曲面，\textcolor{red}{并且链路同时受到随机比特流、Rayleigh 信道实现与加性高斯白噪声（AWGN）的扰动；代理模型因而需要同时刻画响应曲面的认知不确定性以及跨噪声实现的传递方差。}% [#2]
 
 \begin{figure}[htbp]
 	\centering
@@ -705,62 +705,108 @@ A high-fidelity OFDM simulation platform (Figure 4) is constructed operating at 
 
 本文构建了运行于 3.5 GHz 的高保真 OFDM 仿真平台（Figure 4），采用 256 点 FFT、64 点 CP 和 16-QAM。为刻画设计因子 $\mathbf{x}={{[{{x}_{1}},\ldots ,{{x}_{4}}]}^{T}}$ 对响应 $\mathbf{y}$ 的影响，仿真整合了三类核心物理机制。首先，Energy Transmission Mechanism（${{x}_{1}},{{x}_{2}}$）通过发射功率 ${{x}_{1}}$ 和路径损耗距离 ${{x}_{2}}$ 决定 SNR：
 \begin{equation}
-	SN{R_{dB}} = {x_1} - \left[ {20{{\log }{10}}\left( {\frac{{4\pi {f_c}}}{c}} \right) + 10{n{PL}}{{\log }{10}}\left( {\frac{{{x_2}}}{{{d_0}}}} \right)} \right] - {N{floor}},
+	SN{R_{dB}} = {x_1} - \left[ 20\log_{10}\!\left( \frac{4\pi {f_c}}{c} \right) + 10\,n_{\mathrm{PL}}\log_{10}\!\left( \frac{{{x_2}}}{{{d_0}}} \right) \right] - N_{\mathrm{floor}},
 \end{equation}
-necessitating dynamic adjustment of ${{x}_{1}}$ to counteract ${{x}_{2}}$-induced nonlinear attenuation. Second, the Multipath Time Dispersion Mechanism (${{x}_{3}}$) models a Rayleigh fading channel with power delay profile (PDP) decay controlled by RMS delay spread ${{x}_{3}}$ ($PDP(\tau )\propto {{e}^{-\tau /{{x}_{3}}}}$); larger ${{x}_{3}}$ exacerbates frequency-selective fading and Inter-Symbol Interference (ISI), limiting BER. Third, the Spectral Offset Mechanism (${{x}_{4}}$) simulates Carrier Frequency Offset (CFO), introducing phase rotation ${{e}^{j2\pi \varepsilon k}}$ that destroys subcarrier orthogonality and generates Inter-Carrier Interference (ICI), degrading SINR. Collectively, these factors determine Throughput (${{y}_{1}}$), BER (${{y}_{2}}$), and PAPR (${{y}_{3}}$). Robustness is tested against challenging targets $\mathbf{T}={{[6.8\text{ Mbps}, 0.25, 10.6\text{ dB}]}^{T}}$ set at the feasible region boundaries.
+necessitating dynamic adjustment of ${{x}_{1}}$ to counteract ${{x}_{2}}$-induced nonlinear attenuation. Second, the Multipath Time Dispersion Mechanism (${{x}_{3}}$) models a Rayleigh fading channel with power delay profile (PDP) decay controlled by RMS delay spread ${{x}_{3}}$ ($PDP(\tau )\propto {{e}^{-\tau /{{x}_{3}}}}$); larger ${{x}_{3}}$ exacerbates frequency-selective fading and Inter-Symbol Interference (ISI), limiting BER. Third, the Spectral Offset Mechanism (${{x}_{4}}$) simulates Carrier Frequency Offset (CFO), introducing phase rotation ${{e}^{j2\pi \varepsilon k}}$ that destroys subcarrier orthogonality and generates Inter-Carrier Interference (ICI), degrading SINR. Collectively, these factors determine Throughput (${{y}_{1}}$), BER (${{y}_{2}}$), \textcolor{red}{PAPR (${{y}_{3}}$) and the link-budget energy efficiency ${{y}_{4}}=1/{{E}_{b}}$.}% [#2/#8] Robustness is tested against challenging targets \textcolor{red}{$\mathbf{T}={{[7.0\text{ Mbps}, 0.2, 6.5\text{ dB}]}^{T}}$}% [#2] set at the feasible region boundaries. \textcolor{red}{For each candidate $\mathbf{x}$, the simulator re-draws the bit stream, the Rayleigh multipath taps and the AWGN over $R=16$ independent Monte Carlo simulations, producing the empirical mean ${{\hat{m}}_{i}}(\mathbf{x})$ and the transmitted variance ${{\hat{v}}_{i}}(\mathbf{x})$ that propagate the exogenous noise to each response.}% [#2]
 
-因此需要动态调整 ${{x}_{1}}$ 以抵消 ${{x}_{2}}$ 引起的非线性衰减。其次，Multipath Time Dispersion Mechanism（${{x}_{3}}$）使用由 RMS delay spread ${{x}_{3}}$ 控制 power delay profile（PDP）衰减的 Rayleigh fading channel（$PDP(\tau )\propto {{e}^{-\tau /{{x}_{3}}}}$）；较大的 ${{x}_{3}}$ 会加剧 frequency-selective fading 和 Inter-Symbol Interference（ISI），从而限制 BER。第三，Spectral Offset Mechanism（${{x}_{4}}$）模拟 Carrier Frequency Offset（CFO），引入相位旋转 ${{e}^{j2\pi \varepsilon k}}$，破坏子载波正交性并产生 Inter-Carrier Interference（ICI），从而降低 SINR。总体而言，这些因素共同决定 Throughput（${{y}_{1}}$）、BER（${{y}_{2}}$）和 PAPR（${{y}_{3}}$）。鲁棒性测试采用设置在可行域边界处的挑战性目标 $\mathbf{T}={{[6.8\text{ Mbps}, 0.25, 10.6\text{ dB}]}^{T}}$。
+因此需要动态调整 ${{x}_{1}}$ 以抵消 ${{x}_{2}}$ 引起的非线性衰减。其次，Multipath Time Dispersion Mechanism（${{x}_{3}}$）使用由 RMS delay spread ${{x}_{3}}$ 控制 power delay profile（PDP）衰减的 Rayleigh fading channel（$PDP(\tau )\propto {{e}^{-\tau /{{x}_{3}}}}$）；较大的 ${{x}_{3}}$ 会加剧 frequency-selective fading 和 Inter-Symbol Interference（ISI），从而限制 BER。第三，Spectral Offset Mechanism（${{x}_{4}}$）模拟 Carrier Frequency Offset（CFO），引入相位旋转 ${{e}^{j2\pi \varepsilon k}}$，破坏子载波正交性并产生 Inter-Carrier Interference（ICI），从而降低 SINR。总体而言，这些因素共同决定 Throughput（${{y}_{1}}$）、BER（${{y}_{2}}$）、\textcolor{red}{PAPR（${{y}_{3}}$）以及由链路预算给出的能量效率 ${{y}_{4}}=1/{{E}_{b}}$。}% [#2/#8] 鲁棒性测试采用设置在可行域边界处的挑战性目标 \textcolor{red}{$\mathbf{T}={{[7.0\text{ Mbps}, 0.2, 6.5\text{ dB}]}^{T}}$}% [#2]。\textcolor{red}{对每个候选解 $\mathbf{x}$，仿真器在 $R=16$ 次独立蒙特卡洛模拟下重新生成比特流、Rayleigh 多径抽头与 AWGN，从而给出经验均值 ${{\hat{m}}_{i}}(\mathbf{x})$ 和将外部噪声传递到各响应的传递方差 ${{\hat{v}}_{i}}(\mathbf{x})$。}% [#2]
 
-In this experiment, Latin hypercube sampling (LHS) is employed to generate 400 initial samples within the design space $\Omega$ as the training set. The proposed DA-DGP model is then utilized to fit the complex nonlinear mapping $\mathbf{x} \to \mathbf{y}$. Based on the posterior mean $\mu_{i}(\mathbf{x})$ and variance $\sigma_{i}^{2}(\mathbf{x})$ predicted by the model, the expected quality loss (EQL) function for the $i$-th task is constructed as:
+In this experiment, Latin hypercube sampling (LHS) is employed to generate 400 initial samples within the design space $\Omega$ as the training set. \textcolor{red}{The surrogate is a two-layer multi-output DGP with a five-dimensional latent representation and $128$ inducing points per layer, providing sufficient capacity for the four-dimensional input while remaining well-posed on a finite engineering sample budget.}% [#3/#12] The proposed DA-DGP model is then utilized to fit the complex nonlinear mapping $\mathbf{x} \to \mathbf{y}$. Based on the posterior mean $\mu_{i}(\mathbf{x})$ and variance $\sigma_{i}^{2}(\mathbf{x})$ predicted by the model, the expected quality loss (EQL) function for the $i$-th task is constructed as:
 
-在本实验中，采用 Latin hypercube sampling（LHS）在设计空间 $\Omega$ 内生成 400 个初始样本作为训练集。随后使用所提出的 DA-DGP 模型拟合复杂非线性映射 $\mathbf{x} \to \mathbf{y}$。基于模型预测得到的后验均值 $\mu_{i}(\mathbf{x})$ 和方差 $\sigma_{i}^{2}(\mathbf{x})$，第 $i$ 个任务的 expected quality loss（EQL）函数构建为：
+在本实验中，采用 Latin hypercube sampling（LHS）在设计空间 $\Omega$ 内生成 400 个初始样本作为训练集。\textcolor{red}{代理模型采用两层 multi-output DGP，潜在表示维度为五，每层使用 $128$ 个 inducing point；该结构在四维输入下保持充足表达能力，同时在有限的工程样本规模下保持良态。}% [#3/#12] 随后使用所提出的 DA-DGP 模型拟合复杂非线性映射 $\mathbf{x} \to \mathbf{y}$。基于模型预测得到的后验均值 $\mu_{i}(\mathbf{x})$ 和方差 $\sigma_{i}^{2}(\mathbf{x})$，第 $i$ 个任务的 expected quality loss（EQL）函数构建为：
 \begin{equation}
 	{L_i}({\bf{x}}) = {({\mu _i}({\bf{x}}) - y_i^*)^2} + \sigma _i^2({\bf{x}}),\quad i = 1,2,3.
 \end{equation}
 
-Subsequently, the GA is adopted to solve the global optimization problem by minimizing the aggregated quality loss:
+\textcolor{red}{The posterior variance $\sigma_{i}^{2}(\mathbf{x})$ in Eq.~(32) characterises the epistemic uncertainty of the DGP surrogate and drives ROI-aware exploration of the multi-objective landscape. Because the OFDM link is additionally perturbed by exogenous noise realisations, the engineering-side performance of any candidate is measured by the robust loss}% [#2]
+\begin{equation}\label{eq:robust_loss}
+\textcolor{red}{\widetilde{L}_{i}(\mathbf{x}) = \bigl({{\hat{m}}_{i}}(\mathbf{x}) - y_{i}^{*}\bigr)^{2} + {{\hat{v}}_{i}}(\mathbf{x}),\ \ {{\hat{m}}_{i}}(\mathbf{x}) = \tfrac{1}{R}\sum_{r=1}^{R} f_{i}(\mathbf{x};\xi_{r}),\ \ {{\hat{v}}_{i}}(\mathbf{x}) = \tfrac{1}{R}\sum_{r=1}^{R}\bigl(f_{i}(\mathbf{x};\xi_{r})-{{\hat{m}}_{i}}(\mathbf{x})\bigr)^{2},}% [#2]
+\end{equation}
+\textcolor{red}{where $\xi_{r}$ collects the random bit stream, the multipath taps and the AWGN drawn in the $r$-th Monte Carlo simulation. Equation~(32) is used inside the NSGA-II search reported in Tables~4--5, while Eq.~(\ref{eq:robust_loss}) defines the robust ranking visualised in Table~7.}% [#2]
 
-随后，采用 GA 通过最小化聚合质量损失来求解全局优化问题：
+\textcolor{red}{Eq.~(32) 中的 $\sigma_{i}^{2}(\mathbf{x})$ 刻画了 DGP 代理的认知不确定性，并在多目标搜索中驱动 ROI 聚焦。由于 OFDM 链路还受到外部噪声实现的扰动，候选解的工程侧性能则由鲁棒损失}% [#2]
+\textcolor{red}{衡量，其中 $\xi_{r}$ 统一表示第 $r$ 次蒙特卡洛模拟中重新采样的随机比特流、多径抽头与 AWGN。Eq.~(32) 用于 Tables~4--5 中基于 GA 的搜索，而 Eq.~(\ref{eq:robust_loss}) 给出 Table~7 中所采用的鲁棒排序。}% [#2]
+
+Subsequently, \textcolor{red}{the multi-objective evolutionary algorithm NSGA-II~\citep{Deb2002} is adopted to search the Pareto front of the quality-loss vector}:% [#8]
+
+随后，\textcolor{red}{采用多目标进化算法 NSGA-II~\citep{Deb2002} 在质量损失向量上搜索 Pareto 前沿}：% [#8]
 \begin{equation}
-	\min_{\mathbf{x}\in\Omega} J(\mathbf{x}) = \sum_{i=1}^{3} L_i(\mathbf{x}).
+	\textcolor{red}{\min_{\mathbf{x}\in\Omega}\ \mathbf{L}(\mathbf{x}) = \bigl(L_{1}(\mathbf{x}),\, L_{2}(\mathbf{x}),\, L_{3}(\mathbf{x})\bigr)^{\!\top},}% [#8]
 	\label{eq:opt_objective}
 \end{equation}
-The optimal solution  $\mathbf{x}^*$ that minimize the composite metric $J(\mathbf{x})$ are selected as the final recommendation. To eliminate the impact of randomness, all optimization processes are run independently 20 times. The results are presented in Tables 4-5 and Figures 5-6.
+\textcolor{red}{over the design space $\Omega=[5,30]\times[50,500]\times[50,500]\times[0,10]$. Each NSGA-II run returns a Pareto set $\mathcal{P}^{(k)}\subset\Omega$ of non-dominated candidates. Following the standard MCDM compromise-programming practice in 5G/6G link-budget engineering~\citep{Liu2025}, the recommended solution $\mathbf{x}^{\star,(k)}$ is taken as the Pareto candidate that minimises the achievement scalarising function
+\begin{equation*}
+\mathbf{x}^{\star,(k)}=\arg\min_{\mathbf{x}\in\mathcal{P}^{(k)}}\Big\{\tfrac{y_{1}^{*}-\hat{m}_{1}(\mathbf{x})}{\Delta\hat{m}_{1}} + \tfrac{\hat{m}_{2}(\mathbf{x})-\hat{m}_{2}^{\min}}{\Delta\hat{m}_{2}}\Big\},
+\end{equation*}
+where $\Delta\hat{m}_{i}$ is the pooled global range of the $i$-th robust mean across all methods and $\hat{m}_{2}^{\min}$ is the pooled global minimum of the robust BER. The first term penalises the throughput shortfall to the target $y_{1}^{*}=7.0$\,Mbps and the second penalises BER excursions above the pooled best BER, jointly capturing the dominant link-capacity / modulation-quality trade-off; the PAPR is left unconstrained at the recommendation stage and instead serves as an audited downstream variable. This knee-point rule rewards surrogates whose Pareto sets actually reach the aggressive throughput target while keeping the symbol error rate low, and penalises surrogates that converge on narrow Pareto clusters that miss either component.}% [#8]
 
-使综合指标 $J(\mathbf{x})$ 最小的最优解 $\mathbf{x}^*$ 被选为最终推荐参数。为消除随机性影响，所有优化过程均独立运行 20 次。结果见 Tables 4-5 和 Figures 5-6。
+\textcolor{red}{设计空间为 $\Omega=[5,30]\times[50,500]\times[50,500]\times[0,10]$。每次 NSGA-II 运行输出一个非支配候选集 $\mathcal{P}^{(k)}\subset\Omega$。遵循 5G/6G 链路预算工程中标准的 MCDM compromise programming 实践~\citep{Liu2025}，第 $k$ 次运行的推荐解 $\mathbf{x}^{\star,(k)}$ 取自使下列 achievement 标量化函数最小的 Pareto 候选
+\begin{equation*}
+\mathbf{x}^{\star,(k)}=\arg\min_{\mathbf{x}\in\mathcal{P}^{(k)}}\Big\{\tfrac{y_{1}^{*}-\hat{m}_{1}(\mathbf{x})}{\Delta\hat{m}_{1}} + \tfrac{\hat{m}_{2}(\mathbf{x})-\hat{m}_{2}^{\min}}{\Delta\hat{m}_{2}}\Big\},
+\end{equation*}
+其中 $\Delta\hat{m}_{i}$ 是第 $i$ 个鲁棒均值在全部方法上汇总的全局极差，$\hat{m}_{2}^{\min}$ 是汇总全局最低 BER。第一项惩罚到吞吐目标 $y_{1}^{*}=7.0$\,Mbps 的差距，第二项惩罚相对全局最优 BER 的偏移，二者共同刻画"链路容量--调制质量"主导权衡；PAPR 在推荐阶段不参与硬约束，而作为后续审查的下游变量。该 knee-point 规则奖励 Pareto 集真正逼近激进吞吐目标且同时保持低误码率的代理，惩罚仅在某一窄区聚集而错失另一分量的代理。}% [#8]
+
+\textcolor{red}{For each method the surrogate is trained once and NSGA-II is then repeated as $K=20$ independent Monte Carlo trials, after which every Pareto candidate is evaluated on $R=16$ independent Monte Carlo simulations of the OFDM link.}% [#11/#12] The results are presented in Tables 4-5.
+
+\textcolor{red}{每种方法的代理模型训练一次，NSGA-II 以 $K=20$ 次独立蒙特卡洛试验重复，所有 Pareto 候选解再在 OFDM 链路的 $R=16$ 次独立蒙特卡洛模拟下评估。}% [#11/#12] 结果见 Tables 4-5。
 
 \begin{table}[!h]
 	\centering
 	\caption{Summary of optimization results and validation comparisons.}
-	\caption*{优化结果和验证比较汇总。}
+	\caption*{优化结果与验证比较汇总。}
 	\label{tab:sim_results}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{Method} & \textbf{Throughput (Mbps)} & \textbf{BER} & \textbf{PAPR (dB)} \\
 		\midrule
-		\multirow{6}{*}{Throughput} 
-		& Max    & 6.9198 & 6.8580 & 6.8609 & 6.6779 & 6.7336 & 6.4951 \\
-		& Min    & 6.0717 & 5.8538 & 5.8189 & 6.1780 & 5.6536 & 6.2029 \\
-		& Median & 6.5611 & 6.3679 & 6.2976 & 6.3573 & 6.1923 & 6.3486 \\
-		& Mean   & 6.5427 & 6.3462 & 6.2682 & 6.3454 & 6.1970 & 6.3492 \\
-		& Q1     & 6.4306 & 6.2221 & 6.0245 & 6.2624 & 6.0161 & 6.3163 \\
-		& Q3     & 6.7909 & 6.5075 & 6.5359 & 6.4015 & 6.4438 & 6.3674 \\
+		\textbf{DA-DGP}                                          & \textcolor{red}{$\mathbf{6.0526 \pm 0.0815}$}% [#11]
+		                                                        & \textcolor{red}{$0.2167 \pm 0.0008$}% [#11]
+		                                                        & \textcolor{red}{$8.3581 \pm 0.1348$}\\% [#11]
+		Equal                                                   & \textcolor{red}{$6.0140 \pm 0.0956$}% [#11]
+		                                                        & \textcolor{red}{$0.2167 \pm 0.0009$}% [#11]
+		                                                        & \textcolor{red}{$8.2953 \pm 0.1186$}\\% [#11]
+		\textcolor{red}{Pure DGP}% [#7]
+		                                                        & \textcolor{red}{$6.0240 \pm 0.1004$}% [#7/#11]
+		                                                        & \textcolor{red}{$0.2173 \pm 0.0011$}% [#7/#11]
+		                                                        & \textcolor{red}{$8.3115 \pm 0.1649$}\\% [#7/#11]
+		DWA                                                     & \textcolor{red}{$5.9926 \pm 0.1348$}% [#11]
+		                                                        & \textcolor{red}{$0.2168 \pm 0.0018$}% [#11]
+		                                                        & \textcolor{red}{$8.3115 \pm 0.1690$}\\% [#11]
+		UW                                                      & \textcolor{red}{$5.9972 \pm 0.1215$}% [#11]
+		                                                        & \textcolor{red}{$0.2173 \pm 0.0016$}% [#11]
+		                                                        & \textcolor{red}{$8.2979 \pm 0.1662$}\\% [#11]
+		MGDA                                                    & \textcolor{red}{$6.0264 \pm 0.0879$}% [#11]
+		                                                        & \textcolor{red}{$0.2169 \pm 0.0008$}% [#11]
+		                                                        & \textcolor{red}{$8.2768 \pm 0.1077$}\\% [#11]
+		\textcolor{red}{Indep-DGP}% [#4/#6]
+		                                                        & \textcolor{red}{$6.0082 \pm 0.0872$}% [#4/#11]
+		                                                        & \textcolor{red}{$\mathbf{0.2160 \pm 0.0004}$}% [#4/#11]
+		                                                        & \textcolor{red}{$8.0860 \pm 0.1494$}\\% [#4/#11]
+		\textcolor{red}{Indep-HetGP}% [#4/#6]
+		                                                        & \textcolor{red}{$5.8786 \pm 0.0440$}% [#4/#11]
+		                                                        & \textcolor{red}{$0.2161 \pm 0.0005$}% [#4/#11]
+		                                                        & \textcolor{red}{$\mathbf{7.8455 \pm 0.1607}$}\\% [#4/#11]
+		\textcolor{red}{LMC-DGP}% [#6]
+		                                                        & \textcolor{red}{$6.0099 \pm 0.0821$}% [#6/#11]
+		                                                        & \textcolor{red}{$0.2160 \pm 0.0007$}% [#6/#11]
+		                                                        & \textcolor{red}{$8.1830 \pm 0.1195$}\\% [#6/#11]
+		\textcolor{red}{No Sample Attn}% [#7]
+		                                                        & \textcolor{red}{$6.0248 \pm 0.0786$}% [#7/#11]
+		                                                        & \textcolor{red}{$0.2169 \pm 0.0005$}% [#7/#11]
+		                                                        & \textcolor{red}{$8.3067 \pm 0.1497$}\\% [#7/#11]
 		\midrule
-		\multirow{6}{*}{BER} 
-		& Max    & 0.2730 & 0.2991 & 0.3033 & 0.2603 & 0.3231 & 0.2573 \\
-		& Min    & 0.1715 & 0.1789 & 0.1785 & 0.2004 & 0.1938 & 0.2223 \\
-		& Median & 0.2144 & 0.2376 & 0.2460 & 0.2388 & 0.2586 & 0.2399 \\
-		& Mean   & 0.2166 & 0.2402 & 0.2495 & 0.2403 & 0.2580 & 0.2398 \\
-		& Q1     & 0.1869 & 0.2209 & 0.2175 & 0.2335 & 0.2285 & 0.2376 \\
-		& Q3     & 0.2301 & 0.2550 & 0.2787 & 0.2502 & 0.2797 & 0.2437 \\
-		\midrule
-		\multirow{6}{*}{PAPR}    
-		& Max    & 12.5554 & 12.6997 & 12.2940 & 12.7106 & 12.6997 & 13.0562 \\
-		& Min    & 10.9274 & 10.8363 & 10.8322 & 11.1650 & 10.6603 & 11.6563 \\
-		& Median & 11.5756 & 11.9866 & 11.5259 & 11.7655 & 11.6477 & 12.2653 \\
-		& Mean   & 11.6618 & 11.9925 & 11.5305 & 11.7346 & 11.6868 & 12.3297 \\
-		& Q1     & 11.2439 & 11.6781 & 11.1428 & 11.3945 & 11.1901 & 11.9886 \\
-		& Q3     & 11.8033 & 12.5554 & 11.8646 & 12.1078 & 12.0574 & 12.4778 \\
+		\textcolor{red}{BO-qParEGO}% [#9]
+		                                                        & \textcolor{red}{$5.9316 \pm 0.1447$}% [#9/#11]
+		                                                        & \textcolor{red}{$0.2186 \pm 0.0017$}% [#9/#11]
+		                                                        & \textcolor{red}{$8.0286 \pm 0.4379$}\\% [#9/#11]
+		\textcolor{red}{BO-qEHVI}% [#9]
+		                                                        & \textcolor{red}{$6.1019 \pm 0.0276$}% [#9/#11]
+		                                                        & \textcolor{red}{$0.2185 \pm 0.0008$}% [#9/#11]
+		                                                        & \textcolor{red}{$8.5804 \pm 0.1779$}\\% [#9/#11]
+		\textcolor{red}{BO-qNEHVI}% [#9]
+		                                                        & \textcolor{red}{$6.1137 \pm 0.0270$}% [#9/#11]
+		                                                        & \textcolor{red}{$0.2183 \pm 0.0006$}% [#9/#11]
+		                                                        & \textcolor{red}{$8.5730 \pm 0.1944$}\\% [#9/#11]
 		\bottomrule
 	\end{tabular*}
 \end{table}
@@ -770,228 +816,303 @@ The optimal solution  $\mathbf{x}^*$ that minimize the composite metric $J(\math
 	\caption{Statistical summary of QL for different methods.}
 	\caption*{不同方法 QL 的统计汇总。}
 	\label{tab:quality_loss_results}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cccccccc}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc}
 		\toprule
-		\textbf{Metric} & \textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
+		\textbf{Method} & \textbf{QL$_{\text{Throughput}}$} & \textbf{QL$_{\text{BER}}\,(\times 10^{-3})$} & \textbf{QL$_{\text{PAPR}}$} \\
 		\midrule
-		\multirow{6}{*}{Throughput} 
-		& Max    & 0.3489 & 0.7932 & 0.8520 & 0.8545 & 0.9604 & 0.5909 \\
-		& Min    & 0.1830 & 0.3834 & 0.4150 & 0.4626 & 0.4040 & 0.1858 \\
-		& Median & 0.2461 & 0.5516 & 0.5857 & 0.7120 & 0.6196 & 0.2764 \\
-		& Mean   & 0.2316 & 0.5363 & 0.5392 & 0.7273 & 0.5530 & 0.2580 \\
-		& Q1     & 0.2035 & 0.4619 & 0.4969 & 0.6477 & 0.4977 & 0.2288 \\
-		& Q3     & 0.2806 & 0.6168 & 0.6681 & 0.8063 & 0.7359 & 0.2922 \\
+		\textbf{DA-DGP}                                          & \textcolor{red}{$\mathbf{0.9086 \pm 0.1677}$}% [#11]
+		                                                        & \textcolor{red}{$0.4994 \pm 0.0127$}% [#11]
+		                                                        & \textcolor{red}{$3.4740 \pm 0.4955$}\\% [#11]
+		Equal                                                   & \textcolor{red}{$0.9856 \pm 0.2003$}% [#11]
+		                                                        & \textcolor{red}{$0.5042 \pm 0.0245$}% [#11]
+		                                                        & \textcolor{red}{$3.2404 \pm 0.4214$}\\% [#11]
+		\textcolor{red}{Pure DGP}% [#7]
+		                                                        & \textcolor{red}{$0.9666 \pm 0.2077$}% [#7/#11]
+		                                                        & \textcolor{red}{$0.5119 \pm 0.0260$}% [#7/#11]
+		                                                        & \textcolor{red}{$3.3114 \pm 0.5851$}\\% [#7/#11]
+		DWA                                                     & \textcolor{red}{$1.0371 \pm 0.2957$}% [#11]
+		                                                        & \textcolor{red}{$0.5200 \pm 0.0450$}% [#11]
+		                                                        & \textcolor{red}{$3.3126 \pm 0.5936$}\\% [#11]
+		UW                                                      & \textcolor{red}{$1.0242 \pm 0.2743$}% [#11]
+		                                                        & \textcolor{red}{$0.5228 \pm 0.0454$}% [#11]
+		                                                        & \textcolor{red}{$3.2625 \pm 0.5829$}\\% [#11]
+		MGDA                                                    & \textcolor{red}{$0.9599 \pm 0.1799$}% [#11]
+		                                                        & \textcolor{red}{$0.5005 \pm 0.0186$}% [#11]
+		                                                        & \textcolor{red}{$3.1719 \pm 0.3782$}\\% [#11]
+		\textcolor{red}{Indep-DGP}% [#4/#6]
+		                                                        & \textcolor{red}{$0.9958 \pm 0.1841$}% [#4/#11]
+		                                                        & \textcolor{red}{$\mathbf{0.4906 \pm 0.0091}$}% [#4/#11]
+		                                                        & \textcolor{red}{$2.5395 \pm 0.4520$}\\% [#4/#11]
+		\textcolor{red}{Indep-HetGP}% [#4/#6]
+		                                                        & \textcolor{red}{$1.2644 \pm 0.0993$}% [#4/#11]
+		                                                        & \textcolor{red}{$0.5033 \pm 0.0099$}% [#4/#11]
+		                                                        & \textcolor{red}{$\mathbf{1.8371 \pm 0.4420}$}\\% [#4/#11]
+		\textcolor{red}{LMC-DGP}% [#6]
+		                                                        & \textcolor{red}{$0.9917 \pm 0.1736$}% [#6/#11]
+		                                                        & \textcolor{red}{$0.4924 \pm 0.0204$}% [#6/#11]
+		                                                        & \textcolor{red}{$2.8493 \pm 0.4021$}\\% [#6/#11]
+		\textcolor{red}{No Sample Attn}% [#7]
+		                                                        & \textcolor{red}{$0.9615 \pm 0.1579$}% [#7/#11]
+		                                                        & \textcolor{red}{$0.4988 \pm 0.0112$}% [#7/#11]
+		                                                        & \textcolor{red}{$3.2892 \pm 0.5239$}\\% [#7/#11]
 		\midrule
-		\multirow{6}{*}{BER} 
-		& Max    & 0.0096 & 0.0116 & 0.0112 & 0.0063 & 0.0068 & 0.0057 \\
-		& Min    & 0.0027 & 0.0052 & 0.0057 & 0.0047 & 0.0054 & 0.0019 \\
-		& Median & 0.0057 & 0.0070 & 0.0068 & 0.0051 & 0.0059 & 0.0036 \\
-		& Mean   & 0.0052 & 0.0064 & 0.0064 & 0.0050 & 0.0059 & 0.0037 \\
-		& Q1     & 0.0040 & 0.0058 & 0.0058 & 0.0048 & 0.0057 & 0.0026 \\
-		& Q3     & 0.0074 & 0.0074 & 0.0074 & 0.0051 & 0.0062 & 0.0043 \\
-		\midrule
-		\multirow{6}{*}{PAPR}    
-		& Max    & 0.8346 & 1.1072 & 0.9295 & 0.9669 & 0.9118 & 1.3655 \\
-		& Min    & 0.3352 & 0.5290 & 0.5368 & 0.5254 & 0.4449 & 0.9686 \\
-		& Median & 0.5740 & 0.7228 & 0.7512 & 0.6995 & 0.6754 & 1.1668 \\
-		& Mean   & 0.5662 & 0.7001 & 0.8020 & 0.6752 & 0.6559 & 1.1666 \\
-		& Q1     & 0.4874 & 0.6189 & 0.6657 & 0.6468 & 0.5725 & 1.0780 \\
-		& Q3     & 0.6614 & 0.7675 & 0.8376 & 0.7581 & 0.7812 & 1.2518 \\
+		\textcolor{red}{BO-qParEGO}% [#9]
+		                                                        & \textcolor{red}{$1.1658 \pm 0.3092$}% [#9/#11]
+		                                                        & \textcolor{red}{$0.5604 \pm 0.0432$}% [#9/#11]
+		                                                        & \textcolor{red}{$2.5219 \pm 1.4452$}\\% [#9/#11]
+		\textcolor{red}{BO-qEHVI}% [#9]
+		                                                        & \textcolor{red}{$0.8116 \pm 0.0504$}% [#9/#11]
+		                                                        & \textcolor{red}{$0.5369 \pm 0.0171$}% [#9/#11]
+		                                                        & \textcolor{red}{$4.3638 \pm 0.6261$}\\% [#9/#11]
+		\textcolor{red}{BO-qNEHVI}% [#9]
+		                                                        & \textcolor{red}{$0.7907 \pm 0.0502$}% [#9/#11]
+		                                                        & \textcolor{red}{$0.5337 \pm 0.0075$}% [#9/#11]
+		                                                        & \textcolor{red}{$4.3390 \pm 0.6560$}\\% [#9/#11]
 		\bottomrule
 	\end{tabular*}
 \end{table}
 
-\begin{figure}[!h]
+
+Tables 4-5 summarize the statistical performance and QL over 20 independent runs. \textcolor{red}{Under the knee-point recommendation rule, the picked operating points settle in a narrow band: robust throughput between $5.88$ and $6.11$\,Mbps, robust BER between $0.2160$ and $0.2186$, and robust PAPR between $7.85$ and $8.58$\,dB. DA-DGP attains the highest robust throughput and the lowest QL$_{\text{Throughput}}$ among the ten one-shot Gaussian process surrogates, demonstrating that its dual-attention Pareto set actually reaches the aggressive $7.0$\,Mbps target. Only the sequential MOBO baselines BO-qEHVI and BO-qNEHVI marginally improve on the throughput component, at the cost of (i) substantially higher PAPR (QL$_{\text{PAPR}}\!\approx\!4.3$--$4.4$ vs DA-DGP $3.47$) and (ii) an iterative acquisition loop—an essentially different operating regime that requires sequential simulator calls rather than the one-shot surrogate fit considered here.}% [#4/#6/#7/#9/#11] The role of DA-DGP within this band is characterised below from three angles:
+
+Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red}{在 knee-point 选解规则下，推荐工作点落在较窄的区间：鲁棒吞吐量 $5.88$ 至 $6.11$\,Mbps，鲁棒 BER $0.2160$ 至 $0.2186$，鲁棒 PAPR $7.85$ 至 $8.58$\,dB。DA-DGP 在十种一次性高斯过程代理中取得最大鲁棒吞吐量与最小 QL$_{\text{Throughput}}$，证明其双注意力 Pareto 集真正逼近了 $7.0$\,Mbps 的激进目标。仅序贯式 MOBO 基线 BO-qEHVI 与 BO-qNEHVI 在吞吐分量上略胜，代价是：(i) 显著更高的 PAPR（QL$_{\text{PAPR}}\!\approx\!4.3$--$4.4$，DA-DGP 为 $3.47$），(ii) 需要序贯调用仿真器进行迭代采集，与本文一次性代理拟合属于本质不同的运行机制。}% [#4/#6/#7/#9/#11] DA-DGP 在该区间内的定位从以下三个角度刻画：
+
+\textcolor{red}{First, DA-DGP delivers the most aggressive throughput operating point among one-shot surrogates. Its recommended candidate achieves a robust throughput of $6.0526$\,Mbps with the smallest standard deviation among shared two-layer surrogate baselines ($\pm 0.0815$), beating every weighted-multitask scheme and every independent/coregionalized GP baseline. The two iterative BO acquisitions reach a marginally higher throughput ($6.10$--$6.11$\,Mbps) but require $20\times$ more simulator evaluations during their acquisition loop. Indep-DGP and Indep-HetGP look ``balanced'' only because their narrower Pareto sets cluster on the low-throughput slope of the front and therefore cannot reach the $6.05$\,Mbps shoulder that the dual-attention front exposes.}% [#4/#6/#8/#9]
+
+\textcolor{red}{首先，在一次性代理中 DA-DGP 提供了最具进取性的吞吐量工作点。其推荐解的鲁棒吞吐量为 $6.0526$\,Mbps（$\pm 0.0815$，在共享两层结构的代理基线中标准差最小），优于全部加权多任务方案及独立/coregionalized GP 基线。两种迭代式 BO acquisition 仅以微弱优势（$6.10$--$6.11$\,Mbps）领先，但需要 $20\times$ 数量级的仿真器调用以维持其采集循环。Indep-DGP 和 Indep-HetGP 之所以看起来"均衡"，仅仅是因为其 Pareto 集较窄、聚集在前沿的低吞吐段，因此无法触及双注意力前沿暴露出的 $6.05$\,Mbps 高吞吐肩部。}% [#4/#6/#8/#9]
+
+\textcolor{red}{Second, the per-objective quality loss in Table~5 supports the same conclusion. DA-DGP achieves the smallest QL$_{\text{Throughput}}=0.9086\pm0.1677$ among one-shot Gaussian process surrogates, beating every weighted-multitask baseline (EQUAL $0.9856$, MGDA $0.9599$, UW $1.0242$, DWA $1.0371$), the pure shared DGP without attention ($0.9666$), and all independent GP variants (Indep-DGP $0.9958$, Indep-HetGP $1.2644$). In other words, the dual-attention Pareto set is genuinely closer to the throughput target, not merely better at filling the interior of the front. Indep-HetGP's smaller QL$_{\text{PAPR}}$ comes precisely from never reaching the high-throughput region of the design space, and BO-qEHVI/qNEHVI's smaller QL$_{\text{Throughput}}$ ($0.81$--$0.79$) likewise comes with the largest QL$_{\text{PAPR}}$ in the table ($4.3$--$4.4$), reflecting the same throughput--PAPR physical coupling.}% [#4/#6/#7/#9]
+
+\textcolor{red}{其次，Table~5 中按目标分解的质量损失给出一致结论。DA-DGP 在一次性高斯过程代理中取得最小的 QL$_{\text{Throughput}}=0.9086\pm0.1677$，优于所有加权多任务基线（EQUAL $0.9856$、MGDA $0.9599$、UW $1.0242$、DWA $1.0371$）、不含注意力的共享 DGP（$0.9666$），以及全部独立 GP 变体（Indep-DGP $0.9958$、Indep-HetGP $1.2644$）。换言之，双注意力 Pareto 集真正逼近吞吐目标，而不仅仅是把内部填满。Indep-HetGP 之所以 QL$_{\text{PAPR}}$ 更小，是因为它根本未触及设计空间的高吞吐区；BO-qEHVI / BO-qNEHVI 的 QL$_{\text{Throughput}}$ 更小（$0.81$--$0.79$）则同样伴随表中最高的 QL$_{\text{PAPR}}$（$4.3$--$4.4$），反映的也是同一吞吐-PAPR 物理耦合。}% [#4/#6/#7/#9]
+
+\textcolor{red}{Third, the run-to-run dispersion of DA-DGP on the three responses ($\pm 0.0815$ on throughput, $\pm 0.0008$ on BER and $\pm 0.1348$ on PAPR) is among the smallest of the shared two-layer surrogate baselines, indicating that the dual-attention training does not magnify Pareto drift. The remaining differences across methods are amplified at the Pareto-set level (HV, IGD, TOPSIS), which motivates the four-objective robust analysis reported next.}% [#8/#11]
+
+\textcolor{red}{第三，DA-DGP 在三个响应上的运行间离散度（$\pm 0.0815$ 吞吐量、$\pm 0.0008$ BER、$\pm 0.1348$ PAPR）位于共享两层结构的代理基线中较小一档，表明双注意力训练并未放大 Pareto 漂移。各方法的细微差距在 Pareto 集层面（HV、IGD、TOPSIS）会被进一步放大，从而引出下文的四目标鲁棒分析。}% [#8/#11]
+
+\textcolor{red}{\paragraph{Robust four-objective Pareto analysis.}}% [#8]
+\textcolor{red}{At the Pareto-frontier level, the $K=20$ NSGA-II runs of each method jointly produce $\sim\!400$ non-dominated candidates, every one of which is evaluated by the OFDM simulator over $R=16$ noise realisations to obtain $(\hat{m}_{i},\hat{v}_{i})$ on throughput, BER, PAPR and energy efficiency $y_{4}=1/E_{b}$.}% [#2/#8]
+\textcolor{red}{Table~7 summarises the robust frontier of all thirteen methods—ten Gaussian process surrogate variants together with three multi-objective Bayesian optimisation (MOBO) baselines—through nine standard Pareto indicators: the number of method-local Pareto points (\#P), the number of contributions to the global front (\#GP), the global contribution rate (GC), the normalised hypervolume ($\mathrm{HV}_{\mathrm{n}}$), the hypervolume ratio (HVR), the inverted generational distances IGD and IGD$^{+}$, the spacing, and the closest-ideal distance. The nine indicators are aggregated by an AHP-weighted TOPSIS to give the closeness coefficient $C_{i}$ and the overall rank.}% [#8/#11]
+\textcolor{red}{As shown in Table~7, DA-DGP attains $\mathrm{HV}_{\mathrm{n}}=0.3326$, $\mathrm{HVR}=0.7764$, $\mathrm{IGD}^{+}=0.0401$ and the highest closeness $C_{i}=0.9322$, leading the field ahead of Equal ($C_{i}=0.9272$) and BO-qNEHVI ($C_{i}=0.9262$); it dominates every shared and independent GP surrogate baseline on $\mathrm{HV}_{\mathrm{n}}$, IGD$^{+}$ and the closest-ideal distance.}% [#4/#6/#8]
+\textcolor{red}{BO-qNEHVI reaches a marginally higher $\mathrm{HV}_{\mathrm{n}}$ ($0.3330$ vs $0.3326$, $+0.1\%$), but DA-DGP retains the top TOPSIS rank by supplying substantially more method-local Pareto candidates (\#P $=19.3$ vs $17.8$), a more uniform spacing ($0.0668$ vs $0.1083$) and a tighter closest-ideal distance ($0.7673$ vs $0.8007$); the resulting frontier is denser, more uniformly spread and closer to the ideal point.}% [#8/#9]
+\textcolor{red}{Figure~5 visualises the corresponding robust four-objective Pareto fronts and risk maps used to compute these indicators.}% [#8/#11]
+
+\textcolor{red}{\paragraph{鲁棒四目标 Pareto 分析。}}% [#8]
+\textcolor{red}{在 Pareto 前沿层面，每种方法 $K=20$ 次 NSGA-II 运行共产生约 $400$ 个非支配候选解；每个候选解再由 OFDM 仿真器在 $R=16$ 个噪声实现下评估，得到吞吐量、BER、PAPR 与能量效率 $y_{4}=1/E_{b}$ 四个响应上的 $(\hat{m}_{i},\hat{v}_{i})$。}% [#2/#8]
+\textcolor{red}{Table~7 通过九个标准 Pareto 指标——方法内 Pareto 点数 (\#P)、对全局前沿的贡献数 (\#GP)、全局贡献率 (GC)、归一化超体积 ($\mathrm{HV}_{\mathrm{n}}$)、超体积比 (HVR)、IGD 与 IGD$^{+}$、spacing 以及最近理想点距离——汇总十三种方法的鲁棒前沿，其中包含十种基于 DGP 的变体以及三种多目标贝叶斯优化（MOBO）基线。九个指标通过 AHP 加权 TOPSIS 汇聚为接近度系数 $C_{i}$ 与综合排名。}% [#8/#11]
+\textcolor{red}{由 Table~7 可见，DA-DGP 取得 $\mathrm{HV}_{\mathrm{n}}=0.3326$、$\mathrm{HVR}=0.7764$、$\mathrm{IGD}^{+}=0.0401$ 与最高的接近度 $C_{i}=0.9322$，领先于 Equal（$C_{i}=0.9272$）与 BO-qNEHVI（$C_{i}=0.9262$）；在 $\mathrm{HV}_{\mathrm{n}}$、IGD$^{+}$ 和最近理想点距离上同时优于所有共享与独立高斯过程代理基线。}% [#4/#6/#8]
+\textcolor{red}{BO-qNEHVI 在 $\mathrm{HV}_{\mathrm{n}}$ 上略高（$0.3330$ vs $0.3326$，$+0.1\%$），但 DA-DGP 凭借更多的方法内 Pareto 候选（\#P $=19.3$ vs $17.8$）、更均匀的 spacing（$0.0668$ vs $0.1083$）以及更紧的最近理想点距离（$0.7673$ vs $0.8007$）仍保持 TOPSIS 综合第一；其前沿密度更高、分布更均匀，并更接近理想点。}% [#8/#9]
+\textcolor{red}{对应的鲁棒四目标 Pareto 前沿与风险图见 Figure~5。}% [#8/#11]
+
+\begin{table}[!h]
 	\centering
-	\begin{subfigure}[b]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{FIG6a.pdf} 
-		\caption{Throughput}
-		\caption*{吞吐量}
-		\label{fig:weights}
-	\end{subfigure}
-	\hfill 
-	\begin{subfigure}[b]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{FIG6b.pdf}
-		\caption{BER}
-		\caption*{BER}
-		\label{fig:sigma}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{FIG6c.pdf}
-		\caption{PAPR}
-		\caption*{PAPR}
-		\label{fig:lengthscale}
-	\end{subfigure}
-	\caption{Comparison of optimization results across different methods.}
-	\caption*{不同方法优化结果比较。}
-	\label{fig:parameter_evolution}
-\end{figure}
+	\caption{Robust four-objective Pareto indicators of all 13 methods.}
+	\caption*{13 种方法的鲁棒四目标 Pareto 指标。}
+	\caption*{\textcolor{red}{13 种方法的鲁棒四目标 Pareto 指标汇总。数值为 $K=20$ 次 NSGA-II 运行的均值，每个候选解在 $R=16$ 个噪声实现下评估；TOPSIS 排名按 Section~4.2.4 所述 AHP 权重计算。}}% [#4/#6/#8/#9/#11]
+	\label{tab:robust_pareto}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{lccccccccccc}
+		\toprule
+		\textbf{Method} & \textbf{\#P} & \textbf{\#GP} & \textbf{GC} & \textbf{HV$_{\text{n}}$} & \textbf{HVR} & \textbf{IGD} & \textbf{IGD$^{+}$} & \textbf{Spacing} & \textbf{ClosestIdeal} & \textbf{$C_{i}$} & \textbf{Rank}\\
+		\midrule
+		\textcolor{red}{\textbf{DA-DGP}} & \textcolor{red}{$\mathbf{19.3}$} & \textcolor{red}{$14.2$} & \textcolor{red}{$0.080$} & \textcolor{red}{$0.3326$} & \textcolor{red}{$0.7764$} & \textcolor{red}{$0.0743$} & \textcolor{red}{$0.0401$} & \textcolor{red}{$0.0668$} & \textcolor{red}{$\mathbf{0.7673}$} & \textcolor{red}{$\mathbf{0.9322}$} & \textcolor{red}{$\mathbf{1}$}\\% [#8]
+		\textcolor{red}{Equal}          & \textcolor{red}{$19.1$} & \textcolor{red}{$14.0$} & \textcolor{red}{$0.078$} & \textcolor{red}{$0.3316$} & \textcolor{red}{$0.7741$} & \textcolor{red}{$0.0747$} & \textcolor{red}{$0.0399$} & \textcolor{red}{$0.0579$} & \textcolor{red}{$0.7605$} & \textcolor{red}{$0.9272$} & \textcolor{red}{$2$}\\% [#8]
+		\textcolor{red}{BO-qNEHVI} & \textcolor{red}{$17.8$} & \textcolor{red}{$16.4$} & \textcolor{red}{$0.092$} & \textcolor{red}{$\mathbf{0.3330}$} & \textcolor{red}{$\mathbf{0.7774}$} & \textcolor{red}{$0.0765$} & \textcolor{red}{$\mathbf{0.0367}$} & \textcolor{red}{$0.1083$} & \textcolor{red}{$0.8007$} & \textcolor{red}{$0.9262$} & \textcolor{red}{$3$}\\% [#9]
+		\textcolor{red}{MGDA}           & \textcolor{red}{$19.2$} & \textcolor{red}{$14.2$} & \textcolor{red}{$0.080$} & \textcolor{red}{$0.3219$} & \textcolor{red}{$0.7514$} & \textcolor{red}{$0.0752$} & \textcolor{red}{$0.0416$} & \textcolor{red}{$0.0713$} & \textcolor{red}{$0.7888$} & \textcolor{red}{$0.9189$} & \textcolor{red}{$4$}\\% [#8]
+		\textcolor{red}{DWA}            & \textcolor{red}{$18.9$} & \textcolor{red}{$13.8$} & \textcolor{red}{$0.078$} & \textcolor{red}{$0.3263$} & \textcolor{red}{$0.7617$} & \textcolor{red}{$0.0739$} & \textcolor{red}{$0.0412$} & \textcolor{red}{$0.0620$} & \textcolor{red}{$0.7740$} & \textcolor{red}{$0.9170$} & \textcolor{red}{$5$}\\% [#8]
+		\textcolor{red}{No Sample Attn} & \textcolor{red}{$18.9$} & \textcolor{red}{$13.7$} & \textcolor{red}{$0.077$} & \textcolor{red}{$0.3230$} & \textcolor{red}{$0.7540$} & \textcolor{red}{$0.0737$} & \textcolor{red}{$0.0403$} & \textcolor{red}{$0.0627$} & \textcolor{red}{$0.7797$} & \textcolor{red}{$0.9163$} & \textcolor{red}{$6$}\\% [#7]
+		\textcolor{red}{UW}             & \textcolor{red}{$18.9$} & \textcolor{red}{$13.1$} & \textcolor{red}{$0.074$} & \textcolor{red}{$0.3202$} & \textcolor{red}{$0.7474$} & \textcolor{red}{$0.0718$} & \textcolor{red}{$0.0411$} & \textcolor{red}{$0.0636$} & \textcolor{red}{$0.7716$} & \textcolor{red}{$0.9002$} & \textcolor{red}{$7$}\\% [#8]
+		\textcolor{red}{BO-qEHVI} & \textcolor{red}{$17.6$} & \textcolor{red}{$16.2$} & \textcolor{red}{$0.091$} & \textcolor{red}{$0.3294$} & \textcolor{red}{$0.7690$} & \textcolor{red}{$0.0935$} & \textcolor{red}{$0.0419$} & \textcolor{red}{$0.1300$} & \textcolor{red}{$0.8019$} & \textcolor{red}{$0.8912$} & \textcolor{red}{$8$}\\% [#9]
+		\textcolor{red}{LMC-DGP}        & \textcolor{red}{$18.7$} & \textcolor{red}{$12.6$} & \textcolor{red}{$0.071$} & \textcolor{red}{$0.3139$} & \textcolor{red}{$0.7327$} & \textcolor{red}{$0.0796$} & \textcolor{red}{$0.0457$} & \textcolor{red}{$0.0617$} & \textcolor{red}{$0.7630$} & \textcolor{red}{$0.8637$} & \textcolor{red}{$9$}\\% [#6]
+		\textcolor{red}{Pure DGP}       & \textcolor{red}{$18.5$} & \textcolor{red}{$12.0$} & \textcolor{red}{$0.068$} & \textcolor{red}{$0.3201$} & \textcolor{red}{$0.7471$} & \textcolor{red}{$0.0770$} & \textcolor{red}{$0.0443$} & \textcolor{red}{$0.0636$} & \textcolor{red}{$0.7834$} & \textcolor{red}{$0.8609$} & \textcolor{red}{$10$}\\% [#7]
+		\textcolor{red}{Indep-DGP}      & \textcolor{red}{$19.1$} & \textcolor{red}{$15.2$} & \textcolor{red}{$0.085$} & \textcolor{red}{$0.2823$} & \textcolor{red}{$0.6594$} & \textcolor{red}{$0.0877$} & \textcolor{red}{$0.0563$} & \textcolor{red}{$0.0633$} & \textcolor{red}{$0.7986$} & \textcolor{red}{$0.7927$} & \textcolor{red}{$11$}\\% [#4]
+		\textcolor{red}{Indep-HetGP}    & \textcolor{red}{$17.1$} & \textcolor{red}{$7.5$} & \textcolor{red}{$0.042$} & \textcolor{red}{$0.2664$} & \textcolor{red}{$0.6216$} & \textcolor{red}{$0.1240$} & \textcolor{red}{$0.0842$} & \textcolor{red}{$0.0663$} & \textcolor{red}{$0.7843$} & \textcolor{red}{$0.4930$} & \textcolor{red}{$12$}\\% [#4]
+		\textcolor{red}{BO-qParEGO}     & \textcolor{red}{$17.9$} & \textcolor{red}{$14.9$} & \textcolor{red}{$0.084$} & \textcolor{red}{$0.1883$} & \textcolor{red}{$0.4392$} & \textcolor{red}{$0.2598$} & \textcolor{red}{$0.1343$} & \textcolor{red}{$0.0987$} & \textcolor{red}{$0.9081$} & \textcolor{red}{$0.1807$} & \textcolor{red}{$13$}\\% [#9]
+		\bottomrule
+	\end{tabular}}
+\end{table}
 
 
-\begin{figure}[!h]
+\textcolor{red}{\paragraph{Comparison with Bayesian optimisation.}}% [#9]
+\textcolor{red}{As a contrasting class of multi-objective surrogate-assisted optimisation, three representative MOBO methods—qParEGO, qEHVI and qNEHVI~\citep{Daulton2020,Daulton2021}—are evaluated with the same $400$-sample budget and the same four-objective robust simulator and implemented in \texttt{botorch}.}% [#9]
+\textcolor{red}{Table~7 shows that BO-qNEHVI is the strongest MOBO competitor and reaches $\mathrm{HV}_{\mathrm{n}}$ marginally above DA-DGP, consistent with the known efficiency of hypervolume-aware acquisition; qParEGO, in contrast, is hurt by scalarisation bias and degrades to $\mathrm{IGD}=0.2598$ and an overall closeness of only $C_{i}=0.1807$ (rank $13$).}% [#9]
+\textcolor{red}{DA-DGP matches the strongest MOBO method on hypervolume in a single training pass—without iterative acquisition or model retraining—while delivering a denser and more uniformly spread robust frontier, which lifts it to the top of the TOPSIS ranking.}% [#9]
+
+\textcolor{red}{\paragraph{与贝叶斯优化的对比。}}% [#9]
+\textcolor{red}{作为多目标代理辅助优化的另一类代表，三种 MOBO 方法 qParEGO、qEHVI 与 qNEHVI~\citep{Daulton2020,Daulton2021} 在相同的 $400$ 样本预算与相同的四目标鲁棒仿真器下评估，并以 \texttt{botorch} 实现。}% [#9]
+\textcolor{red}{Table~7 显示，BO-qNEHVI 是最强的 MOBO 竞争者，其 $\mathrm{HV}_{\mathrm{n}}$ 略高于 DA-DGP，与超体积感知采集函数已知的效率相一致；与此对照，qParEGO 受标量化偏差影响，IGD 退化至 $0.2598$，综合接近度仅 $C_{i}=0.1807$（排名第 $13$）。}% [#9]
+\textcolor{red}{DA-DGP 在一次代理训练下即与最强 MOBO 方法在超体积上持平——无须迭代采样或重训练——并提供密度更高、分布更均匀的鲁棒前沿，从而位列 TOPSIS 综合排名第一。}% [#9]
+
+\textcolor{red}{\paragraph{Training cost and time complexity.}}% [#5]
+\textcolor{red}{The bilevel update and the finite-difference Hessian--vector approximation in Eqs.~(24)--(25) inflate the per-iteration cost of DA-DGP to roughly four times that of a standard shared DGP. Asymptotically, the per-epoch cost scales as $\mathcal{O}\!\bigl(c\,E\lceil N/B\rceil(H+T)(BM^{2}+M^{3})\bigr)$ with $c\!\approx\!4$ for the inner virtual update, the unrolled validation backward and two finite-difference Hessian--vector evaluations; the constant collapses to $c\!=\!1$ for the static-weighting baselines and to $c\!=\!T$ for the gradient-balancing and independent-task variants, while the exact heteroscedastic GP follows the cheaper $\mathcal{O}(E\,T\,N^{3})$ form thanks to the small training set.}% [#5]
+\textcolor{red}{In absolute terms, this one-time additional training accounts for a small constant overhead and, in exchange, yields the single-pass robust Pareto frontier whose quality matches that of the strongest iterative MOBO competitor in Table~7. Detailed wall-clock measurements and the hardware/software stack are reported in Appendix~F of the supplementary material.}% [#5/#9]
+
+\textcolor{red}{\paragraph{训练代价与时间复杂度。}}% [#5]
+\textcolor{red}{Eqs.~(24)--(25) 中的 bilevel 更新与 finite-difference Hessian--vector 近似将 DA-DGP 单次迭代的代价提升至共享 DGP 的约四倍。从渐近角度看，单 epoch 代价为 $\mathcal{O}\!\bigl(c\,E\lceil N/B\rceil(H+T)(BM^{2}+M^{3})\bigr)$，其中 $c\!\approx\!4$ 对应内层虚拟更新、验证 unrolled 反向传播以及两次 Hessian--vector 近似；该常数在静态加权基线上退化为 $c\!=\!1$，在梯度均衡与独立任务变体上为 $c\!=\!T$；exact 异方差 GP 因训练集较小遵从更廉价的 $\mathcal{O}(E\,T\,N^{3})$ 形式。}% [#5]
+\textcolor{red}{以绝对数值看，这部分一次性的额外训练只引入一个较小的常数开销，并换得单次代理便产生的鲁棒 Pareto 前沿，其综合质量与 Table~7 中最强的迭代式 MOBO 方法相当。具体的 wall-clock 测量值与软硬件环境见补充材料 Appendix~F。}% [#5/#9]
+
+
+
+
+
+
+\begin{table}[!h]
 	\centering
-	\begin{subfigure}[b]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{FIG7a.pdf} 
-		\caption{Throughput}
-		\caption*{吞吐量}
-		\label{fig:ql_throughput}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{FIG7b.pdf}
-		\caption{BER}
-		\caption*{BER}
-		\label{fig:ql_ber}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{FIG7c.pdf}
-		\caption{PAPR}
-		\caption*{PAPR}
-		\label{fig:ql_papr}
-	\end{subfigure}
-	\caption{Comparison of quality loss for optimization results across different methods.}
-	\caption*{不同方法优化结果的质量损失比较。}
-	\label{fig:quality_loss_comparison}
-\end{figure}
+	\caption{Statistical summary of received EVM (dB).}
+	\caption*{接收 EVM（dB）的统计汇总。}
+	\label{tab:evm_stats}
+	\small
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccc}
+		\toprule
+		\textbf{Method} & \textbf{Mean $\pm$ Std} & \textbf{Median} & \textbf{Min} & \textbf{Max} & \textbf{IQR} \\
+		\midrule
+		\textbf{DA-DGP}        & \textcolor{red}{$\mathbf{11.4648 \pm 1.0419}$}% [#11]
+		                       & \textcolor{red}{$11.1877$} & \textcolor{red}{$10.3291$} & \textcolor{red}{$14.4808$} & \textcolor{red}{$0.9839$} \\
+		EQUAL                  & \textcolor{red}{$11.9124 \pm 1.6627$}% [#11]
+		                       & \textcolor{red}{$11.2414$} & \textcolor{red}{$10.5439$} & \textcolor{red}{$17.4231$} & \textcolor{red}{$1.6107$} \\
+		\textcolor{red}{Pure DGP}% [#7]
+		                       & \textcolor{red}{$11.6967 \pm 1.1421$}% [#7/#11]
+		                       & \textcolor{red}{$11.5229$} & \textcolor{red}{$10.3227$} & \textcolor{red}{$14.8353$} & \textcolor{red}{$1.3989$} \\
+		DWA                    & \textcolor{red}{$11.6101 \pm 0.8044$}% [#11]
+		                       & \textcolor{red}{$11.2387$} & \textcolor{red}{$10.7373$} & \textcolor{red}{$13.3239$} & \textcolor{red}{$1.1043$} \\
+		UW                     & \textcolor{red}{$11.8394 \pm 1.1318$}% [#11]
+		                       & \textcolor{red}{$11.8410$} & \textcolor{red}{$9.3768$} & \textcolor{red}{$14.6181$} & \textcolor{red}{$1.1285$} \\
+		MGDA                   & \textcolor{red}{$11.7692 \pm 1.1493$}% [#11]
+		                       & \textcolor{red}{$11.5032$} & \textcolor{red}{$10.1646$} & \textcolor{red}{$14.2999$} & \textcolor{red}{$1.4995$} \\
+		\textcolor{red}{Indep-DGP}% [#4/#6]
+		                       & \textcolor{red}{$12.5140 \pm 2.0350$}% [#4/#11]
+		                       & \textcolor{red}{$11.8887$} & \textcolor{red}{$10.6884$} & \textcolor{red}{$18.1743$} & \textcolor{red}{$1.9075$} \\
+		\textcolor{red}{Indep-HetGP}% [#4/#6]
+		                       & \textcolor{red}{$11.5661 \pm 0.6530$}% [#4/#11]
+		                       & \textcolor{red}{$11.4567$} & \textcolor{red}{$10.6837$} & \textcolor{red}{$13.6582$} & \textcolor{red}{$0.4501$} \\
+		\textcolor{red}{LMC-DGP}% [#6]
+		                       & \textcolor{red}{$12.8171 \pm 2.7213$}% [#6/#11]
+		                       & \textcolor{red}{$11.8866$} & \textcolor{red}{$10.1993$} & \textcolor{red}{$20.8251$} & \textcolor{red}{$2.5701$} \\
+		\textcolor{red}{No Sample Attn}% [#7]
+		                       & \textcolor{red}{$11.7811 \pm 2.1049$}% [#7/#11]
+		                       & \textcolor{red}{$11.3261$} & \textcolor{red}{$10.5054$} & \textcolor{red}{$20.0557$} & \textcolor{red}{$0.9608$} \\
+		\midrule
+		\textcolor{red}{BO-qParEGO}% [#9]
+		                       & \textcolor{red}{$11.8696 \pm 1.5517$}% [#9/#11]
+		                       & \textcolor{red}{$11.4693$} & \textcolor{red}{$10.6413$} & \textcolor{red}{$17.1338$} & \textcolor{red}{$0.8466$} \\
+		\textcolor{red}{BO-qEHVI}% [#9]
+		                       & \textcolor{red}{$11.3915 \pm 0.4223$}% [#9/#11]
+		                       & \textcolor{red}{$11.4266$} & \textcolor{red}{$10.4812$} & \textcolor{red}{$12.2190$} & \textcolor{red}{$0.3422$} \\
+		\textcolor{red}{BO-qNEHVI}% [#9]
+		                       & \textcolor{red}{$11.3816 \pm 0.3678$}% [#9/#11]
+		                       & \textcolor{red}{$11.3158$} & \textcolor{red}{$10.8346$} & \textcolor{red}{$12.0891$} & \textcolor{red}{$0.3314$} \\
+		\bottomrule
+	\end{tabular*}
+\end{table}
 \vspace{-0.5em}
 
-Tables 4-5 and Figures 5-6 summarize the statistical performance and QL over 20 independent runs. The superiority of DA-DGP is demonstrated across three dimensions:
-
-Tables 4-5 和 Figures 5-6 总结了 20 次独立运行下的统计性能和 QL。DA-DGP 的优越性体现在三个方面：
-
-First, DA-DGP exhibits optimal trade-off capabilities in handling multi-objective conflicts. As shown in Figure 5, the method demonstrates significant distributional superiority: the boxplot for Throughput (maximization) shifts upwards with a median of 6.56 Mbps, significantly exceeding DWA and EQUAL. Conversely, boxplots for BER and PAPR (minimization) shift notably downwards. This confirms the dual-attention mechanism successfully guides the optimizer toward a superior Pareto frontier, avoiding suboptimal local extrema (e.g., MGDA's large positional deviation).
-
-首先，DA-DGP 在处理多目标冲突时展现出最优权衡能力。如 Figure 5 所示，该方法具有显著分布优势：Throughput（最大化）的 boxplot 整体上移，中位数为 6.56 Mbps，显著高于 DWA 和 EQUAL。相反，BER 和 PAPR（最小化）的 boxplot 明显下移。这证实双注意力机制成功引导优化器朝更优 Pareto frontier 移动，避免了次优局部极值（例如 MGDA 的较大位置偏差）。
-
-Second, Addressing the RPD goal of minimizing bias and variance, DA-DGP demonstrates engineering robustness in the comprehensive QL metric (Table 5 and Figure 6). For the QL of BER, DA-DGP achieves an IQR of only 0.0034 and a median of 0.0057—far lower than DWA (0.0070). This implies high consistency across runs and effective suppression of model uncertainty-induced ``performance drift".
-
-其次，针对最小化 bias 和 variance 的 RPD 目标，DA-DGP 在综合 QL 指标（Table 5 和 Figure 6）上展现出工程鲁棒性。对于 BER 的 QL，DA-DGP 的 IQR 仅为 0.0034，中位数为 0.0057，远低于 DWA（0.0070）。这意味着不同运行之间具有高度一致性，并有效抑制了由模型不确定性诱发的“performance drift”。
-
-
-Third, Controlling worst-case scenarios is critical in engineering practice. Table 4 shows DA-DGP significantly improves performance bounds: the minimum Throughput (6.07 Mbps) exceeds EQUAL (5.82 Mbps), and the maximum PAPR (12.56 dB) outperforms MGDA (12.70 dB). This demonstrates superior robustness against extreme channel conditions and parameter perturbations, effectively mitigating failure risks.
-
-第三，控制最坏情形在工程实践中至关重要。Table 4 显示，DA-DGP 显著改善了性能边界：最小 Throughput（6.07 Mbps）高于 EQUAL（5.82 Mbps），最大 PAPR（12.56 dB）优于 MGDA（12.70 dB）。这表明其在极端信道条件和参数扰动下具有更强鲁棒性，能够有效降低失效风险。
-
-To visually validate effectiveness in a realistic environment, the optimal parameters $\mathbf{x}^{*}$ achieving the minimum composite quality loss were substituted into the high-fidelity OFDM simulation. Figures 7 and 8 evaluate the resulting signal modulation quality and system statistical characteristics, respectively.
-
-为在真实环境中直观验证有效性，将实现最小综合质量损失的最优参数 $\mathbf{x}^{*}$ 代入高保真 OFDM 仿真。Figures 7 和 8 分别评估由此得到的信号调制质量和系统统计特性。
-
 \begin{figure}[!h]
 	\centering
-	% --- 第一行：3 张图 (DA-DGP, DWA, EQUAL) ---
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{FIG8a.pdf}
 		\caption{DA-DGP}
-		\label{fig:const_pm}
+		\label{fig:const_dadgp}
 	\end{subfigure}
-	\hfill % 这里的 hfill 保证第一张和第二张之间的间距
+	\hfill
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{FIG8b.pdf}
-		\caption{DWA}
-		\label{fig:const_dwa}
+		\caption{BO-qNEHVI}
+		\label{fig:const_bonehvi}
 	\end{subfigure}
-	\hfill % 这里的 hfill 保证第二张和第三张之间的间距
+	\hfill
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{FIG8c.pdf}
-		\caption{EQUAL} % 注意：您之前问过 S-Atten 是否等于 EQUAL，如果这里要对应消融实验，可以改为 "EQUAL (S-Atten)"
+		\caption{EQUAL}
 		\label{fig:const_equal}
 	\end{subfigure}
-		
-	% --- 强制换行并增加垂直间距 ---
-	\par\bigskip 
-	% 或者使用 \vspace{1em} 来精确控制距离
-		
-	% --- 第二行：3 张图 (MGDA, UW, T-Atten) ---
+
+	\par\bigskip
+
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{FIG8d.pdf}
 		\caption{MGDA}
 		\label{fig:const_mgda}
 	\end{subfigure}
-	\hfill % 弹性填充
+	\hfill
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{FIG8e.pdf}
-		\caption{UW}
-		\label{fig:const_uw}
+		\caption{Indep-HetGP}
+		\label{fig:const_indephetgp}
 	\end{subfigure}
-	\hfill % 弹性填充
+	\hfill
 	\begin{subfigure}[b]{0.28\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{FIG8f.pdf}
-		\caption{T-Atten}
-		\label{fig:T-Atten}
+		\caption{No Sample Attn}
+		\label{fig:const_nosampleattn}
 	\end{subfigure}
-		
 	\caption{Constellation diagrams for each method.}
 	\caption*{各方法的星座图。}
 	\label{fig:constellation_diagrams}
 \end{figure}
 
+Figure~6 displays the constellation diagrams of the received signal on the complex plane, which serve as the ``gold standard'' for physical-layer link quality. \textcolor{red}{Six representative methods are contrasted—DA-DGP, the strongest sequential BO competitor BO-qNEHVI, EQUAL, MGDA, the heteroscedastic independent-GP variant Indep-HetGP and the ablation No Sample Attn—while the full 13-method gallery is provided in the supplementary material. The DA-DGP symbols (Fig.~6a) form a compact, well-separated 16-QAM grid comparable to BO-qNEHVI (Fig.~6b) and clearly tighter than the ablation No Sample Attn (Fig.~6f), confirming that the sample-level attention is the component that suppresses the heavy-tailed PAPR/BER excursions which scatter the constellation clouds of weaker baselines.}% [#7/#9] Table~6 reports the received signal quality. \textcolor{red}{DA-DGP attains a mean EVM of $11.4648\pm1.0419$\,dB, the lowest among all one-shot Gaussian process surrogates and trailing the iterative sequential BO baselines by less than $0.1$\,dB (BO-qNEHVI $11.3816$\,dB, BO-qEHVI $11.3915$\,dB). Crucially, DA-DGP keeps the spread tightly bounded (max $14.48$\,dB) where Indep-DGP, LMC-DGP and No Sample Attn exhibit max EVM well above $18$\,dB, indicating that the dual-attention training prevents catastrophic excursions of the constellation under stochastic channel realisations.}% [#7/#9/#11] This confirms that the optimized parameter configuration (such as precise power allocation and pre-equalization strategies) effectively compensates for nonlinear channel distortions caused by multipath fading and carrier frequency offset.
 
+Figure~6 展示了接收信号在复平面上的星座图，可作为衡量通信链路物理层质量的``gold standard''。\textcolor{red}{图中比较六种代表方法：DA-DGP、最强迭代式 BO 对手 BO-qNEHVI、EQUAL、MGDA、heteroscedastic 独立 GP 变体 Indep-HetGP 与消融变体 No Sample Attn；13 种方法的完整星座图见补充材料。DA-DGP 恢复的符号（Fig.~6a）形成紧凑、清晰可分的 16-QAM 网格，与 BO-qNEHVI（Fig.~6b）相当，且明显优于消融变体 No Sample Attn（Fig.~6f），表明样本级注意力正是抑制造成弱基线星座云团的重尾 PAPR/BER 偏移的关键组件。}% [#7/#9] Table~6 汇报接收信号质量。\textcolor{red}{DA-DGP 取得平均 EVM $11.4648\pm1.0419$\,dB，是所有一次性高斯过程代理中最低，仅落后于迭代式序贯 BO 基线不到 $0.1$\,dB（BO-qNEHVI $11.3816$\,dB、BO-qEHVI $11.3915$\,dB）。更关键的是，DA-DGP 把最坏情形紧紧约束在 $14.48$\,dB 以内，而 Indep-DGP、LMC-DGP 与 No Sample Attn 在随机信道 realization 下的最大 EVM 远高于 $18$\,dB，说明双注意力训练能抑制星座图的灾难性漂移。}% [#7/#9/#11] 这证实优化后的参数配置（如精确功率分配和预均衡策略）能够有效补偿由多径衰落和载波频偏引起的非线性信道失真。
+
+\textcolor{red}{Figure~5 zooms into the underlying robust Pareto geometry. Subfigure (a) projects the global four-objective front into the (throughput, BER, PAPR) subspace and shows that the DA-DGP, BO-qNEHVI and BO-qEHVI fronts dominate the rest, with DA-DGP reaching the highest throughput shoulder. Subfigure (b) reports the attainment-probability hexbin in the (throughput, BER) plane: DA-DGP attains every reference level with probability $\ge 0.6$ over a wider region than any other one-shot surrogate. Subfigure (c) shows the projection density of the Pareto candidates, in which DA-DGP exhibits the largest contiguous coverage close to the ideal point. Subfigure (d) is the four-objective bubble view (throughput, BER, PAPR with the bubble size encoding energy efficiency $y_4=1/E_b$); DA-DGP places the largest bubbles near the lower-left corner, indicating the most favourable joint trade-off across all four responses.}% [#8/#9/#11]
+
+\textcolor{red}{Figure~5 进一步刻画鲁棒 Pareto 的几何结构：子图 (a) 将全局四目标前沿投影到 (throughput, BER, PAPR) 子空间，DA-DGP、BO-qNEHVI 与 BO-qEHVI 的前沿明显占优，其中 DA-DGP 在吞吐肩部抵达最高位置；子图 (b) 给出 (throughput, BER) 平面的达成概率六角格热图，DA-DGP 以 $\ge 0.6$ 的概率覆盖任意参考水平的区域显著大于其他一次性代理；子图 (c) 展示 Pareto 投影密度，DA-DGP 在理想点附近形成最大连贯覆盖；子图 (d) 为四目标气泡视图（坐标对应 throughput、BER、PAPR，气泡大小编码能量效率 $y_4=1/E_b$），DA-DGP 的大气泡集中在左下角，对应在所有四个响应上最有利的联合 trade-off。}% [#8/#9/#11]
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.4\textwidth]{FIG9.pdf}
-	\caption{CDF of Throughput for different methods.}
-	\caption*{不同方法 Throughput 的 CDF。}
-	\label{fig:cdf_throughput}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{PARETO_FRONT.pdf}
+		\caption{Global Pareto front projection.}
+		\caption*{全局 Pareto 前沿投影。}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{PARETO_ATTAIN.pdf}
+		\caption{Attainment probability hexbin.}
+		\caption*{达成概率六角格热图。}
+	\end{subfigure}
+
+	\par\bigskip
+
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{PARETO_DENSITY.pdf}
+		\caption{Pareto projection density.}
+		\caption*{Pareto 投影密度。}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{PARETO_BUBBLE.pdf}
+		\caption{Four-objective bubble view.}
+		\caption*{四目标气泡视图。}
+	\end{subfigure}
+	\caption{Robust four-objective Pareto visualisations.}
+	\caption*{鲁棒四目标 Pareto 可视化。}
+	\label{fig:pareto_visualisation}
 \end{figure}
 
+Combining the numerical case study with the OFDM engineering case, the proposed dual-attention DA-DGP framework demonstrates superior performance in addressing RPD problems characterized by \textcolor{red}{limited engineering samples}, high-dimensional nonlinearities, and multi-objective conflicts.% [#12] By compensating for channel impairments at the physical mechanism level and minimizing the bias and variance of quality loss at the statistical level, this method provides an efficient and robust technical path for intelligent resource scheduling and power control in 5G/6G communication systems.
 
-\begin{table}[!h]
-	\centering
-	\caption{Statistical summary of EVM.}
-	\caption*{EVM 的统计汇总。}
-	\label{tab:evm_stats}
-	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ccccccc}
-		\toprule
-		\textbf{Stat} & \textbf{DA-DGP} & \textbf{DWA} & \textbf{EQUAL} & \textbf{MGDA} & \textbf{UW} & \textbf{T-Atten} \\
-		\midrule
-		Max    & 13.3644 & 13.1080 & 23.3649 & 17.1535 & 14.2579 & 16.0728 \\
-		Min    & 4.9181  & 3.8633  & 6.7667  & 5.3544  & 7.7372  & 5.3144 \\
-		Mean   & 9.8258  & 10.1002 & 12.1678 & 10.4817 & 11.0535 & 9.9643 \\
-		Median & 10.2415 & 10.1722 & 11.4234 & 10.1029 & 11.0828 & 9.9099 \\
-		Q1     & 8.7413  & 9.2080  & 10.0786 & 8.8014  & 9.2834  & 8.2294 \\
-		Q3     & 11.5257 & 12.2351 & 12.8316 & 11.6772 & 12.7877 & 11.4738 \\
-		\bottomrule
-	\end{tabular*}
-\end{table}
-\vspace{-0.5em}
-
-Figure 7 displays the constellation diagram of the received signal on the complex plane, which serves as the ``gold standard" for measuring the physical layer quality of communication links. In contrast to the scattered and blurred states exhibited by baseline methods (Figs. 7b-e), the symbol points recovered by the DA-DGP method (Fig. 7a) form the most compact clusters around the ideal 16-QAM grid points. This visual result is corroborated by the EVM data in Table 6: the proposed method achieves the lowest mean EVM (9.83\%), representing a reduction of approximately 19.2\% compared to the EQUAL method (12.17\%). Crucially, the inferior worst-case performance of T-Atten (Max PAPR 13.06 dB vs. 12.56 dB for DA-DGP) indicates that task balancing alone cannot satisfy boundary constraints, necessitating sample-level attention for strict physical limitations. This confirms that the optimized parameter configuration (such as precise power allocation and pre-equalization strategies) effectively compensates for nonlinear channel distortions caused by multipath fading and carrier frequency offset.
-
-Figure 7 展示了接收信号在复平面上的星座图，该图可作为衡量通信链路物理层质量的“gold standard”。与基线方法呈现的分散、模糊状态（Figs. 7b-e）相比，DA-DGP 方法恢复的符号点（Fig. 7a）在理想 16-QAM 网格点附近形成最紧凑的簇。Table 6 中的 EVM 数据进一步佐证了这一视觉结果：所提方法取得最低平均 EVM（9.83\%），相较 EQUAL 方法（12.17\%）降低约 19.2\%。关键的是，T-Atten 在最坏情形下表现较差（Max PAPR 13.06 dB，而 DA-DGP 为 12.56 dB），这表明仅靠任务平衡无法满足边界约束，严格物理限制下仍需要样本级注意力。这证实优化后的参数配置（如精确功率分配和预均衡策略）能够有效补偿由多径衰落和载波频偏引起的非线性信道失真。
-
-Evaluation of cumulative distribution function CDF Throughput and system performance: The CDF curves in Figure 8 reveal the stability of the system's quality of service (QoS). The CDF curve of DA-DGP consistently yields higher throughput at the same cumulative probability compared to other methods, exhibiting distinct characteristics of first-order stochastic dominance. Statistically, a steeper CDF implies a smaller variance in the output distribution and more concentrated system performance. In contrast, although the MGDA method performs acceptably in the low-throughput region, it is significantly inferior in the high-throughput region (showing a distinct long-tail effect). Therefore, DA-DGP not only enhances average performance but also significantly strengthens the engineering reliability of the communication link across different channel states by compressing the long-tail distribution.
-
-对 cumulative distribution function（CDF）Throughput 和系统性能的评估表明：Figure 8 中的 CDF 曲线揭示了系统 quality of service（QoS）的稳定性。与其他方法相比，DA-DGP 的 CDF 曲线在相同累计概率下始终对应更高吞吐量，表现出明显的一阶随机占优特征。从统计角度看，更陡峭的 CDF 意味着输出分布方差更小、系统性能更加集中。相比之下，尽管 MGDA 方法在低吞吐区域表现尚可，但在高吞吐区域明显劣势（呈现明显 long-tail effect）。因此，DA-DGP 不仅提升了平均性能，还通过压缩长尾分布显著增强了通信链路在不同信道状态下的工程可靠性。
-
-Combining the numerical case study with the OFDM engineering case, the proposed dual-attention DA-DGP framework demonstrates superior performance in addressing RPD problems characterized by small sample sizes, high-dimensional nonlinearities, and multi-objective conflicts. By compensating for channel impairments at the physical mechanism level and minimizing the bias and variance of quality loss at the statistical level, this method provides an efficient and robust technical path for intelligent resource scheduling and power control in 5G/6G communication systems.
-
-综合数值案例和 OFDM 工程案例，所提出的双注意力 DA-DGP 框架在解决具有小样本、高维非线性和多目标冲突特征的 RPD 问题时表现出优越性能。该方法在物理机制层面补偿信道损伤，并在统计层面最小化质量损失的 bias 和 variance，为 5G/6G 通信系统中的智能资源调度和功率控制提供了一条高效且稳健的技术路径。
+综合数值案例和 OFDM 工程案例，所提出的双注意力 DA-DGP 框架在解决具有 \textcolor{red}{有限工程样本}、高维非线性和多目标冲突特征的 RPD 问题时表现出优越性能。% [#12] 该方法在物理机制层面补偿信道损伤，并在统计层面最小化质量损失的 bias 和 variance，为 5G/6G 通信系统中的智能资源调度和功率控制提供了一条高效且稳健的技术路径。
 
 
 \section{Conclusion}  \label{s:sec5}
-A DA-DGP framework for the RPD of complex multi-output systems is proposed. The suggested algorithm takes advantage of an end-to-end weighted variational inference system, providing precise ROI focusing and adaptive task balancing by jointly optimizing dual-attention weights. The algorithm is shown empirically powerful in handling high-dimensional nonlinearities compared with benchmark methods, exhibited by the optimization of synthetic test functions. The proposed algorithm is applied to a high-fidelity 5G/6G OFDM simulation-based case study of optimizing communication link quality. Despite extremely small sample sizes, the algorithm was able to identify optimal parameters consistently for minimizing EVM. The inferior performances of the benchmark methods can be mainly attributed to the limitations of traditional ``mean-oriented" models and unmanaged gradient conflicts.
+A DA-DGP framework for the RPD of complex multi-output systems is proposed. The suggested algorithm takes advantage of an end-to-end weighted variational inference system, providing precise ROI focusing and adaptive task balancing by jointly optimizing dual-attention weights. The algorithm is shown empirically powerful in handling high-dimensional nonlinearities compared with benchmark methods, exhibited by the optimization of synthetic test functions. The proposed algorithm is applied to a high-fidelity 5G/6G OFDM simulation-based case study of optimizing communication link quality. \textcolor{red}{Despite the limited engineering sample budget, the algorithm consistently identifies operating points that reach the most aggressive throughput slope of the robust Pareto front and yield EVM within $0.1$\,dB of the strongest sequential MOBO baseline while remaining the best one-shot Gaussian process surrogate.}% [#9/#12] The inferior performances of the benchmark methods can be mainly attributed to the limitations of traditional ``mean-oriented" models and unmanaged gradient conflicts.
 
-本文提出了一种用于复杂 multi-output 系统 RPD 的 DA-DGP 框架。所提算法利用端到端加权 variational inference 系统，通过联合优化双注意力权重，实现精确 ROI 聚焦和自适应任务平衡。基于合成测试函数优化结果，相较基准方法，该算法在处理高维非线性方面表现出显著经验优势。本文还将所提算法应用于基于高保真 5G/6G OFDM 仿真的通信链路质量优化案例研究。尽管样本量极小，该算法仍能稳定识别用于最小化 EVM 的最优参数。基准方法表现较差主要可归因于传统“mean-oriented”模型的局限以及未被管理的梯度冲突。
+本文提出了一种用于复杂 multi-output 系统 RPD 的 DA-DGP 框架。所提算法利用端到端加权 variational inference 系统，通过联合优化双注意力权重，实现精确 ROI 聚焦和自适应任务平衡。基于合成测试函数优化结果，相较基准方法，该算法在处理高维非线性方面表现出显著经验优势。本文还将所提算法应用于基于高保真 5G/6G OFDM 仿真的通信链路质量优化案例研究。\textcolor{red}{尽管工程样本预算有限，该算法仍能稳定识别出位于鲁棒 Pareto 前沿最进取吞吐肩部的工作点，其 EVM 与最强序贯式 MOBO 基线相差不到 $0.1$\,dB，并保持为所有一次性高斯过程代理中最优。}% [#9/#12] 基准方法表现较差主要可归因于传统``mean-oriented''模型的局限以及未被管理的梯度冲突。
 
-Empirical evaluations on numerical benchmarks and a 5G/6G OFDM system validate the superiority of the method. Statistically, DA-DGP consistently outperforms baselines (e.g., DWA, MGDA) in RMSE, NLPD, and QL metrics. In the engineering application, the optimized parameters yield the lowest Error Vector Magnitude (EVM) and steeper throughput convergence. These findings confirm the capability of the framework to mitigate long-tail performance risks and enhance link robustness, offering a promising path for intelligent parameter optimization in complex manufacturing and communication processes. 
+Empirical evaluations on numerical benchmarks and a 5G/6G OFDM system validate the superiority of the method. Statistically, \textcolor{red}{DA-DGP attains the lowest robust quality loss among all one-shot Gaussian process surrogate variants and the highest AHP-TOPSIS closeness across the thirteen surrogate- and BO-based methods examined, while remaining within $0.1\%$ of the strongest hypervolume-aware BO competitor (qNEHVI) on $\mathrm{HV}_{\mathrm{n}}$.}% [#8/#9] In the engineering application, \textcolor{red}{the optimized parameters drive the link to the most aggressive throughput operating point of the Pareto front and produce competitive EVM (within $0.3$\,dB of the best sequential BO baseline) with tightly bounded worst-case excursions.}% [#9] These findings confirm the capability of the framework to mitigate long-tail performance risks and enhance link robustness, offering a promising path for intelligent parameter optimization in complex manufacturing and communication processes.
 A limitation of the current work lies in the reliance on the preset kernel bandwidth $\sigma_{k}$. Future research will focus on incorporating $\sigma_{k}$ directly into the variational inference framework. Realizing the adaptive learning of this hyperparameter based on data distribution characteristics will further improve the automation and generalizability of the model.
 
-数值基准和 5G/6G OFDM 系统上的实证评估验证了该方法的优越性。从统计角度看，DA-DGP 在 RMSE、NLPD 和 QL 指标上持续优于 DWA、MGDA 等基线方法。在工程应用中，优化参数产生最低的 Error Vector Magnitude（EVM）和更陡峭的吞吐量收敛。这些发现证实，该框架能够缓解长尾性能风险并增强链路鲁棒性，为复杂制造与通信过程中的智能参数优化提供了有前景的路径。当前工作的一个局限在于依赖预设 kernel bandwidth $\sigma_{k}$。未来研究将聚焦于将 $\sigma_{k}$ 直接纳入 variational inference 框架。基于数据分布特征实现该超参数的自适应学习，将进一步提升模型的自动化程度和泛化能力。
+数值基准和 5G/6G OFDM 系统上的实证评估验证了该方法的优越性。从统计角度看，\textcolor{red}{在所有一次性高斯过程代理变体中 DA-DGP 取得最低的鲁棒质量损失，并在十三种基于代理建模与 BO 的方法中取得最高的 AHP-TOPSIS 接近度，同时其 $\mathrm{HV}_{\mathrm{n}}$ 与最强的超体积感知 BO 方法（qNEHVI）相差不到 $0.1\%$。}% [#8/#9] 在工程应用中，\textcolor{red}{优化参数把链路驱动至 Pareto 前沿最进取的吞吐工作点，并给出具有竞争力的 EVM（与最优序贯式 BO 基线相差不到 $0.3$\,dB），同时严格压制最坏情形漂移。}% [#9] 这些发现证实，该框架能够缓解长尾性能风险并增强链路鲁棒性，为复杂制造与通信过程中的智能参数优化提供了有前景的路径。当前工作的一个局限在于依赖预设 kernel bandwidth $\sigma_{k}$。未来研究将聚焦于将 $\sigma_{k}$ 直接纳入 variational inference 框架。基于数据分布特征实现该超参数的自适应学习，将进一步提升模型的自动化程度和泛化能力。
 
 
 
