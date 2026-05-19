@@ -1,0 +1,27 @@
+{
+  "experiment": "sigma_sensitivity",
+  "condition": "sigma_1.0",
+  "run_id": 16,
+  "data_sources": {
+    "train_data": "/home/kkkk24/桌面/autoldgp/mathexam/Achievements/16/train_data.xlsx",
+    "val_data": "/home/kkkk24/桌面/autoldgp/mathexam/Achievements/16/val_data.xlsx"
+  },
+  "seed": 58,
+  "epochs": 300,
+  "sigma_values": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "num_hidden_dgp_dims": 5,
+  "num_dgp_layers": 2,
+  "num_tasks": 3,
+  "train_size": 400,
+  "val_size": 400,
+  "final_task_weights": [
+    0.3191488981246948,
+    0.40938395261764526,
+    0.2714671194553375
+  ],
+  "output_dir": "/home/kkkk24/桌面/autoldgp/mathexam/SupplementalModels/sigma_sensitivity/sigma_1.0/16"
+}

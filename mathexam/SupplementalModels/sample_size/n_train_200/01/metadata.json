@@ -1,0 +1,29 @@
+{
+  "experiment": "sample_size",
+  "condition": "n_train_200",
+  "run_id": 1,
+  "n_train": 200,
+  "lhs_train_seed": 43,
+  "saved_train_data": "/home/kkkk24/桌面/autoldgp/mathexam/SupplementalModels/sample_size/n_train_200/01/train_data.xlsx",
+  "data_sources": {
+    "val_data": "/home/kkkk24/桌面/autoldgp/mathexam/Achievements/01/val_data.xlsx"
+  },
+  "seed": 43,
+  "epochs": 300,
+  "sigma_values": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "num_hidden_dgp_dims": 5,
+  "num_dgp_layers": 2,
+  "num_tasks": 3,
+  "train_size": 200,
+  "val_size": 400,
+  "final_task_weights": [
+    0.3336459994316101,
+    0.304670512676239,
+    0.36168351769447327
+  ],
+  "output_dir": "/home/kkkk24/桌面/autoldgp/mathexam/SupplementalModels/sample_size/n_train_200/01"
+}

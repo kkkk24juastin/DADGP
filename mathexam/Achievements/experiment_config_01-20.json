@@ -1,0 +1,11 @@
+{
+  "start_run": 1,
+  "end_run": 20,
+  "n_runs": 20,
+  "num_epochs": 300,
+  "base_seed": 42,
+  "methods": [
+    "baseline_indep_hetgp"
+  ],
+  "device": "cuda:0"
+}

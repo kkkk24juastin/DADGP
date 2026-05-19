@@ -51,20 +51,6 @@ matplotlib/
 *.pkl
 *.pickle
 
-# DA-DGP synthetic benchmark generated outputs
-mathexam/Achievements/
-mathexam/SupplementalModels/
-mathexam/fig/
-mathexam/数据/
-
-# OFDM case generated outputs
-wirelessexam/Achievements/
-wirelessexam/model/
-wirelessexam/moo/
-wirelessexam/result/
-wirelessexam/fig/
-wirelessexam/timealy/
-
 # MATLAB generated/intermediate files
 *.asv
 *.fig

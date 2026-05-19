@@ -1,0 +1,32 @@
+{
+  "experiment": "depth_complexity",
+  "condition": "5L-D5",
+  "run_id": 15,
+  "data_sources": {
+    "train_data": "/home/kkkk24/桌面/autoldgp/mathexam/Achievements/15/train_data.xlsx",
+    "val_data": "/home/kkkk24/桌面/autoldgp/mathexam/Achievements/15/val_data.xlsx"
+  },
+  "depth_config": {
+    "label": "5L-D5",
+    "num_dgp_layers": 5,
+    "num_hidden_dgp_dims": 5
+  },
+  "seed": 57,
+  "epochs": 300,
+  "sigma_values": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "num_hidden_dgp_dims": 5,
+  "num_dgp_layers": 5,
+  "num_tasks": 3,
+  "train_size": 400,
+  "val_size": 400,
+  "final_task_weights": [
+    0.23389653861522675,
+    0.4549853801727295,
+    0.31111806631088257
+  ],
+  "output_dir": "/home/kkkk24/桌面/autoldgp/mathexam/SupplementalModels/depth_complexity/5L-D5/15"
+}

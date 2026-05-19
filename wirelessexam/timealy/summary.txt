@@ -1,0 +1,41 @@
+时间复杂度与训练耗时分析摘要
+========================================
+开始时间: 2026-05-01T12:27:35
+结束时间: 2026-05-01T12:54:49
+总耗时秒: 1633.7522
+方法: dadgp, baseline_equal, baseline_pure_dgp, baseline_dwa, baseline_uw, baseline_mgda, baseline_indep_dgp, baseline_indep_hetgp, baseline_lmc_dgp, ablation_no_sample_attn
+设备: cuda (NVIDIA GeForce RTX 2060)
+PyTorch: 2.11.0+cu130
+Python: 3.10.20
+系统: Linux-6.17.0-22-generic-x86_64-with-glibc2.39
+归一化: True
+随机种子: None
+Profiler: False
+
+配置
+----------------------------------------
+NUM_EPOCHS: 500
+BATCH_SIZE: 128
+INPUT_DIMENSIONS: 4
+NUM_TASKS: 3
+NUM_HIDDEN_DGP_DIMS: 5
+NUM_INDUCING_POINTS: 128
+LMC_NUM_LATENTS: 3
+
+耗时排序（慢到快）
+----------------------------------------
+dadgp: 397.7914s (0.7956s/epoch, 0.1989s/batch)
+ablation_no_sample_attn: 387.7773s (0.7756s/epoch, 0.1939s/batch)
+baseline_mgda: 164.8711s (0.3297s/epoch, 0.0824s/batch)
+baseline_indep_dgp: 163.3970s (0.3268s/epoch, 0.0817s/batch)
+baseline_dwa: 109.2533s (0.2185s/epoch, 0.0546s/batch)
+baseline_lmc_dgp: 103.3491s (0.2067s/epoch, 0.0517s/batch)
+baseline_equal: 100.5735s (0.2011s/epoch, 0.0503s/batch)
+baseline_pure_dgp: 99.5561s (0.1991s/epoch, 0.0498s/batch)
+baseline_uw: 96.0402s (0.1921s/epoch, 0.0480s/batch)
+baseline_indep_hetgp: 10.5149s (0.0210s/epoch, 0.0053s/batch)
+
+最快/最慢
+----------------------------------------
+最快: baseline_indep_hetgp (10.5149s)
+最慢: dadgp (397.7914s)
