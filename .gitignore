@@ -50,7 +50,7 @@ matplotlib/
 *.ckpt
 *.pkl
 *.pickle
-
+。codex
 # MATLAB generated/intermediate files
 *.asv
 *.fig
