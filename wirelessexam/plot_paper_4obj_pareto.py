@@ -62,12 +62,20 @@ GENERATED_FIGURE_STEMS = (
     "08_four_objective_bubble",
 )
 
-FONT_SIZE = 7.0
-TITLE_SIZE = 8.2
-LABEL_SIZE = 7.2
-TICK_SIZE = 6.2
-LEGEND_SIZE = 6.0
-COLORBAR_SIZE = 6.4
+TITLE_SIZE = 22.0
+LABEL_SIZE = 20.0
+TICK_SIZE = 18.0
+LEGEND_SIZE = 18.0
+FONT_SIZE = TICK_SIZE
+UPPER_RIGHT_LEGEND_SIZE = LEGEND_SIZE
+LEGEND_MARKER_SCALE = 2.4
+LEGEND_HANDLE_HEIGHT = 1.45
+LEGEND_HANDLE_TEXT_PAD = 0.12
+LEGEND_LABEL_SPACING = 0.35
+LEGEND_BORDER_AXES_PAD = 0.12
+COLORBAR_SIZE = LABEL_SIZE
+CELL_TEXT_SIZE = TICK_SIZE
+CALLOUT_SIZE = TICK_SIZE
 
 AXIS_COLOR = "#2B2B2B"
 GRID_COLOR = "#D6D6D6"
@@ -75,6 +83,8 @@ BACKGROUND_POINT_COLOR = "#C9C9C9"
 GLOBAL_FRONT_EDGE = "#272727"
 CONTEXT_FRONT_COLOR = "#A9A9A9"
 DADGP_EDGE_COLOR = "#1F1F1F"
+DADGP_LEGEND_LABEL = "DADGP"
+OTHER_LEGEND_LABEL = "Other"
 
 POWER_MODEL_P_BB = 0.2
 POWER_MODEL_P_RF = 0.8
@@ -213,13 +223,22 @@ def style_colorbar(colorbar, label: str) -> None:
 
 def add_compact_legend(
     ax: plt.Axes,
-    loc: str = "best",
+    loc: str = "upper right",
     ncol: int = 1,
     title: str | None = None,
+    fontsize: float | None = None,
 ):
     handles, labels = ax.get_legend_handles_labels()
-    if not handles:
+    legend_items = {}
+    allowed_labels = (DADGP_LEGEND_LABEL, OTHER_LEGEND_LABEL)
+    for handle, label in zip(handles, labels):
+        if label in allowed_labels and label not in legend_items:
+            legend_items[label] = handle
+    if not legend_items:
         return None
+    labels = [label for label in allowed_labels if label in legend_items]
+    handles = [legend_items[label] for label in labels]
+    legend_size = LEGEND_SIZE if fontsize is None else fontsize
     legend = ax.legend(
         handles,
         labels,
@@ -227,12 +246,16 @@ def add_compact_legend(
         ncol=ncol,
         title=title,
         frameon=False,
-        handletextpad=0.35,
-        columnspacing=0.8,
-        labelspacing=0.28,
-        borderaxespad=0.25,
-        fontsize=LEGEND_SIZE,
-        title_fontsize=LEGEND_SIZE,
+        scatterpoints=1,
+        markerscale=LEGEND_MARKER_SCALE,
+        handlelength=0.9,
+        handleheight=LEGEND_HANDLE_HEIGHT,
+        handletextpad=LEGEND_HANDLE_TEXT_PAD,
+        columnspacing=0.35,
+        labelspacing=LEGEND_LABEL_SPACING,
+        borderaxespad=LEGEND_BORDER_AXES_PAD,
+        fontsize=legend_size,
+        title_fontsize=legend_size,
     )
     return legend
 
@@ -284,6 +307,10 @@ def focus_methods(methods: list[str]) -> list[str]:
     return [method for method in REPRESENTATIVE_METHODS if method in available]
 
 
+def split_dadgp_other(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    return frame[frame["method"] == "dadgp"], frame[frame["method"] != "dadgp"]
+
+
 def add_panel_note(ax: plt.Axes, text: str, loc: str = "upper left") -> None:
     if not text:
         return
@@ -299,7 +326,7 @@ def add_panel_note(ax: plt.Axes, text: str, loc: str = "upper left") -> None:
         "transform": ax.transAxes,
         "ha": horizontal_alignment,
         "va": vertical_alignment,
-        "fontsize": 6.3,
+        "fontsize": CALLOUT_SIZE,
         "color": AXIS_COLOR,
         "bbox": {
             "facecolor": "white",
@@ -707,7 +734,7 @@ def plot_metric_manifold_embedding(indicators: pd.DataFrame, topsis: pd.DataFram
                 f"{value:.2f}",
                 ha="center",
                 va="center",
-                fontsize=5.8,
+                fontsize=CELL_TEXT_SIZE,
                 fontweight="bold",
                 color="#1B1B1B",
             )
@@ -715,7 +742,6 @@ def plot_metric_manifold_embedding(indicators: pd.DataFrame, topsis: pd.DataFram
     for spine in ax.spines.values():
         spine.set_linewidth(0.55)
         spine.set_edgecolor(AXIS_COLOR)
-    ax.set_title("DADGP ranks first by balanced Pareto-quality score")
     ax.set_xlabel("Metric desirability after direction normalization")
     save_figure(fig, FIG_DIR / "01_metric_manifold_embedding.png")
 
@@ -745,34 +771,31 @@ def plot_objective_manifold_embedding(
         rasterized=True,
     )
 
-    context_front = method_front[~method_front["method"].isin(focus_methods(methods))]
-    if not context_front.empty:
+    dadgp_front, other_front = split_dadgp_other(method_front)
+    if not other_front.empty:
         ax.scatter(
-            context_front["pc1"],
-            context_front["pc2"],
+            other_front["pc1"],
+            other_front["pc2"],
             s=10,
             color=CONTEXT_FRONT_COLOR,
             alpha=0.24,
             edgecolors="none",
-            label="Other Pareto fronts",
+            label=OTHER_LEGEND_LABEL,
             rasterized=True,
             zorder=2,
         )
 
-    for method_name in focus_methods(methods):
-        front = method_front[method_front["method"] == method_name]
-        if front.empty:
-            continue
+    if not dadgp_front.empty:
         ax.scatter(
-            front["pc1"],
-            front["pc2"],
-            s=34 if method_name == "dadgp" else 18,
-            color=color_for_method(method_name),
-            alpha=0.9 if method_name == "dadgp" else 0.5,
-            edgecolors=DADGP_EDGE_COLOR if method_name == "dadgp" else "white",
-            linewidths=0.45 if method_name == "dadgp" else 0.25,
-            label=method_label(method_name),
-            zorder=5 if method_name == "dadgp" else 4,
+            dadgp_front["pc1"],
+            dadgp_front["pc2"],
+            s=34,
+            color=color_for_method("dadgp"),
+            alpha=0.9,
+            edgecolors=DADGP_EDGE_COLOR,
+            linewidths=0.45,
+            label=DADGP_LEGEND_LABEL,
+            zorder=5,
         )
 
     global_front = embedded[embedded["is_run_global_pareto"]]
@@ -789,10 +812,8 @@ def plot_objective_manifold_embedding(
 
     ax.set_xlabel(f"Objective manifold PC1 ({explained[0] * 100:.1f}%)")
     ax.set_ylabel(f"Objective manifold PC2 ({explained[1] * 100:.1f}%)")
-    ax.set_title("Objective-space Pareto manifold with DADGP highlighted")
     style_axes(ax)
-    add_compact_legend(ax, loc="best", ncol=2)
-    add_panel_note(ax, summary_note, loc="upper left")
+    add_compact_legend(ax)
     save_figure(fig, FIG_DIR / "02_objective_manifold_embedding.png")
 
 
@@ -805,69 +826,46 @@ def plot_global_front_3d_projection(
 
     fig = plt.figure(figsize=FIGURE_SIZE, constrained_layout=True)
     ax = fig.add_subplot(111, projection="3d")
-    context_front = global_front[~global_front["method"].isin(focus_methods(methods))]
-    if not context_front.empty:
+    dadgp_front, other_front = split_dadgp_other(global_front)
+    if not other_front.empty:
         ax.scatter(
-            context_front["log10_ber"],
-            context_front["papr_db"],
-            context_front["throughput_mbps"],
-            s=scaled_marker_sizes(context_front["energy_efficiency"], 8, 45),
+            other_front["log10_ber"],
+            other_front["papr_db"],
+            other_front["throughput_mbps"],
+            s=scaled_marker_sizes(other_front["energy_efficiency"], 8, 64),
             color=CONTEXT_FRONT_COLOR,
-            alpha=0.16,
+            alpha=0.24,
             edgecolors="none",
             depthshade=False,
-            label="Other global PF hits",
+            label=OTHER_LEGEND_LABEL,
             zorder=1,
         )
 
-    for method_name in focus_methods(methods):
-        hits = global_front[global_front["method"] == method_name]
-        if hits.empty:
-            continue
+    if not dadgp_front.empty:
         ax.scatter(
-            hits["log10_ber"],
-            hits["papr_db"],
-            hits["throughput_mbps"],
+            dadgp_front["log10_ber"],
+            dadgp_front["papr_db"],
+            dadgp_front["throughput_mbps"],
             s=scaled_marker_sizes(
-                hits["energy_efficiency"],
-                34 if method_name == "dadgp" else 16,
-                105 if method_name == "dadgp" else 64,
+                dadgp_front["energy_efficiency"],
+                34,
+                105,
             ),
-            color=color_for_method(method_name),
-            alpha=0.9 if method_name == "dadgp" else 0.48,
-            edgecolors=DADGP_EDGE_COLOR if method_name == "dadgp" else "white",
-            linewidths=0.5 if method_name == "dadgp" else 0.22,
+            color=color_for_method("dadgp"),
+            alpha=0.9,
+            edgecolors=DADGP_EDGE_COLOR,
+            linewidths=0.5,
             depthshade=False,
-            label=method_label(method_name),
-            zorder=5 if method_name == "dadgp" else 3,
+            label=DADGP_LEGEND_LABEL,
+            zorder=5,
         )
 
-    quantiles = global_front["energy_efficiency"].quantile([0.25, 0.5, 0.75])
-    handles = [
-        ax.scatter([], [], [], s=size, color="#BDBDBD", alpha=0.45, edgecolors="none")
-        for size in scaled_marker_sizes(quantiles, 12, 70)
-    ]
-    labels = [f"EE {format_millions(value)}" for value in quantiles]
-    size_legend = ax.legend(
-        handles,
-        labels,
-        title="Marker size",
-        loc="upper right",
-        fontsize=LEGEND_SIZE,
-        title_fontsize=LEGEND_SIZE,
-        frameon=False,
-        handletextpad=0.35,
-        labelspacing=0.28,
-    )
-    ax.add_artist(size_legend)
-    add_compact_legend(ax, loc="lower left", ncol=2)
+    add_compact_legend(ax)
     ax.set_xlabel("log10(BER)", labelpad=7)
-    ax.set_ylabel("PAPR (dB)", labelpad=7)
-    ax.set_zlabel("Throughput (Mbps)", labelpad=7)
-    ax.set_title("Global Pareto front: DADGP vs key challengers")
+    ax.set_ylabel("PAPR", labelpad=7)
+    ax.set_zlabel("Throughput", labelpad=7)
     ax.view_init(elev=23, azim=-138)
     ax.tick_params(labelsize=TICK_SIZE, width=0.45)
-    add_panel_note(ax, summary_note, loc="upper left")
     save_figure(fig, FIG_DIR / "03_global_front_3d_projection.png")
 
 
@@ -888,41 +886,37 @@ def plot_attainment_probability_hexbin(tagged: pd.DataFrame, methods: list[str])
     style_colorbar(colorbar, "Global PF hit rate per bin")
 
     method_front = tagged[tagged["is_run_method_pareto"]]
-    context_front = method_front[~method_front["method"].isin(focus_methods(methods))]
-    if not context_front.empty:
+    dadgp_front, other_front = split_dadgp_other(method_front)
+    if not other_front.empty:
         ax.scatter(
-            context_front["log10_ber"],
-            context_front["throughput_mbps"],
+            other_front["log10_ber"],
+            other_front["throughput_mbps"],
             s=7,
             color=CONTEXT_FRONT_COLOR,
             alpha=0.2,
             edgecolors="none",
-            label="Other Pareto fronts",
+            label=OTHER_LEGEND_LABEL,
             rasterized=True,
             zorder=2,
         )
 
-    for method_name in focus_methods(methods):
-        front = method_front[method_front["method"] == method_name]
-        if front.empty:
-            continue
+    if not dadgp_front.empty:
         ax.scatter(
-            front["log10_ber"],
-            front["throughput_mbps"],
-            s=26 if method_name == "dadgp" else 12,
-            color=color_for_method(method_name),
-            alpha=0.88 if method_name == "dadgp" else 0.46,
-            edgecolors=DADGP_EDGE_COLOR if method_name == "dadgp" else "white",
-            linewidths=0.42 if method_name == "dadgp" else 0.18,
-            label=method_label(method_name),
-            zorder=5 if method_name == "dadgp" else 4,
+            dadgp_front["log10_ber"],
+            dadgp_front["throughput_mbps"],
+            s=26,
+            color=color_for_method("dadgp"),
+            alpha=0.88,
+            edgecolors=DADGP_EDGE_COLOR,
+            linewidths=0.42,
+            label=DADGP_LEGEND_LABEL,
+            zorder=5,
         )
 
     ax.set_xlabel("log10(BER)")
-    ax.set_ylabel("Throughput (Mbps)")
-    ax.set_title("BER-throughput attainment with DADGP highlighted")
+    ax.set_ylabel("Throughput")
     style_axes(ax)
-    add_compact_legend(ax, loc="lower right", ncol=2)
+    add_compact_legend(ax)
     save_figure(fig, FIG_DIR / "04_attainment_probability_hexbin.png")
 
 
@@ -943,41 +937,37 @@ def plot_design_space_pareto_map(tagged: pd.DataFrame, methods: list[str]) -> No
     style_colorbar(colorbar, "Global PF density")
 
     global_front = tagged[tagged["is_run_global_pareto"]]
-    context_front = global_front[~global_front["method"].isin(focus_methods(methods))]
-    if not context_front.empty:
+    dadgp_front, other_front = split_dadgp_other(global_front)
+    if not other_front.empty:
         ax.scatter(
-            context_front["x1"],
-            context_front["x4"],
+            other_front["x1"],
+            other_front["x4"],
             s=10,
             color=CONTEXT_FRONT_COLOR,
             alpha=0.24,
             edgecolors="none",
-            label="Other global PF hits",
+            label=OTHER_LEGEND_LABEL,
             rasterized=True,
             zorder=2,
         )
 
-    for method_name in focus_methods(methods):
-        hits = global_front[global_front["method"] == method_name]
-        if hits.empty:
-            continue
+    if not dadgp_front.empty:
         ax.scatter(
-            hits["x1"],
-            hits["x4"],
-            s=42 if method_name == "dadgp" else 18,
-            color=color_for_method(method_name),
-            alpha=0.9 if method_name == "dadgp" else 0.52,
-            edgecolors=DADGP_EDGE_COLOR if method_name == "dadgp" else "white",
-            linewidths=0.45 if method_name == "dadgp" else 0.22,
-            label=method_label(method_name),
-            zorder=5 if method_name == "dadgp" else 4,
+            dadgp_front["x1"],
+            dadgp_front["x4"],
+            s=42,
+            color=color_for_method("dadgp"),
+            alpha=0.9,
+            edgecolors=DADGP_EDGE_COLOR,
+            linewidths=0.45,
+            label=DADGP_LEGEND_LABEL,
+            zorder=5,
         )
 
     ax.set_xlabel("x1: transmit power control")
     ax.set_ylabel("x4: OFDM design variable")
-    ax.set_title("Design-space location of global Pareto solutions")
     style_axes(ax)
-    add_compact_legend(ax, loc="best", ncol=2)
+    add_compact_legend(ax)
     save_figure(fig, FIG_DIR / "05_design_space_pareto_map.png")
 
 
@@ -997,41 +987,38 @@ def plot_uncertainty_risk_map(tagged: pd.DataFrame, methods: list[str]) -> None:
         rasterized=True,
     )
 
-    context_front = method_front[~method_front["method"].isin(focus_methods(methods))]
-    if not context_front.empty:
+    dadgp_front, other_front = split_dadgp_other(method_front)
+    if not other_front.empty:
         ax.scatter(
-            context_front["objective_cost_score"],
-            context_front["robust_variance_risk"],
-            s=scaled_marker_sizes(context_front["energy_efficiency"], 10, 54),
+            other_front["objective_cost_score"],
+            other_front["robust_variance_risk"],
+            s=scaled_marker_sizes(other_front["energy_efficiency"], 10, 82),
             color=CONTEXT_FRONT_COLOR,
-            alpha=0.18,
+            alpha=0.24,
             edgecolors="none",
-            label="Other Pareto fronts",
+            label=OTHER_LEGEND_LABEL,
             rasterized=True,
             zorder=2,
         )
 
-    for method_name in focus_methods(methods):
-        front = method_front[method_front["method"] == method_name]
-        if front.empty:
-            continue
+    if not dadgp_front.empty:
         ax.scatter(
-            front["objective_cost_score"],
-            front["robust_variance_risk"],
+            dadgp_front["objective_cost_score"],
+            dadgp_front["robust_variance_risk"],
             s=scaled_marker_sizes(
-                front["energy_efficiency"],
-                34 if method_name == "dadgp" else 16,
-                130 if method_name == "dadgp" else 82,
+                dadgp_front["energy_efficiency"],
+                34,
+                130,
             ),
-            color=color_for_method(method_name),
-            alpha=0.9 if method_name == "dadgp" else 0.46,
-            edgecolors=DADGP_EDGE_COLOR if method_name == "dadgp" else "white",
-            linewidths=0.45 if method_name == "dadgp" else 0.2,
-            label=method_label(method_name),
-            zorder=5 if method_name == "dadgp" else 4,
+            color=color_for_method("dadgp"),
+            alpha=0.9,
+            edgecolors=DADGP_EDGE_COLOR,
+            linewidths=0.45,
+            label=DADGP_LEGEND_LABEL,
+            zorder=5,
         )
 
-    ax.set_xlabel("Normalized objective cost (lower is better)")
+    ax.set_xlabel("Normalized objective cost")
     ax.set_ylabel("Normalized robust variance risk")
     ax.annotate(
         "better",
@@ -1039,7 +1026,7 @@ def plot_uncertainty_risk_map(tagged: pd.DataFrame, methods: list[str]) -> None:
         xycoords="axes fraction",
         xytext=(0.22, 0.23),
         textcoords="axes fraction",
-        fontsize=6.2,
+        fontsize=CALLOUT_SIZE,
         color=AXIS_COLOR,
         arrowprops={
             "arrowstyle": "->",
@@ -1049,9 +1036,8 @@ def plot_uncertainty_risk_map(tagged: pd.DataFrame, methods: list[str]) -> None:
             "shrinkB": 0,
         },
     )
-    ax.set_title("Robust Pareto risk-return structure")
     style_axes(ax)
-    add_compact_legend(ax, loc="upper right", ncol=2)
+    add_compact_legend(ax, fontsize=UPPER_RIGHT_LEGEND_SIZE)
     save_figure(fig, FIG_DIR / "06_uncertainty_risk_map.png")
 
 
@@ -1069,66 +1055,63 @@ def plot_projection_density(tagged: pd.DataFrame, methods: list[str]) -> None:
         alpha=0.9,
     )
     colorbar = fig.colorbar(density, ax=ax)
-    style_colorbar(colorbar, "Mean throughput (Mbps)")
+    style_colorbar(colorbar, "Mean throughput")
 
     front = tagged[tagged["is_run_method_pareto"]]
-    context_front = front[~front["method"].isin(focus_methods(methods))]
-    if not context_front.empty:
+    dadgp_front, other_front = split_dadgp_other(front)
+    if not other_front.empty:
         ax.scatter(
-            context_front["log10_ber"],
-            context_front["papr_db"],
+            other_front["log10_ber"],
+            other_front["papr_db"],
             s=8,
             color=CONTEXT_FRONT_COLOR,
             alpha=0.2,
             edgecolors="none",
-            label="Other Pareto fronts",
+            label=OTHER_LEGEND_LABEL,
             rasterized=True,
             zorder=2,
         )
 
-    for method_name in focus_methods(methods):
-        method_front = front[front["method"] == method_name]
-        if method_front.empty:
-            continue
+    if not dadgp_front.empty:
         ax.scatter(
-            method_front["log10_ber"],
-            method_front["papr_db"],
-            s=30 if method_name == "dadgp" else 14,
-            color=color_for_method(method_name),
-            alpha=0.9 if method_name == "dadgp" else 0.48,
-            edgecolors=DADGP_EDGE_COLOR if method_name == "dadgp" else "white",
-            linewidths=0.42 if method_name == "dadgp" else 0.2,
-            label=method_label(method_name),
-            zorder=5 if method_name == "dadgp" else 4,
+            dadgp_front["log10_ber"],
+            dadgp_front["papr_db"],
+            s=30,
+            color=color_for_method("dadgp"),
+            alpha=0.9,
+            edgecolors=DADGP_EDGE_COLOR,
+            linewidths=0.42,
+            label=DADGP_LEGEND_LABEL,
+            zorder=5,
         )
 
     ax.set_xlabel("log10(BER)")
-    ax.set_ylabel("PAPR (dB)")
-    ax.set_title("BER-PAPR projection with throughput field")
+    ax.set_ylabel("PAPR")
     style_axes(ax)
-    add_compact_legend(ax, loc="upper right", ncol=2)
+    add_compact_legend(ax, fontsize=UPPER_RIGHT_LEGEND_SIZE)
     save_figure(fig, FIG_DIR / "07_pareto_projection_density.png")
 
 
 def plot_four_objective_bubble(tagged: pd.DataFrame, summary_note: str) -> None:
     global_front = tagged[tagged["is_run_global_pareto"]].copy()
-    sizes = scaled_marker_sizes(global_front["energy_efficiency"])
+    dadgp_front, other_front = split_dadgp_other(global_front)
 
     fig, ax = plt.subplots(figsize=FIGURE_SIZE, constrained_layout=True)
+    color_source = other_front if not other_front.empty else global_front
     scatter = ax.scatter(
-        global_front["throughput_mbps"],
-        global_front["log10_ber"],
-        c=global_front["papr_db"],
-        s=sizes,
+        color_source["throughput_mbps"],
+        color_source["log10_ber"],
+        c=color_source["papr_db"],
+        s=scaled_marker_sizes(color_source["energy_efficiency"]),
         cmap="cividis_r",
-        alpha=0.38,
+        alpha=0.38 if not other_front.empty else 0.0,
         edgecolors="none",
         linewidths=0.0,
+        label=OTHER_LEGEND_LABEL if not other_front.empty else "_nolegend_",
         rasterized=True,
         zorder=1,
     )
 
-    dadgp_front = global_front[global_front["method"] == "dadgp"]
     if not dadgp_front.empty:
         ax.scatter(
             dadgp_front["throughput_mbps"],
@@ -1138,39 +1121,18 @@ def plot_four_objective_bubble(tagged: pd.DataFrame, summary_note: str) -> None:
             alpha=0.9,
             edgecolors=DADGP_EDGE_COLOR,
             linewidths=0.45,
-            label="DADGP global PF hits",
+            label=DADGP_LEGEND_LABEL,
             zorder=5,
         )
 
     colorbar = fig.colorbar(scatter, ax=ax)
-    style_colorbar(colorbar, "PAPR (dB)")
+    style_colorbar(colorbar, "PAPR")
 
-    quantiles = global_front["energy_efficiency"].quantile([0.25, 0.5, 0.75])
-    handles = [
-        ax.scatter([], [], s=size, facecolors="#C8C8C8", edgecolors="#666666", alpha=0.7)
-        for size in scaled_marker_sizes(quantiles)
-    ]
-    labels = [f"EE {format_millions(value)}" for value in quantiles]
-    size_legend = ax.legend(
-        handles,
-        labels,
-        title="Bubble size",
-        loc="upper right",
-        fontsize=LEGEND_SIZE,
-        title_fontsize=LEGEND_SIZE,
-        frameon=False,
-        handletextpad=0.35,
-        labelspacing=0.28,
-    )
-    ax.add_artist(size_legend)
-    if not dadgp_front.empty:
-        add_compact_legend(ax, loc="lower left")
+    add_compact_legend(ax)
 
-    ax.set_xlabel("Throughput (Mbps)")
+    ax.set_xlabel("Throughput")
     ax.set_ylabel("log10(BER)")
-    ax.set_title("Four-objective global Pareto bubble map")
     style_axes(ax)
-    add_panel_note(ax, summary_note, loc="upper left")
     save_figure(fig, FIG_DIR / "08_four_objective_bubble.png")
 
 

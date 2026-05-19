@@ -66,6 +66,13 @@ ERROR_MARKER_SIZE = 6.5;
 ERROR_MARKER_ALPHA = 0.28;
 EXPORT_BASENAME_PREFIX = 'ofdm_error_constellation_13methods';
 
+% 字体大小与 plot_paper_4obj_pareto.py 保持一致。
+TITLE_FONT_SIZE = 22;
+LABEL_FONT_SIZE = 20;
+TICK_FONT_SIZE = 18;
+LEGEND_FONT_SIZE = 18;
+EVM_LABEL_FONT_SIZE = 12;
+
 %% -------------------- 配置解析 -----------------
 selectedMethods = normalize_method_list(SELECTED_METHODS);
 inputMooDir = char(string(INPUT_MOO_DIR));
@@ -75,6 +82,13 @@ modulationOrder = MODULATION_ORDER;
 simulationSeed = SIMULATION_SEED;
 simConfig = SIM_CONFIG;
 throughputFloorMbps = MIN_THROUGHPUT_FOR_EVM_SELECTION_MBPS;
+fontSizes = struct( ...
+    'title', TITLE_FONT_SIZE, ...
+    'label', LABEL_FONT_SIZE, ...
+    'tick', TICK_FONT_SIZE, ...
+    'legend', LEGEND_FONT_SIZE, ...
+    'evmLabel', EVM_LABEL_FONT_SIZE ...
+);
 
 if ~exist(outputFigDir, 'dir')
     mkdir(outputFigDir);
@@ -162,6 +176,7 @@ for specIdx = 1:numel(methodSpecs)
         ERROR_CIRCLE_QUANTILE, ...
         ERROR_MARKER_SIZE, ...
         ERROR_MARKER_ALPHA, ...
+        fontSizes, ...
         figurePathPng, ...
         figurePathPdf ...
     );
@@ -349,8 +364,8 @@ function [selectedRow, selectionScore, selectionInfo] = select_representative_ca
     selectionScore = selectedRow.real_evm_rms;
 end
 
-function plot_constellation_figure(plotSpec, modulationOrder, simulationSeed, maxSymbolsPerFigure, axisLimit, circleQuantile, markerSize, markerAlpha, outputPng, outputPdf)
-    set_paper_style();
+function plot_constellation_figure(plotSpec, modulationOrder, simulationSeed, maxSymbolsPerFigure, axisLimit, circleQuantile, markerSize, markerAlpha, fontSizes, outputPng, outputPdf)
+    set_paper_style(fontSizes);
 
     fig = figure('Color', 'w', 'Units', 'inches', 'Position', [1, 1, 3.3, 3.05]);
     ax = axes('Parent', fig);
@@ -396,22 +411,22 @@ function plot_constellation_figure(plotSpec, modulationOrder, simulationSeed, ma
     ylim(ax, [-axisLimit, axisLimit]);
     grid(ax, 'on');
     box(ax, 'off');
-    style_axes(ax);
+    style_axes(ax, fontSizes);
 
     if strcmp(plotSpec.methodName, 'dadgp')
         ax.LineWidth = 0.85;
     end
 
-    add_evm_label(ax, plotSpec.selectedRow.real_evm_rms);
+    add_evm_label(ax, plotSpec.selectedRow.real_evm_rms, fontSizes);
 
-    xlabel(ax, 'Error In-phase');
-    ylabel(ax, 'Error Quadrature');
+    xlabel(ax, 'Error In-phase', 'FontSize', fontSizes.label);
+    ylabel(ax, 'Error Quadrature', 'FontSize', fontSizes.label);
 
     save_figure(fig, outputPng, outputPdf);
     close(fig);
 end
 
-function add_evm_label(ax, evmValue)
+function add_evm_label(ax, evmValue, fontSizes)
     if ~isfinite(evmValue)
         labelText = 'EVM = N/A';
     else
@@ -423,7 +438,7 @@ function add_evm_label(ax, evmValue)
         'HorizontalAlignment', 'left', ...
         'VerticalAlignment', 'top', ...
         'FontName', 'Arial', ...
-        'FontSize', 7.0, ...
+        'FontSize', fontSizes.evmLabel, ...
         'FontWeight', 'bold', ...
         'Color', [0.10, 0.10, 0.10], ...
         'BackgroundColor', [1.00, 1.00, 1.00], ...
@@ -442,18 +457,24 @@ function symbols = downsample_symbols(symbols, maxSymbols)
     symbols = symbols(indices);
 end
 
-function set_paper_style()
+function set_paper_style(fontSizes)
     set(groot, 'defaultFigureColor', 'w');
     set(groot, 'defaultAxesFontName', 'Arial');
     set(groot, 'defaultTextFontName', 'Arial');
-    set(groot, 'defaultAxesFontSize', 7.0);
-    set(groot, 'defaultTextFontSize', 7.0);
+    set(groot, 'defaultAxesFontSize', fontSizes.tick);
+    set(groot, 'defaultTextFontSize', fontSizes.tick);
     set(groot, 'defaultAxesLineWidth', 0.55);
+    try
+        set(groot, 'defaultLegendFontSize', fontSizes.legend);
+        set(groot, 'defaultAxesTitleFontSizeMultiplier', fontSizes.title / fontSizes.tick);
+        set(groot, 'defaultAxesLabelFontSizeMultiplier', fontSizes.label / fontSizes.tick);
+    catch
+    end
 end
 
-function style_axes(ax)
+function style_axes(ax, fontSizes)
     ax.FontName = 'Arial';
-    ax.FontSize = 6.2;
+    ax.FontSize = fontSizes.tick;
     ax.LineWidth = 0.55;
     ax.XColor = [0.17, 0.17, 0.17];
     ax.YColor = [0.17, 0.17, 0.17];
