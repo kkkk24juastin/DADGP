@@ -134,7 +134,7 @@ for specIdx = 1:numel(methodSpecs)
     fprintf('Selected x = [%.6g, %.6g, %.6g, %.6g]\n', ...
         selectedRow.x1, selectedRow.x2, selectedRow.x3, selectedRow.x4);
     fprintf('Selected metrics: EVM=%.6g, throughput=%.6g Mbps, BER=%.6g, PAPR=%.6g dB\n', ...
-        selectedRow.real_evm_rms, ...
+        evm_rms_to_db(selectedRow.real_evm_rms), ...
         selectedRow.evm_eval_throughput_mbps, ...
         selectedRow.evm_eval_ber, ...
         selectedRow.evm_eval_papr_db);
@@ -162,7 +162,7 @@ for specIdx = 1:numel(methodSpecs)
     );
 
     fprintf('Real metrics: throughput=%.4g Mbps, BER=%.4g, PAPR=%.4g dB, EVM=%.4g\n', ...
-        metrics.thr_mbps, metrics.ber, metrics.papr_dB, metrics.evm_rms);
+        metrics.thr_mbps, metrics.ber, metrics.papr_dB, evm_rms_to_db(metrics.evm_rms));
     figureBaseName = sprintf('%s_%s', EXPORT_BASENAME_PREFIX, sanitize_file_stem(spec.methodName));
     figurePathPng = fullfile(outputFigDir, sprintf('%s.png', figureBaseName));
     figurePathPdf = fullfile(outputFigDir, sprintf('%s.pdf', figureBaseName));
@@ -426,11 +426,12 @@ function plot_constellation_figure(plotSpec, modulationOrder, simulationSeed, ma
     close(fig);
 end
 
-function add_evm_label(ax, evmValue, fontSizes)
-    if ~isfinite(evmValue)
+function add_evm_label(ax, evmRmsValue, fontSizes)
+    evmDisplayValue = evm_rms_to_db(evmRmsValue);
+    if ~isfinite(evmDisplayValue)
         labelText = 'EVM = N/A';
     else
-        labelText = sprintf('EVM = %.3f', evmValue);
+        labelText = sprintf('EVM = %.3f', evmDisplayValue);
     end
 
     text(ax, 0.035, 0.955, labelText, ...
@@ -445,6 +446,10 @@ function add_evm_label(ax, evmValue, fontSizes)
         'EdgeColor', [0.72, 0.72, 0.72], ...
         'LineWidth', 0.45, ...
         'Margin', 2.4);
+end
+
+function evmDbValue = evm_rms_to_db(evmRmsValue)
+    evmDbValue = 20 * log10(max(evmRmsValue, realmin));
 end
 
 function symbols = downsample_symbols(symbols, maxSymbols)

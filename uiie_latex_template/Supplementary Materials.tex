@@ -241,7 +241,7 @@
 		% --- 第一行: Task 1 (a) ---
 		\begin{subfigure}[b]{1.0\textwidth}
 				\centering
-				\includegraphics[width=0.8\textwidth]{../mathexam/fig/metrics/task1_metrics.pdf}
+					\includegraphics[width=0.8\textwidth]{FIG7(a).pdf}
 				\caption{Task 1 ($y_1$)}
 				\label{fig:task1_curves}
 			\end{subfigure}
@@ -251,7 +251,7 @@
 		% --- 第二行: Task 2 (b) ---
 		\begin{subfigure}[b]{1.0\textwidth}
 				\centering
-				\includegraphics[width=0.8\textwidth]{../mathexam/fig/metrics/task2_metrics.pdf}
+					\includegraphics[width=0.8\textwidth]{FIG7(b).pdf}
 				\caption{Task 2 ($y_2$)}
 				\label{fig:task2_curves}
 			\end{subfigure}
@@ -261,7 +261,7 @@
 		% --- 第三行: Task 3 (c) ---
 		\begin{subfigure}[b]{1.0\textwidth}
 				\centering
-				\includegraphics[width=0.8\textwidth]{../mathexam/fig/metrics/task3_metrics.pdf}
+					\includegraphics[width=0.8\textwidth]{FIG7(c).pdf}
 				\caption{Task 3 ($y_3$)}
 				\label{fig:task3_curves}
 			\end{subfigure}
@@ -307,19 +307,19 @@
 		\centering
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sigma_sensitivity/task1_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG8(a).pdf}
 			\caption{Task 1}
 		\end{subfigure}
 
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sigma_sensitivity/task2_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG8(b).pdf}
 			\caption{Task 2}
 		\end{subfigure}
 
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sigma_sensitivity/task3_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG8(c).pdf}
 			\caption{Task 3}
 		\end{subfigure}
 		\caption{Taskwise error-bar plots for Gaussian bandwidth sensitivity.}
@@ -354,19 +354,19 @@
 		\centering
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/depth_complexity/task1_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG9(a).pdf}
 			\caption{Task 1}
 		\end{subfigure}
 
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/depth_complexity/task2_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG9(b).pdf}
 			\caption{Task 2}
 		\end{subfigure}
 
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/depth_complexity/task3_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG9(c).pdf}
 			\caption{Task 3}
 		\end{subfigure}
 		\caption{Taskwise error-bar plots for depth and hidden-complexity sensitivity.}
@@ -401,19 +401,19 @@
 		\centering
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sample_size/task1_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG10(a).pdf}
 			\caption{Task 1}
 		\end{subfigure}
 
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sample_size/task2_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG10(b).pdf}
 			\caption{Task 2}
 		\end{subfigure}
 
 		\begin{subfigure}[b]{0.9\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{../mathexam/fig/sensitivity/sample_size/task3_metrics_errorbars.pdf}
+				\includegraphics[width=\textwidth]{FIG10(c).pdf}
 			\caption{Task 3}
 		\end{subfigure}
 		\caption{Taskwise error-bar plots for sample-size sensitivity.}
@@ -427,36 +427,38 @@
 	\section{Wall-clock Training Time and Time Complexity} \label{app:F}
 	\resetappendixcounters % [#1]
 
-	This appendix reports the detailed wall-clock training time and asymptotic time-complexity order of the Gaussian process surrogate methods evaluated in Section~4.2 of the main paper. All methods are trained for $500$ epochs on the OFDM dataset with $N=400$ training samples, $B=128$, $H=5$, $M=128$, $T=3$ and $L=3$, on a single workstation equipped with an NVIDIA RTX~2060 GPU, PyTorch~2.11+cu130 and Python~3.10. Table~\ref{tab:training_time_appendix} aggregates the total wall-clock time, the per-epoch time, the trainable-parameter count, and the asymptotic per-epoch order for each method.
+		\textcolor{red}{This appendix reports the detailed wall-clock training time and asymptotic time-complexity order of the Gaussian process surrogate methods evaluated in Section~4.2 of the main paper. All methods are trained for $500$ epochs on the OFDM dataset with $N=400$ training samples, $B=128$, hidden latent dimension $h=5$, $M=128$ inducing points, $p=3$ response tasks, and $q=3$ LMC latent functions where applicable, on a single workstation equipped with an NVIDIA RTX~2060 GPU, PyTorch~2.11+cu130 and Python~3.10. Table~\ref{tab:training_time_appendix} aggregates the total wall-clock time, the per-epoch time, the trainable-parameter count, and the total asymptotic training order for each method.}% [#5]
 
-	本附录给出正文 Section~4.2 中各高斯过程代理方法的 wall-clock 训练耗时与渐近时间复杂度。所有方法在 OFDM 数据集上训练 $500$ epochs，使用 $N=400$ 训练样本、$B=128$、$H=5$、$M=128$、$T=3$、$L=3$，硬件为一块 NVIDIA RTX~2060 GPU，软件栈为 PyTorch~2.11+cu130、Python~3.10。Table~\ref{tab:training_time_appendix} 汇总各方法的总耗时、单 epoch 耗时、可训练参数量以及单 epoch 的渐近阶。
+		\textcolor{red}{本附录给出正文 Section~4.2 中各高斯过程代理方法的 wall-clock 训练耗时与渐近时间复杂度。所有方法在 OFDM 数据集上训练 $500$ epochs，使用 $N=400$ 训练样本、$B=128$、隐藏潜在维度 $h=5$、$M=128$ 个 inducing points、$p=3$ 个响应任务；对 LMC-DGP，latent functions 数为 $q=3$。硬件为一块 NVIDIA RTX~2060 GPU，软件栈为 PyTorch~2.11+cu130、Python~3.10。Table~\ref{tab:training_time_appendix} 汇总各方法的总耗时、单 epoch 耗时、可训练参数量以及总训练渐近阶。}% [#5]
 
-	\begin{table}[!h]
-		\centering
-		\caption{Wall-clock training time of all Gaussian process surrogate methods on the OFDM dataset ($500$ epochs, NVIDIA RTX~2060, PyTorch~2.11+cu130).}
+		\begin{table}[!h]
+			\centering
+			\footnotesize
+			\setlength{\tabcolsep}{2.5pt}
+			\caption{Wall-clock training time of all Gaussian process surrogate methods on the OFDM dataset ($500$ epochs, NVIDIA RTX~2060, PyTorch~2.11+cu130).}
 		\caption*{在 OFDM 数据集上各高斯过程代理方法的 wall-clock 训练耗时（$500$ epochs，NVIDIA RTX~2060，PyTorch~2.11+cu130）。}
 		\label{tab:training_time_appendix}
 		\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}
 			\toprule
-			\textbf{Method} & \textbf{Total (s)} & \textbf{s/epoch} & \textbf{Params (K)} & \textbf{Asymptotic order} \\
-			\midrule
-			DA-DGP            & $397.79$ & $0.7956$ & $136.6$ & $\mathcal{O}(4\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			\textcolor{red}{T-Atten}    & $387.78$ & $0.7756$ & $136.6$ & $\mathcal{O}(4\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\% [#7]
-			MGDA              & $164.87$ & $0.3297$ & $136.6$ & $\mathcal{O}(T\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			Indep-DGP         & $163.40$ & $0.3268$ & $306.9$ & $\mathcal{O}(T\,E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			DWA               & $109.25$ & $0.2185$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			LMC-DGP           & $103.35$ & $0.2067$ & $136.7$ & $\mathcal{O}(E\lceil N/B\rceil(H+L)(BM^{2}\!+\!M^{3}))$\\
-			Equal             & $100.57$ & $0.2011$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			Pure DGP          & $\phantom{0}99.56$ & $0.1991$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			UW                & $\phantom{0}96.04$ & $0.1921$ & $136.6$ & $\mathcal{O}(E\lceil N/B\rceil(H+T)(BM^{2}\!+\!M^{3}))$\\
-			Indep-HetGP       & $\phantom{00}10.51$ & $0.0210$ & $0.021$ & $\mathcal{O}(E\,T\,N^{3})$\\
+				\textbf{Method} & \textbf{Total (s)} & \textbf{s/epoch} & \textbf{Params (K)} & \textbf{\textcolor{red}{Total asymptotic order}} \\
+				\midrule
+				DA-DGP            & $397.79$ & $0.7956$ & $136.6$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\
+				\textcolor{red}{T-Atten}    & $387.78$ & $0.7756$ & $136.6$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\% [#7]
+				MGDA              & $164.87$ & $0.3297$ & $136.6$ & \textcolor{red}{$\mathcal{O}(p\,E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\
+				Indep-DGP         & $163.40$ & $0.3268$ & $306.9$ & \textcolor{red}{$\mathcal{O}(p\,E\lceil N/B\rceil(h+1)(BM^{2}\!+\!M^{3}))$}\\
+				DWA               & $109.25$ & $0.2185$ & $136.6$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\
+				LMC-DGP           & $103.35$ & $0.2067$ & $136.7$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+q)(BM^{2}\!+\!M^{3}))$}\\
+				Equal             & $100.57$ & $0.2011$ & $136.6$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\
+				Pure DGP          & $\phantom{0}99.56$ & $0.1991$ & $136.6$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\
+				UW                & $\phantom{0}96.04$ & $0.1921$ & $136.6$ & \textcolor{red}{$\mathcal{O}(E\lceil N/B\rceil(h+p)(BM^{2}\!+\!M^{3}))$}\\
+				Indep-HetGP       & $\phantom{00}10.51$ & $0.0210$ & $0.021$ & \textcolor{red}{$\mathcal{O}(E\,p\,N^{3})$}\\
 			\bottomrule
 		\end{tabular*}
 	\end{table}
 
-	The constant factor in the per-epoch order of DA-DGP and \textcolor{red}{T-Atten} arises from the inner virtual update, the unrolled validation backward, and two finite-difference Hessian--vector evaluations introduced by the bilevel optimisation; the gradient-balancing baseline (MGDA) and the independent-task baseline (Indep-DGP) instead scale linearly in the number of tasks $T$. The heteroscedastic exact GP (Indep-HetGP) bypasses the variational machinery and is dominated by the dense $N\times N$ Cholesky factorisation, which remains affordable because $N=400$ is small. These numbers verify that the additional wall-clock overhead of DA-DGP is a small constant factor amortised over a single training pass, in exchange for the robust Pareto frontier reported in Table~7 of the main paper.% [#7]
+		\textcolor{red}{The table reports asymptotic orders up to constant factors, so DA-DGP and T-Atten have the same formal order as the shared DGP backbone. Their larger wall-clock times arise from constant-factor operations introduced by bilevel optimisation: the inner virtual update, the unrolled validation backward, and two finite-difference Hessian--vector evaluations. The gradient-balancing baseline (MGDA) and the independent-task baseline (Indep-DGP) instead scale approximately linearly in the number of tasks $p$. The heteroscedastic exact GP (Indep-HetGP) bypasses the variational machinery and is dominated by the dense $N\times N$ Cholesky factorisation, which remains affordable because $N=400$ is small. These numbers verify that the additional wall-clock overhead of DA-DGP is acceptable for a one-shot surrogate fit, in exchange for the robust Pareto frontier reported in Table~7 of the main paper.}% [#5/#7]
 
-	DA-DGP 与 \textcolor{red}{T-Atten} 的单 epoch 阶中的常数因子源自 bilevel 优化引入的内层虚拟更新、验证 unrolled 反向传播以及两次 finite-difference Hessian--vector 近似；梯度均衡基线（MGDA）和独立任务基线（Indep-DGP）则随任务数 $T$ 线性增长。异方差 exact GP（Indep-HetGP）不经过变分机制，其代价由 $N\times N$ Cholesky 分解主导，因 $N=400$ 较小而仍可接受。综上，DA-DGP 多出的 wall-clock 开销只是一次性训练中的小常数因子，所换得的是正文 Table~7 中的鲁棒 Pareto 前沿。% [#7]
+		\textcolor{red}{表中渐近阶省略常数因子，因此 DA-DGP 与 T-Atten 在形式上与共享 DGP 主干保持相同阶。二者 wall-clock 时间较高，来自 bilevel 优化引入的常数因子操作，包括内层虚拟更新、验证 unrolled 反向传播以及两次 finite-difference Hessian--vector 近似；梯度均衡基线（MGDA）和独立任务基线（Indep-DGP）则近似随任务数 $p$ 线性增长。异方差 exact GP（Indep-HetGP）不经过变分机制，其代价由 $N\times N$ Cholesky 分解主导，因 $N=400$ 较小而仍可接受。综上，DA-DGP 多出的 wall-clock 开销对于一次性代理拟合是可接受的，所换得的是正文 Table~7 中的鲁棒 Pareto 前沿。}% [#5/#7]
 
 	\subsection{\textcolor{red}{Robust Pareto Indicator Settings}} \label{app:F1}% [#4]
 

@@ -44,13 +44,28 @@
     \usepackage{algpseudocode}
     \usepackage{bm}
     \usepackage{setspace}
-    \usepackage{float} % 需要这个包来控制样式
-    \usepackage{graphicx}
-    \usepackage{subcaption}
-    \usepackage{booktabs} % 用于专业表格线条 (\toprule, \midrule, \bottomrule)
-    \usepackage{multirow} % 用于合并单元格 (\multirow)
+	    \usepackage{float} % 需要这个包来控制样式
+	    \usepackage{graphicx}
+	    \usepackage{subcaption}
+	    \usepackage{booktabs} % 用于专业表格线条 (\toprule, \midrule, \bottomrule)
+	    \usepackage{multirow} % 用于合并单元格 (\multirow)
+	    \captionsetup{font=small,skip=3pt}
+	    \captionsetup[sub]{font=small,skip=2pt}
+	    \setlength{\textfloatsep}{9pt plus 2pt minus 2pt}
+	    \setlength{\floatsep}{8pt plus 2pt minus 2pt}
+	    \setlength{\intextsep}{8pt plus 2pt minus 2pt}
+	    \setlength{\abovecaptionskip}{3pt plus 1pt minus 1pt}
+	    \setlength{\belowcaptionskip}{1pt plus 1pt minus 1pt}
+	    \setcounter{topnumber}{5}
+	    \setcounter{bottomnumber}{4}
+	    \setcounter{totalnumber}{8}
+	    \renewcommand{\topfraction}{0.95}
+	    \renewcommand{\bottomfraction}{0.85}
+	    \renewcommand{\textfraction}{0.05}
+	    \renewcommand{\floatpagefraction}{0.78}
+	    \emergencystretch=2em
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	%%%%% Author package list and commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%%%%% Here are some examples %%%%%%%%%%%%%%
@@ -97,10 +112,10 @@
 		
 	\begin{abstract}
 Robust parameter design (RPD) for modern complex engineering systems is frequently challenged by \textcolor{red}{limited engineering samples}% [#12]
-, non-stationary response surfaces, and strongly conflicting objectives. Existing Gaussian process (GP) surrogate models, constrained by global stationarity assumptions and mean-oriented loss functions, often suffer from underfitting in the region of interest (ROI) critical for optimization. To overcome these limitations, this paper proposes a novel modeling framework named dual-attention deep Gaussian process (DA-DGP). A hierarchical attention mechanism is constructed: at the data level, a sample-level attention is designed to assign higher learning weights to samples within the ROI, achieving refined local modeling of potential optimal regions; at the task level, a meta-learning-based dynamic weight adjustment strategy is introduced to effectively mitigate gradient conflicts among heterogeneous objectives. By deriving a rigorous weighted variational evidence lower bound (ELBO), the framework realizes end-to-end joint optimization of model parameters and attention weights. \textcolor{red}{Experiments on numerical benchmarks and a 5G/6G OFDM design show that DA-DGP is the strongest one-shot GP surrogate in the current experiments: it reduces average local RMSE by 14.3\%--59.0\% relative to the compared numerical baselines and attains the highest AHP-TOPSIS robust Pareto rank in the engineering case, while the EVM of its selected optimal solutions still shows a modest advantage compared with the sequentially augmented MOBO methods.}% [#9/#11/#12]
+, non-stationary response surfaces, and strongly conflicting objectives. Existing Gaussian process (GP) surrogate models, constrained by global stationarity assumptions and mean-oriented loss functions, often suffer from underfitting in the region of interest (ROI) critical for optimization. To overcome these limitations, this paper proposes a novel modeling framework named dual-attention deep Gaussian process (DA-DGP). A hierarchical attention mechanism is constructed: at the data level, a sample-level attention is designed to assign higher learning weights to samples within the ROI, achieving refined local modeling of potential optimal regions; at the task level, a meta-learning-based dynamic weight adjustment strategy is introduced to effectively mitigate gradient conflicts among heterogeneous objectives. By deriving a rigorous weighted variational evidence lower bound (ELBO), the framework realizes end-to-end joint optimization of model parameters and attention weights. \textcolor{red}{Experiments on numerical benchmarks and a 5G/6G OFDM design show that DA-DGP is the strongest one-shot GP surrogate in the current experiments: it reduces average local RMSE by 14.3\%--59.0\% relative to the compared numerical baselines, attains the highest AHP-TOPSIS robust Pareto rank in the engineering case, and keeps the selected-solution EVM in the same high-quality range as sequentially augmented MOBO methods while avoiding their iterative acquisition loop.}% [#9/#11/#12]
 
 现代复杂工程系统的鲁棒参数设计（RPD）通常面临\textcolor{red}{有限工程样本}% [#12]
-、非平稳响应曲面以及多目标强冲突等挑战。现有 Gaussian process（GP）代理模型受全局平稳性假设和均值导向损失函数限制，往往在对优化至关重要的 region of interest（ROI）内出现欠拟合。为克服这些局限，本文提出一种新的建模框架，即 dual-attention deep Gaussian process（DA-DGP）。该框架构建了分层注意力机制：在数据层面，设计样本级注意力，为 ROI 内样本分配更高学习权重，从而实现对潜在最优区域的精细局部建模；在任务层面，引入基于 meta-learning 的动态权重调整策略，以有效缓解异质目标之间的梯度冲突。通过推导严格的加权变分 evidence lower bound（ELBO），该框架实现了模型参数与注意力权重的端到端联合优化。\textcolor{red}{数值基准与 5G/6G OFDM 设计实验表明，DA-DGP 是当前实验中最强的一次性 GP 代理：在数值案例中，相比所比较的基线方法，其平均局部 RMSE 降低 14.3\%--59.0\%；在工程案例中，其鲁棒 Pareto 前沿取得最高 AHP-TOPSIS 综合排名，并且所选最优解的 EVM 与序贯式加点的 MOBO 方法结果相比，也保持一定的优势。}% [#9/#11/#12]
+、非平稳响应曲面以及多目标强冲突等挑战。现有 Gaussian process（GP）代理模型受全局平稳性假设和均值导向损失函数限制，往往在对优化至关重要的 region of interest（ROI）内出现欠拟合。为克服这些局限，本文提出一种新的建模框架，即 dual-attention deep Gaussian process（DA-DGP）。该框架构建了分层注意力机制：在数据层面，设计样本级注意力，为 ROI 内样本分配更高学习权重，从而实现对潜在最优区域的精细局部建模；在任务层面，引入基于 meta-learning 的动态权重调整策略，以有效缓解异质目标之间的梯度冲突。通过推导严格的加权变分 evidence lower bound（ELBO），该框架实现了模型参数与注意力权重的端到端联合优化。\textcolor{red}{数值基准与 5G/6G OFDM 设计实验表明，DA-DGP 是当前实验中最强的一次性 GP 代理：在数值案例中，相比所比较的基线方法，其平均局部 RMSE 降低 14.3\%--59.0\%；在工程案例中，其鲁棒 Pareto 前沿取得最高 AHP-TOPSIS 综合排名，且所选最优解的 EVM 与序贯式加点 MOBO 方法处于同一优良区间，同时避免了后者的迭代采集过程。}% [#9/#11/#12]
 	\end{abstract}
 			
 	\noindent%
@@ -215,7 +230,7 @@ where the first term represents the expected log-likelihood (model fit) and the 
 
 
 \subsection{Multi-output Deep Gaussian Process Framework} \label{s:sec2.3}
-To overcome the limitations of stationary kernels in single-layer GPs, the DGP frameworkis employed \cite{Li2025}. This architecture hierarchically stacks sparse GP modules to capture complex non-stationary features while preserving Bayesian uncertainty. For the multi-objective nature of RPD, a multi-output structure is constructed (Figure \ref{fig:1}). \textcolor{red}{In the experiments of this paper, the default surrogate adopts two stochastic GP layers (one hidden layer and one output layer), while deeper variants are examined later only for sensitivity analysis rather than as the default architecture.}
+To overcome the limitations of stationary kernels in single-layer GPs, the DGP framework is employed \cite{Li2025}. This architecture hierarchically stacks sparse GP modules to capture complex non-stationary features while preserving Bayesian uncertainty. For the multi-objective nature of RPD, a multi-output structure is constructed (Figure \ref{fig:1}). \textcolor{red}{In the experiments of this paper, the default surrogate adopts two stochastic GP layers (one hidden layer and one output layer), while deeper variants are examined later only for sensitivity analysis rather than as the default architecture.}
 
 为克服单层 GP 中平稳核的局限，本文采用 DGP 框架 \cite{Li2025}。该结构以层次化方式堆叠 sparse GP 模块，在保留 Bayesian uncertainty 的同时捕捉复杂非平稳特征。针对 RPD 的多目标性质，本文构建了 multi-output 结构（Figure \ref{fig:1}）。\textcolor{red}{在本文实验中，默认代理模型采用两层随机 GP 结构（一个隐藏层加一个输出层），而更深的结构仅在后文作为敏感性分析对象出现，并不作为默认架构。}
 
@@ -422,7 +437,7 @@ Despite the overhead of bilevel optimization, the computational cost remains fea
 
 尽管 bilevel optimization 会带来额外开销，但其计算成本对于 RPD 仍然可行（通常 $N<1000$），因为总体开销主要由 GP inference 的固有复杂度主导。\textcolor{red}{对于共享式稀疏变分 DGP 主干而言，每个 batch 的主导计算量仍然是标准 sparse-DGP 的 $B M^2 + M^3$ 项，其中 $B$ 为 batch size，$M$ 为 inducing points 数量。相较于普通共享 DGP 训练，DA-DGP 的额外代价主要来自一次虚拟梯度更新、一次验证集反向传播以及一次 finite-difference Hessian-vector 近似；后续工程实验会把这部分额外开销与 Equal、MGDA 和 Indep-DGP 基线做实证比较。}为确保数值稳定性，实现中包含：（i）gradient clipping（阈值 1.0）以防止梯度爆炸；（ii）解耦学习率（$\eta_{\theta} \gg \eta_{\lambda}$）以建立稳定的“快参数、慢权重”动态；（iii）Softmax activation 以强制权重非负。完整流程总结于 Algorithm \ref{alg:da_dgp}。
 
-\begin{algorithm}[H]
+\begin{algorithm}[!htbp]
 	\caption{DA-DGP modeling workflow.}
 	\caption*{DA-DGP 建模流程。}
 	\label{alg:da_dgp}
@@ -548,7 +563,7 @@ These responses represent escalating levels of complexity: $y_1$ serves as a smo
 	% 第一张子图 (a)
 	\begin{subfigure}[b]{0.3\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{FIG3a.pdf}
+		\includegraphics[width=\textwidth]{FIG3(a).pdf}
 		\caption{Variation of $\sigma_f^2$}
 		\caption*{$\sigma_f^2$ 的变化}
 		\label{fig:sigma_variation}		
@@ -557,7 +572,7 @@ These responses represent escalating levels of complexity: $y_1$ serves as a smo
 	% 第二张子图 (b)
 	\begin{subfigure}[b]{0.3\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{FIG3b.pdf}
+		\includegraphics[width=\textwidth]{FIG3(b).pdf}
 		\caption{Variation of $l$}
 		\caption*{$l$ 的变化}
 		\label{fig:lengthscale_variation}
@@ -566,7 +581,7 @@ These responses represent escalating levels of complexity: $y_1$ serves as a smo
 	% 第三张子图 (c)
 	\begin{subfigure}[b]{0.3\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{FIG3c.pdf}
+		\includegraphics[width=\textwidth]{FIG3(c).pdf}
 
 		\caption{Variation of task weights}
 		\caption*{任务权重的变化}
@@ -685,7 +700,7 @@ To validate the proposed framework on complex engineering systems, this section 
 	\centering
 	\begin{subfigure}[b]{0.35\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{FIG5a.pdf} 
+		\includegraphics[width=\textwidth]{FIG4(a).pdf} 
 		\caption{OFDM signal structure}
 		\caption*{OFDM 信号结构}
 		\label{fig:ofdm_signals}
@@ -693,7 +708,7 @@ To validate the proposed framework on complex engineering systems, this section 
 %	\hfill 
 	\begin{subfigure}[b]{0.35\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{FIG5b.pdf}
+		\includegraphics[width=\textwidth]{FIG4(b).pdf}
 		\caption{Pinching antenna system}
 		\caption*{Pinching 天线系统}
 		\label{fig:pinching_system}
@@ -757,7 +772,7 @@ where $\Delta\hat{m}_{i}$ is the pooled global range of the $i$-th robust mean a
 
 \textcolor{red}{每种方法的代理模型训练一次，NSGA-II 以 $K=20$ 次独立蒙特卡洛试验重复，所有 Pareto 候选解再在 OFDM 链路的 $R=16$ 次独立蒙特卡洛模拟下评估。}% [#11/#12] 结果见 Tables 4-5。
 
-\begin{table}[!h]
+\begin{table}[!htbp]
 	\centering
 	\caption{Summary of optimization results and validation comparisons.}
 	\caption*{优化结果与验证比较汇总。}
@@ -818,7 +833,7 @@ where $\Delta\hat{m}_{i}$ is the pooled global range of the $i$-th robust mean a
 	\end{tabular*}
 \end{table}
 
-\begin{table}[!h]
+\begin{table}[!htbp]
 	\centering
 	\caption{Statistical summary of QL for different methods.}
 	\caption*{不同方法 QL 的统计汇总。}
@@ -880,13 +895,13 @@ where $\Delta\hat{m}_{i}$ is the pooled global range of the $i$-th robust mean a
 \end{table}
 
 
-Tables 4-5 summarize the statistical performance and QL over 20 independent runs. \textcolor{red}{Under the prespecified selection rule, the selected optimal solutions settle in a narrow band: robust throughput between $5.88$ and $6.11$\,Mbps, robust BER between $0.2160$ and $0.2186$, and robust PAPR between $7.85$ and $8.58$\,dB. DA-DGP attains the highest robust throughput and the lowest QL$_{\text{Throughput}}$ among the ten one-shot Gaussian process surrogates, demonstrating that its dual-attention Pareto set actually reaches the aggressive $7.0$\,Mbps target. Only the sequential MOBO baselines BO-qEHVI and BO-qNEHVI marginally improve on the throughput component, at the cost of (i) substantially higher PAPR (QL$_{\text{PAPR}}\!\approx\!4.3$--$4.4$ vs DA-DGP $3.47$) and (ii) an iterative acquisition loop—an essentially different operating regime that requires sequential simulator calls rather than the one-shot surrogate fit considered here.}% [#4/#6/#7/#9/#11] The role of DA-DGP within this band is characterised below from three angles:
+Tables 4-5 summarize the statistical performance and QL over 20 independent runs. \textcolor{red}{Under the prespecified selection rule, the selected optimal solutions settle in a narrow band: robust throughput between $5.88$ and $6.11$\,Mbps, robust BER between $0.2160$ and $0.2186$, and robust PAPR between $7.85$ and $8.58$\,dB. DA-DGP attains the highest robust throughput and the lowest QL$_{\text{Throughput}}$ among the ten one-shot Gaussian process surrogates, demonstrating that its dual-attention Pareto set actually reaches the aggressive $7.0$\,Mbps target. The sequentially augmented MOBO baselines BO-qEHVI and BO-qNEHVI explore a nearby high-throughput band, but they do so with substantially higher PAPR cost (QL$_{\text{PAPR}}\!\approx\!4.3$--$4.4$ vs DA-DGP $3.47$) and through an iterative acquisition loop that requires additional simulator calls; in contrast, DA-DGP exposes the high-throughput shoulder in a single surrogate fit.}% [#4/#6/#7/#9/#11] The role of DA-DGP within this band is characterised below from three angles:
 
-Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red}{在预设选解规则下，所选最优解落在较窄的区间：鲁棒吞吐量 $5.88$ 至 $6.11$\,Mbps，鲁棒 BER $0.2160$ 至 $0.2186$，鲁棒 PAPR $7.85$ 至 $8.58$\,dB。DA-DGP 在十种一次性高斯过程代理中取得最大鲁棒吞吐量与最小 QL$_{\text{Throughput}}$，证明其双注意力 Pareto 集真正逼近了 $7.0$\,Mbps 的激进目标。仅序贯式 MOBO 基线 BO-qEHVI 与 BO-qNEHVI 在吞吐分量上略胜，代价是：(i) 显著更高的 PAPR（QL$_{\text{PAPR}}\!\approx\!4.3$--$4.4$，DA-DGP 为 $3.47$），(ii) 需要序贯调用仿真器进行迭代采集，与本文一次性代理拟合属于本质不同的运行机制。}% [#4/#6/#7/#9/#11] DA-DGP 在该区间内的定位从以下三个角度刻画：
+Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red}{在预设选解规则下，所选最优解落在较窄的区间：鲁棒吞吐量 $5.88$ 至 $6.11$\,Mbps，鲁棒 BER $0.2160$ 至 $0.2186$，鲁棒 PAPR $7.85$ 至 $8.58$\,dB。DA-DGP 在十种一次性高斯过程代理中取得最大鲁棒吞吐量与最小 QL$_{\text{Throughput}}$，证明其双注意力 Pareto 集真正逼近了 $7.0$\,Mbps 的激进目标。序贯式加点 MOBO 基线 BO-qEHVI 与 BO-qNEHVI 也探索到相邻高吞吐区间，但伴随显著更高的 PAPR 代价（QL$_{\text{PAPR}}\!\approx\!4.3$--$4.4$，DA-DGP 为 $3.47$），并需要额外序贯调用仿真器进行迭代采集；相比之下，DA-DGP 通过一次性代理拟合即可暴露高吞吐肩部。}% [#4/#6/#7/#9/#11] DA-DGP 在该区间内的定位从以下三个角度刻画：
 
-\textcolor{red}{First, DA-DGP delivers the most aggressive throughput optimal solution among one-shot surrogates. Its selected optimal solution achieves a robust throughput of $6.0526$\,Mbps with the smallest standard deviation among shared two-layer surrogate baselines ($\pm 0.0815$), beating every weighted-multitask scheme and every independent/coregionalized GP baseline. The two iterative BO acquisitions reach a marginally higher throughput ($6.10$--$6.11$\,Mbps) but require $20\times$ more simulator evaluations during their acquisition loop. Indep-DGP and Indep-HetGP look ``balanced'' only because their narrower Pareto sets cluster on the low-throughput slope of the front and therefore cannot reach the $6.05$\,Mbps shoulder that the dual-attention front exposes.}% [#4/#6/#8/#9]
+\textcolor{red}{First, DA-DGP delivers the most aggressive throughput optimal solution among one-shot surrogates. Its selected optimal solution achieves a robust throughput of $6.0526$\,Mbps with the smallest standard deviation among shared two-layer surrogate baselines ($\pm 0.0815$), beating every weighted-multitask scheme and every independent/coregionalized GP baseline. The two iterative BO acquisitions occupy the same high-throughput regime only after their sequential acquisition loops, whereas DA-DGP reaches the $6.05$\,Mbps shoulder without additional simulator-driven augmentation. Indep-DGP and Indep-HetGP look ``balanced'' only because their narrower Pareto sets cluster on the low-throughput slope of the front and therefore cannot reach the shoulder that the dual-attention front exposes.}% [#4/#6/#8/#9]
 
-\textcolor{red}{首先，在一次性代理中 DA-DGP 给出了吞吐量最具进取性的最优解。其所选最优解的鲁棒吞吐量为 $6.0526$\,Mbps（$\pm 0.0815$，在共享两层结构的代理基线中标准差最小），优于全部加权多任务方案及独立/coregionalized GP 基线。两种迭代式 BO acquisition 仅以微弱优势（$6.10$--$6.11$\,Mbps）领先，但需要 $20\times$ 数量级的仿真器调用以维持其采集循环。Indep-DGP 和 Indep-HetGP 之所以看起来"均衡"，仅仅是因为其 Pareto 集较窄、聚集在前沿的低吞吐段，因此无法触及双注意力前沿暴露出的 $6.05$\,Mbps 高吞吐肩部。}% [#4/#6/#8/#9]
+\textcolor{red}{首先，在一次性代理中 DA-DGP 给出了吞吐量最具进取性的最优解。其所选最优解的鲁棒吞吐量为 $6.0526$\,Mbps（$\pm 0.0815$，在共享两层结构的代理基线中标准差最小），优于全部加权多任务方案及独立/coregionalized GP 基线。两种迭代式 BO acquisition 需要通过序贯采集循环才能进入相同高吞吐区间，而 DA-DGP 无需额外仿真器加点即可触及 $6.05$\,Mbps 高吞吐肩部。Indep-DGP 和 Indep-HetGP 之所以看起来"均衡"，仅仅是因为其 Pareto 集较窄、聚集在前沿的低吞吐段，因此无法触及双注意力前沿暴露出的肩部区域。}% [#4/#6/#8/#9]
 
 \textcolor{red}{Second, the per-objective quality loss in Table~5 supports the same conclusion. DA-DGP achieves the smallest QL$_{\text{Throughput}}=0.9086\pm0.1677$ among one-shot Gaussian process surrogates, beating every weighted-multitask baseline (EQUAL $0.9856$, MGDA $0.9599$, UW $1.0242$, DWA $1.0371$), the pure shared DGP without attention ($0.9666$), and all independent GP variants (Indep-DGP $0.9958$, Indep-HetGP $1.2644$). In other words, the dual-attention Pareto set is genuinely closer to the throughput target, not merely better at filling the interior of the front. Indep-HetGP's smaller QL$_{\text{PAPR}}$ comes precisely from never reaching the high-throughput region of the design space, and BO-qEHVI/qNEHVI's smaller QL$_{\text{Throughput}}$ ($0.81$--$0.79$) likewise comes with the largest QL$_{\text{PAPR}}$ in the table ($4.3$--$4.4$), reflecting the same throughput--PAPR physical coupling.}% [#4/#6/#7/#9]
 
@@ -900,17 +915,17 @@ Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red
 \textcolor{red}{At the Pareto-frontier level, the $K=20$ NSGA-II runs of each method jointly produce $\sim\!400$ non-dominated candidates. Each candidate is first evaluated by the OFDM waveform simulator over $R=16$ noise realisations to obtain $(\hat{m}_{i},\hat{v}_{i})$ for throughput, BER and PAPR; the fourth objective, energy efficiency $y_{4}=1/E_{b}$, is then derived by the separate link-budget post-processing model from transmit power and robust throughput.}% [#2/#8]
 \textcolor{red}{Table~7 summarises the robust frontier of all thirteen methods—ten Gaussian process surrogate variants together with three multi-objective Bayesian optimisation (MOBO) baselines—through nine standard Pareto indicators: the number of method-local Pareto points (\#P), the number of contributions to the global front (\#GP), the global contribution rate (GC), the normalised hypervolume ($\mathrm{HV}_{\mathrm{n}}$), the hypervolume ratio (HVR), the inverted generational distance (IGD), the inverted generational distance plus (IGD$^{+}$), the spacing metric (SP), and the closest-ideal distance (CID). The nine indicators are aggregated by an AHP-weighted TOPSIS to give the closeness coefficient $C_{i}$ and the overall rank.}% [#8/#11]
 \textcolor{red}{As shown in Table~7, DA-DGP attains $\mathrm{HV}_{\mathrm{n}}=0.3326$, $\mathrm{HVR}=0.7764$, $\mathrm{IGD}^{+}=0.0401$ and the highest closeness $C_{i}=0.9322$, leading the field ahead of Equal ($C_{i}=0.9272$) and BO-qNEHVI ($C_{i}=0.9262$). Among the one-shot GP surrogates, DA-DGP leads on hypervolume-based indicators and local-front density, whereas Equal and LMC-DGP remain close and are slightly better on selected distance-only indicators such as closest-ideal distance (CID). Therefore, DA-DGP shows the best integrated performance on the robust Pareto front and leads the competing baselines in the AHP-TOPSIS ranking.}% [#4/#6/#8/#11]
-\textcolor{red}{BO-qNEHVI reaches a marginally higher $\mathrm{HV}_{\mathrm{n}}$ ($0.3330$ vs $0.3326$, about $+0.1\%$), but DA-DGP retains the top TOPSIS rank by supplying substantially more method-local Pareto candidates (\#P $=19.3$ vs $17.8$), more uniform spacing metric (SP) relative to BO-qNEHVI ($0.0668$ vs $0.1083$), and a tighter closest-ideal distance (CID) than BO-qNEHVI ($0.7673$ vs $0.8007$); the resulting frontier is denser and better balanced under the integrated ranking.}% [#8/#9]
+\textcolor{red}{Even without additional sequential simulator calls, DA-DGP reaches an $\mathrm{HV}_{\mathrm{n}}$ value essentially tied with the strongest hypervolume-aware BO competitor, BO-qNEHVI ($0.3326$ vs $0.3330$), and higher than the other two BO baselines (BO-qEHVI $0.3294$ and BO-qParEGO $0.1883$). It also achieves the top TOPSIS rank by supplying substantially more method-local Pareto candidates (\#P $=19.3$ vs $17.8$), more uniform spacing metric (SP) relative to BO-qNEHVI ($0.0668$ vs $0.1083$), and a tighter closest-ideal distance (CID) than BO-qNEHVI ($0.7673$ vs $0.8007$); the resulting frontier is denser and better balanced.}% [#8/#9]
 \textcolor{red}{Figure~5 visualises the corresponding risk, four-objective, manifold and attainment views used to interpret these robust Pareto indicators.}% [#8/#11]
 
 \textcolor{red}{\paragraph{鲁棒四目标 Pareto 分析。}}% [#8]
 \textcolor{red}{在 Pareto 前沿层面，每种方法 $K=20$ 次 NSGA-II 运行共产生约 $400$ 个非支配候选解；每个候选解首先由 OFDM 波形仿真器在 $R=16$ 个噪声实现下评估，得到吞吐量、BER 与 PAPR 的 $(\hat{m}_{i},\hat{v}_{i})$，第四个目标能量效率 $y_{4}=1/E_{b}$ 则由独立链路预算后处理模型根据发射功率与稳健吞吐量进一步派生。}% [#2/#8]
 \textcolor{red}{Table~7 通过九个标准 Pareto 指标——方法内 Pareto 点数 (\#P)、对全局前沿的贡献数 (\#GP)、全局贡献率 (GC)、归一化超体积 ($\mathrm{HV}_{\mathrm{n}}$)、超体积比 (HVR)、反世代距离 (IGD)、增强反世代距离 (IGD$^{+}$)、spacing metric (SP) 以及最近理想点距离 (CID)——汇总十三种方法的鲁棒前沿，其中包含十种基于 DGP 的变体以及三种多目标贝叶斯优化（MOBO）基线。九个指标通过 AHP 加权 TOPSIS 汇聚为接近度系数 $C_{i}$ 与综合排名。}% [#8/#11]
 \textcolor{red}{由 Table~7 可见，DA-DGP 取得 $\mathrm{HV}_{\mathrm{n}}=0.3326$、$\mathrm{HVR}=0.7764$、$\mathrm{IGD}^{+}=0.0401$ 与最高的接近度 $C_{i}=0.9322$，领先于 Equal（$C_{i}=0.9272$）与 BO-qNEHVI（$C_{i}=0.9262$）。在一次性 GP 代理中，DA-DGP 在超体积类指标和方法内前沿密度上领先；同时，Equal 与 LMC-DGP 在个别纯距离指标（如最近理想点距离 (CID)）上接近或略优。因此，DA-DGP 在鲁棒 Pareto 前沿上的综合表现最优，并在 AHP-TOPSIS 排名中领先于其他基线方法。}% [#4/#6/#8/#11]
-\textcolor{red}{BO-qNEHVI 在 $\mathrm{HV}_{\mathrm{n}}$ 上略高（$0.3330$ vs $0.3326$，约 $+0.1\%$），但 DA-DGP 凭借更多的方法内 Pareto 候选（\#P $=19.3$ vs $17.8$）、相对 BO-qNEHVI 更均匀的 spacing metric (SP)（$0.0668$ vs $0.1083$）以及更紧的最近理想点距离 (CID)（$0.7673$ vs $0.8007$）仍保持 TOPSIS 综合第一；其前沿在综合排序下更密集且更均衡。}% [#8/#9]
+\textcolor{red}{在无需额外序贯调用仿真器的情况下，DA-DGP 的 $\mathrm{HV}_{\mathrm{n}}$ 与最强的超体积感知 BO 方法 BO-qNEHVI 基本持平（$0.3326$ vs $0.3330$），并高于另外两种 BO 基线（BO-qEHVI $0.3294$、BO-qParEGO $0.1883$）。同时，DA-DGP 凭借更多的方法内 Pareto 候选（\#P $=19.3$ vs $17.8$）、相对 BO-qNEHVI 更均匀的 spacing metric (SP)（$0.0668$ vs $0.1083$）以及更紧的最近理想点距离 (CID)（$0.7673$ vs $0.8007$）保持 TOPSIS 综合第一；其前沿在综合排序下更密集、更均衡。}% [#8/#9]
 \textcolor{red}{对应的风险、四目标、流形与达成概率视角见 Figure~5，用于解释这些鲁棒 Pareto 指标。}% [#8/#11]
 
-\begin{table}[!h]
+\begin{table}[!htbp]
 	\centering
 	\caption{Robust four-objective Pareto indicators of all 13 methods.}
 	\caption*{13 种方法的鲁棒四目标 Pareto 指标。}
@@ -942,34 +957,34 @@ Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red
 
 \textcolor{red}{Figure~5 从四个互补视角刻画鲁棒 Pareto 证据。子图 (a) 将方法内 Pareto 候选置于归一化目标代价--方差风险平面，DA-DGP 点沿着低风险有效边界分布，并占据 trade-off 曲线的低风险部分，说明双注意力前沿不仅目标质量高，而且对噪声实现具有鲁棒性。子图 (b) 为四目标气泡图，坐标轴为 throughput 与 BER，颜色编码 PAPR，气泡大小编码能量效率；DA-DGP 保持在主前沿上，并覆盖高吞吐、低 BER 的关键肩部。子图 (c) 将所有候选嵌入目标流形，显示 DA-DGP 在主导前沿上与全局 Pareto manifold 持续重合。子图 (d) 给出 (BER, throughput) 平面的达成概率图，DA-DGP 沿高达成概率脊线展开，说明其前沿反复落在全局 Pareto 命中率较高的区域。}% [#8/#9/#11]
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{PARETO_RISK.pdf}
+		\includegraphics[width=\textwidth]{FIG5(a).pdf}
 		\caption{\textcolor{red}{Uncertainty-risk map.}}% [#8/#11]
 		\caption*{\textcolor{red}{不确定性风险图。}}% [#8/#11]
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{PARETO_FOUR_OBJECTIVE_BUBBLE.pdf}
+		\includegraphics[width=\textwidth]{FIG5(b).pdf}
 		\caption{\textcolor{red}{Four-objective bubble view.}}% [#8/#11]
 		\caption*{\textcolor{red}{四目标气泡视图。}}% [#8/#11]
 	\end{subfigure}
 
-	\par\bigskip
+	\par\vspace{0.35\baselineskip}
 
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{PARETO_OBJECTIVE_MANIFOLD.pdf}
+		\includegraphics[width=\textwidth]{FIG5(c).pdf}
 		\caption{\textcolor{red}{Objective manifold embedding.}}% [#8/#11]
 		\caption*{\textcolor{red}{目标流形嵌入。}}% [#8/#11]
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{PARETO_ATTAINMENT_HEXBIN.pdf}
+		\includegraphics[width=\textwidth]{FIG5(d).pdf}
 		\caption{\textcolor{red}{Attainment probability map.}}% [#8/#11]
 		\caption*{\textcolor{red}{达成概率图。}}% [#8/#11]
 	\end{subfigure}
@@ -981,28 +996,44 @@ Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red
 
 \textcolor{red}{\paragraph{Comparison with Bayesian optimisation.}}% [#9]
 \textcolor{red}{As a contrasting class of multi-objective surrogate-assisted optimisation, three representative MOBO methods—qParEGO, qEHVI and qNEHVI~\citep{Daulton2020,Daulton2021}—are evaluated under the same initial $400$-sample design used by the GP surrogates and are then given a $20$-step sequential acquisition budget in each of the $20$ runs before evaluation by the same four-objective robust simulator.}% [#9/#11]
-\textcolor{red}{Table~7 shows that BO-qNEHVI is the strongest MOBO competitor and reaches $\mathrm{HV}_{\mathrm{n}}$ marginally above DA-DGP, consistent with the known efficiency of hypervolume-aware acquisition; qParEGO, in contrast, is hurt by scalarisation bias and degrades to $\mathrm{IGD}=0.2598$ and an overall closeness of only $C_{i}=0.1807$ (rank $13$).}% [#9]
-\textcolor{red}{DA-DGP remains close to the strongest MOBO method on hypervolume in a single training pass—without iterative acquisition or model retraining—while delivering a denser and better balanced robust frontier, which lifts it to the top of the TOPSIS ranking.}% [#9]
+\textcolor{red}{Table~7 shows that BO-qNEHVI is the strongest MOBO competitor and gives a hypervolume value very close to DA-DGP, consistent with the known efficiency of hypervolume-aware acquisition; qParEGO, in contrast, is hurt by scalarisation bias and degrades to $\mathrm{IGD}=0.2598$ and an overall closeness of only $C_{i}=0.1807$ (rank $13$).}% [#9]
+\textcolor{red}{DA-DGP turns this one-shot surrogate fit into the best integrated robust Pareto result: without iterative acquisition or model retraining, it delivers a denser and better balanced robust frontier and ranks first in the AHP-TOPSIS assessment across all surrogate and MOBO baselines.}% [#9]
 
 \textcolor{red}{\paragraph{与贝叶斯优化的对比。}}% [#9]
 \textcolor{red}{作为多目标代理辅助优化的另一类代表，三种 MOBO 方法 qParEGO、qEHVI 与 qNEHVI~\citep{Daulton2020,Daulton2021} 使用与 GP 代理相同的 $400$ 个初始设计样本进行评估，并在 $20$ 次运行中分别给予每次 $20$ 步的序贯采集预算，随后再由相同的四目标鲁棒仿真器评估。}% [#9/#11]
-\textcolor{red}{Table~7 显示，BO-qNEHVI 是最强的 MOBO 竞争者，其 $\mathrm{HV}_{\mathrm{n}}$ 略高于 DA-DGP，与超体积感知采集函数已知的效率相一致；与此对照，qParEGO 受标量化偏差影响，IGD 退化至 $0.2598$，综合接近度仅 $C_{i}=0.1807$（排名第 $13$）。}% [#9]
-\textcolor{red}{DA-DGP 在一次代理训练下即与最强 MOBO 方法在超体积上保持接近——无须迭代采样或重训练——并提供密度更高、综合更均衡的鲁棒前沿，从而位列 TOPSIS 综合排名第一。}% [#9]
+\textcolor{red}{Table~7 显示，BO-qNEHVI 是最强的 MOBO 竞争者，其超体积结果与 DA-DGP 非常接近，与超体积感知采集函数已知的效率相一致；与此对照，qParEGO 受标量化偏差影响，IGD 退化至 $0.2598$，综合接近度仅 $C_{i}=0.1807$（排名第 $13$）。}% [#9]
+\textcolor{red}{DA-DGP 则将一次性代理拟合转化为最优综合鲁棒 Pareto 结果：无需迭代采样或重训练，即可提供密度更高、综合更均衡的鲁棒前沿，并在全部代理与 MOBO 基线的 AHP-TOPSIS 评价中排名第一。}% [#9]
 
 \textcolor{red}{\paragraph{Training cost and time complexity.}}% [#5]
-\textcolor{red}{The bilevel update and the finite-difference Hessian--vector approximation in Eqs.~(24)--(25) inflate the per-iteration cost of DA-DGP to roughly four times that of a standard shared DGP. Asymptotically, the per-epoch cost scales as $\mathcal{O}\!\bigl(c\,E\lceil N/B\rceil(H+T)(BM^{2}+M^{3})\bigr)$ with $c\!\approx\!4$ for the inner virtual update, the unrolled validation backward and two finite-difference Hessian--vector evaluations; the constant collapses to $c\!=\!1$ for the static-weighting baselines and to $c\!=\!T$ for the gradient-balancing and independent-task variants, while the exact heteroscedastic GP follows the cheaper $\mathcal{O}(E\,T\,N^{3})$ form thanks to the small training set.}% [#5]
-\textcolor{red}{In absolute terms, this one-time additional training accounts for a small constant overhead and, in exchange, yields the single-pass robust Pareto frontier whose quality matches that of the strongest iterative MOBO competitor in Table~7. Detailed wall-clock measurements and the hardware/software stack are reported in Appendix~F of the supplementary material.}% [#5/#9]
+\textcolor{red}{For the shared two-layer sparse variational DGP backbone, the dominant per-batch cost is}% [#5]
+\[
+\textcolor{red}{\mathcal{O}\!\left((h+p)(BM^{2}+M^{3})\right),}
+\]
+\textcolor{red}{where $h$ is the hidden latent dimension, $p$ is the number of response tasks, $B$ is the mini-batch size and $M$ is the number of inducing points. Over $E$ epochs, the corresponding total training order is}% [#5]
+\[
+\textcolor{red}{\mathcal{O}\!\left(E\lceil N/B\rceil(h+p)(BM^{2}+M^{3})\right).}
+\]
+\textcolor{red}{DA-DGP keeps this same asymptotic order as the shared DGP backbone, but its bilevel update in Eqs.~(24)--(25) introduces a constant-factor wall-clock overhead from one virtual update, one validation backward pass and two finite-difference Hessian--vector evaluations.}% [#5]
+\textcolor{red}{In the OFDM experiment ($N=400$, $B=128$, $h=5$, $p=3$, $M=128$, $E=500$), DA-DGP requires $397.79$\,s in total ($0.7956$\,s/epoch), compared with $100.57$\,s for Equal, $99.56$\,s for Pure DGP, $164.87$\,s for MGDA and $163.40$\,s for Indep-DGP. Thus, the extra cost is real but remains acceptable for a one-shot surrogate fit, especially because it yields the best integrated robust Pareto performance in Table~7 without the iterative acquisition loop required by sequential MOBO. Detailed wall-clock measurements and the hardware/software stack are reported in Appendix~F of the supplementary material.}% [#5/#9]
 
 \textcolor{red}{\paragraph{训练代价与时间复杂度。}}% [#5]
-\textcolor{red}{Eqs.~(24)--(25) 中的 bilevel 更新与 finite-difference Hessian--vector 近似将 DA-DGP 单次迭代的代价提升至共享 DGP 的约四倍。从渐近角度看，单 epoch 代价为 $\mathcal{O}\!\bigl(c\,E\lceil N/B\rceil(H+T)(BM^{2}+M^{3})\bigr)$，其中 $c\!\approx\!4$ 对应内层虚拟更新、验证 unrolled 反向传播以及两次 Hessian--vector 近似；该常数在静态加权基线上退化为 $c\!=\!1$，在梯度均衡与独立任务变体上为 $c\!=\!T$；exact 异方差 GP 因训练集较小遵从更廉价的 $\mathcal{O}(E\,T\,N^{3})$ 形式。}% [#5]
-\textcolor{red}{以绝对数值看，这部分一次性的额外训练只引入一个较小的常数开销，并换得单次代理便产生的鲁棒 Pareto 前沿，其综合质量与 Table~7 中最强的迭代式 MOBO 方法相当。具体的 wall-clock 测量值与软硬件环境见补充材料 Appendix~F。}% [#5/#9]
+\textcolor{red}{对于共享两层 sparse variational DGP 主干，每个 batch 的主导计算量为}% [#5]
+\[
+\textcolor{red}{\mathcal{O}\!\left((h+p)(BM^{2}+M^{3})\right),}
+\]
+\textcolor{red}{其中 $h$ 为隐藏潜在维度，$p$ 为响应任务数，$B$ 为 mini-batch size，$M$ 为 inducing points 数量。训练 $E$ 个 epochs 的总复杂度为}% [#5]
+\[
+\textcolor{red}{\mathcal{O}\!\left(E\lceil N/B\rceil(h+p)(BM^{2}+M^{3})\right).}
+\]
+\textcolor{red}{DA-DGP 与共享 DGP 主干保持相同渐近阶，但 Eqs.~(24)--(25) 中的 bilevel 更新会因一次虚拟更新、一次验证集反向传播以及两次 finite-difference Hessian--vector 计算带来常数因子的 wall-clock 开销。}% [#5]
+\textcolor{red}{在 OFDM 实验中（$N=400$、$B=128$、$h=5$、$p=3$、$M=128$、$E=500$），DA-DGP 总训练耗时为 $397.79$\,s（$0.7956$\,s/epoch），而 Equal 为 $100.57$\,s，Pure DGP 为 $99.56$\,s，MGDA 为 $164.87$\,s，Indep-DGP 为 $163.40$\,s。因此，DA-DGP 的额外计算开销是存在的，但对于一次性代理拟合仍然可以接受，尤其是其无需序贯 MOBO 的迭代采集过程，即可在 Table~7 中取得最优综合鲁棒 Pareto 表现。具体 wall-clock 测量值与软硬件环境见补充材料 Appendix~F。}% [#5/#9]
 
 
 
 
 
 
-\begin{table}[!h]
+\begin{table}[!htbp]
 	\centering
 	\caption{Statistical summary of received EVM for the selected optimal solutions over 20 runs (dB).}
 	\caption*{20 次运行中所选最优解的接收 EVM（dB）统计汇总。}
@@ -1052,118 +1083,113 @@ Tables 4-5 总结了 20 次独立运行下的统计性能和 QL。\textcolor{red
 \end{table}
 \vspace{-0.5em}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 	\centering
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_DADGP.pdf}
+		\includegraphics[width=\textwidth]{FIG6(a).pdf}
 		\caption{DA-DGP}
 		\label{fig:const_dadgp}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_EQUAL.pdf}
+		\includegraphics[width=\textwidth]{FIG6(b).pdf}
 		\caption{Equal}
 		\label{fig:const_equal}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_PURE_DGP.pdf}
+		\includegraphics[width=\textwidth]{FIG6(c).pdf}
 		\caption{Pure DGP}
 		\label{fig:const_puredgp}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_DWA.pdf}
+		\includegraphics[width=\textwidth]{FIG6(d).pdf}
 		\caption{DWA}
 		\label{fig:const_dwa}
 	\end{subfigure}
-
-	\par\vspace{0.2em}
-
-	\begin{subfigure}[b]{0.235\textwidth}
+	\hfill
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_UW.pdf}
+		\includegraphics[width=\textwidth]{FIG6(e).pdf}
 		\caption{UW}
 		\label{fig:const_uw}
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+
+	\par\vspace{0.15em}
+
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_MGDA.pdf}
+		\includegraphics[width=\textwidth]{FIG6(f).pdf}
 		\caption{MGDA}
 		\label{fig:const_mgda}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_INDEP_DGP.pdf}
+		\includegraphics[width=\textwidth]{FIG6(g).pdf}
 		\caption{Indep-DGP}
 		\label{fig:const_indepdgp}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_INDEP_HETGP.pdf}
+		\includegraphics[width=\textwidth]{FIG6(h).pdf}
 		\caption{Indep-HetGP}
 		\label{fig:const_indephetgp}
 	\end{subfigure}
-	\caption{\textcolor{red}{Constellation diagrams for all 13 methods in the OFDM case (part 1).}}% [#7/#9/#11]
-	\caption*{\textcolor{red}{OFDM 案例中 13 种方法的星座图（第一部分）。}}% [#7/#9/#11]
-	\label{fig:constellation_diagrams}
-\end{figure}
-
-\begin{figure}[H]
-	\ContinuedFloat
-	\centering
-	\begin{subfigure}[b]{0.235\textwidth}
+	\hfill
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_LMC_DGP.pdf}
+		\includegraphics[width=\textwidth]{FIG6(i).pdf}
 		\caption{LMC-DGP}
 		\label{fig:const_lmcdgp}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_T_ATTEN.pdf}
+		\includegraphics[width=\textwidth]{FIG6(j).pdf}
 		\caption{\textcolor{red}{T-Atten}}% [#7]
 		\label{fig:const_tatten}
 	\end{subfigure}
+
+	\par\vspace{0.15em}
+
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_BO_QPAREGO.pdf}
+		\includegraphics[width=\textwidth]{FIG6(k).pdf}
 		\caption{BO-qParEGO}
 		\label{fig:const_boqparego}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_BO_QEHVI.pdf}
+		\includegraphics[width=\textwidth]{FIG6(l).pdf}
 		\caption{BO-qEHVI}
 		\label{fig:const_boqehvi}
 	\end{subfigure}
-
-	\par\vspace{0.2em}
-
 	\hfill
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.185\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{CONST_BO_QNEHVI.pdf}
+		\includegraphics[width=\textwidth]{FIG6(m).pdf}
 		\caption{BO-qNEHVI}
 		\label{fig:const_boqnehvi}
 	\end{subfigure}
+	\hfill
 	\hfill\null
-	\caption{\textcolor{red}{Constellation diagrams for all 13 methods in the OFDM case (continued).}}% [#7/#9/#11]
-	\caption*{\textcolor{red}{OFDM 案例中 13 种方法的星座图（续）。}}% [#7/#9/#11]
+	\caption{\textcolor{red}{Constellation diagrams for all 13 methods in the OFDM case.}}% [#7/#9/#11]
+	\caption*{\textcolor{red}{OFDM 案例中 13 种方法的星座图。}}% [#7/#9/#11]
+	\label{fig:constellation_diagrams}
 \end{figure}
 
-Figure~6 displays the constellation diagrams of the received signal on the complex plane, which serve as the ``gold standard'' for physical-layer link quality. \textcolor{red}{All thirteen methods are now shown in the main text, covering the proposed DA-DGP, static and dynamic weighting baselines, independent/coregionalized GP variants, the T-Atten ablation, and three sequential MOBO baselines. The DA-DGP symbols (Fig.~6a) form a compact, well-separated 16-QAM grid and remain visually comparable to the strongest sequential BO panels (Fig.~6l--m), while avoiding the iterative acquisition loop required by BO. The contrast with T-Atten (Fig.~6j), Indep-DGP (Fig.~6g) and LMC-DGP (Fig.~6i) shows that removing sample-level attention or weakening the shared representation leads to broader constellation clouds and heavier excursions.}% [#7/#9] \textcolor{red}{Table~6 reports the received signal quality of the same selected optimal solutions used in Tables~4--5; for each method, one optimal solution is selected from each run and subjected to a common physical-layer EVM check.}% [#9/#11] \textcolor{red}{Under this selected-solution EVM check, DA-DGP attains a mean EVM of $11.4648\pm1.0419$\,dB, the lowest among all one-shot Gaussian process surrogates and trailing the iterative sequential BO baselines by less than $0.1$\,dB (BO-qNEHVI $11.3816$\,dB, BO-qEHVI $11.3915$\,dB). DA-DGP also keeps the selected-solution spread tightly bounded (max $14.48$\,dB), whereas Indep-DGP, LMC-DGP and T-Atten exhibit maxima well above $18$\,dB, indicating that dual-attention training reduces tail excursions in the selected optimal-solution constellation patterns.}% [#7/#9/#11] This confirms that the optimized parameter configuration (such as precise power allocation and pre-equalization strategies) effectively compensates for nonlinear channel distortions caused by multipath fading and carrier frequency offset.
+Figure~6 displays the constellation diagrams of the received signal on the complex plane, which serve as the ``gold standard'' for physical-layer link quality. \textcolor{red}{All thirteen methods are now shown in the main text, covering the proposed DA-DGP, static and dynamic weighting baselines, independent/coregionalized GP variants, the T-Atten ablation, and three sequential MOBO baselines. The DA-DGP symbols (Fig.~6a) form a compact, well-separated 16-QAM grid and remain visually comparable to the strongest sequential BO panels (Fig.~6l--m), while avoiding the iterative acquisition loop required by BO. The contrast with T-Atten (Fig.~6j), Indep-DGP (Fig.~6g) and LMC-DGP (Fig.~6i) shows that removing sample-level attention or weakening the shared representation leads to broader constellation clouds and heavier excursions.}% [#7/#9] \textcolor{red}{Table~6 reports the received signal quality of the same selected optimal solutions used in Tables~4--5; for each method, one optimal solution is selected from each run and subjected to a common physical-layer EVM check.}% [#9/#11] \textcolor{red}{Under this selected-solution EVM check, DA-DGP attains a mean EVM of $11.4648\pm1.0419$\,dB, the lowest among all one-shot Gaussian process surrogates and in the same narrow high-quality range as the sequentially augmented BO baselines (BO-qNEHVI $11.3816$\,dB, BO-qEHVI $11.3915$\,dB). More importantly, DA-DGP keeps the selected-solution spread tightly bounded (max $14.48$\,dB), whereas Indep-DGP, LMC-DGP and T-Atten exhibit maxima well above $18$\,dB, indicating that dual-attention training reduces tail excursions in the selected optimal-solution constellation patterns while preserving the efficiency of one-shot surrogate fitting.}% [#7/#9/#11] This confirms that the optimized parameter configuration (such as precise power allocation and pre-equalization strategies) effectively compensates for nonlinear channel distortions caused by multipath fading and carrier frequency offset.
 
-Figure~6 展示了接收信号在复平面上的星座图，可作为衡量通信链路物理层质量的``gold standard''。\textcolor{red}{正文现在展示全部 13 种方法，包括所提 DA-DGP、静态与动态加权基线、独立/协同 GP 变体、T-Atten 消融以及三种序贯式 MOBO 基线。DA-DGP 恢复的符号（Fig.~6a）形成紧凑、清晰可分的 16-QAM 网格，在视觉上接近最强序贯 BO 面板（Fig.~6l--m），但不需要 BO 的迭代采集过程。与 T-Atten（Fig.~6j）、Indep-DGP（Fig.~6g）和 LMC-DGP（Fig.~6i）的对比表明，移除样本级注意力或削弱共享表示会带来更分散的星座云团和更明显的尾部偏移。}% [#7/#9] \textcolor{red}{Table~6 汇报与 Tables~4--5 相同的所选最优解的接收信号质量；对每种方法，每次运行选取一个最优解，并进行统一的物理层 EVM 检查。}% [#9/#11] \textcolor{red}{在这一所选最优解 EVM 检查中，DA-DGP 取得平均 EVM $11.4648\pm1.0419$\,dB，是所有一次性高斯过程代理中最低，仅落后于迭代式序贯 BO 基线不到 $0.1$\,dB（BO-qNEHVI $11.3816$\,dB、BO-qEHVI $11.3915$\,dB）。同时，DA-DGP 的所选最优解扩散范围较小（最大值 $14.48$\,dB），而 Indep-DGP、LMC-DGP 与 T-Atten 的最大 EVM 均高于 $18$\,dB，说明双注意力训练能降低所选最优解星座图模式的尾部漂移。}% [#7/#9/#11] 这证实优化后的参数配置（如精确功率分配和预均衡策略）能够有效补偿由多径衰落和载波频偏引起的非线性信道失真。
+Figure~6 展示了接收信号在复平面上的星座图，可作为衡量通信链路物理层质量的``gold standard''。\textcolor{red}{正文现在展示全部 13 种方法，包括所提 DA-DGP、静态与动态加权基线、独立/协同 GP 变体、T-Atten 消融以及三种序贯式 MOBO 基线。DA-DGP 恢复的符号（Fig.~6a）形成紧凑、清晰可分的 16-QAM 网格，在视觉上接近最强序贯 BO 面板（Fig.~6l--m），但不需要 BO 的迭代采集过程。与 T-Atten（Fig.~6j）、Indep-DGP（Fig.~6g）和 LMC-DGP（Fig.~6i）的对比表明，移除样本级注意力或削弱共享表示会带来更分散的星座云团和更明显的尾部偏移。}% [#7/#9] \textcolor{red}{Table~6 汇报与 Tables~4--5 相同的所选最优解的接收信号质量；对每种方法，每次运行选取一个最优解，并进行统一的物理层 EVM 检查。}% [#9/#11] \textcolor{red}{在这一所选最优解 EVM 检查中，DA-DGP 取得平均 EVM $11.4648\pm1.0419$\,dB，是所有一次性高斯过程代理中最低，并与序贯式加点 BO 基线处于同一优良区间（BO-qNEHVI $11.3816$\,dB、BO-qEHVI $11.3915$\,dB）。更重要的是，DA-DGP 的所选最优解扩散范围较小（最大值 $14.48$\,dB），而 Indep-DGP、LMC-DGP 与 T-Atten 的最大 EVM 均高于 $18$\,dB，说明双注意力训练在保持一次性代理效率的同时降低了所选最优解星座图模式的尾部漂移。}% [#7/#9/#11] 这证实优化后的参数配置（如精确功率分配和预均衡策略）能够有效补偿由多径衰落和载波频偏引起的非线性信道失真。
 
 Combining the numerical case study with the OFDM engineering case, the proposed dual-attention DA-DGP framework demonstrates superior performance in addressing RPD problems characterized by \textcolor{red}{limited engineering samples}, high-dimensional nonlinearities, and multi-objective conflicts.% [#12] By compensating for channel impairments at the physical mechanism level and minimizing the bias and variance of quality loss at the statistical level, this method provides an efficient and robust technical path for intelligent resource scheduling and power control in 5G/6G communication systems.
 
@@ -1171,14 +1197,14 @@ Combining the numerical case study with the OFDM engineering case, the proposed 
 
 
 \section{Conclusion}  \label{s:sec5}
-A DA-DGP framework for the RPD of complex multi-output systems is proposed. The suggested algorithm takes advantage of an end-to-end weighted variational inference system, providing precise ROI focusing and adaptive task balancing by jointly optimizing dual-attention weights. The algorithm is shown empirically powerful in handling high-dimensional nonlinearities compared with benchmark methods, exhibited by the optimization of synthetic test functions. The proposed algorithm is applied to a high-fidelity 5G/6G OFDM simulation-based case study of optimizing communication link quality. \textcolor{red}{Despite the limited engineering sample budget, the algorithm consistently identifies optimal solutions that reach the most aggressive throughput slope of the robust Pareto front and yields selected-solution EVM within $0.1$\,dB of the strongest sequential MOBO baseline while remaining the best one-shot Gaussian process surrogate under the integrated robust Pareto assessment.}% [#9/#11/#12] The inferior performances of the benchmark methods can be mainly attributed to the limitations of traditional ``mean-oriented" models and unmanaged gradient conflicts.
+A DA-DGP framework for the RPD of complex multi-output systems is proposed. The suggested algorithm takes advantage of an end-to-end weighted variational inference system, providing precise ROI focusing and adaptive task balancing by jointly optimizing dual-attention weights. The algorithm is shown empirically powerful in handling high-dimensional nonlinearities compared with benchmark methods, exhibited by the optimization of synthetic test functions. The proposed algorithm is applied to a high-fidelity 5G/6G OFDM simulation-based case study of optimizing communication link quality. \textcolor{red}{Despite the limited engineering sample budget, the algorithm consistently identifies optimal solutions that reach the most aggressive throughput slope of the robust Pareto front, keeps selected-solution EVM in the same high-quality range as the strongest sequentially augmented MOBO baselines, and remains the best one-shot Gaussian process surrogate under the integrated robust Pareto assessment.}% [#9/#11/#12] The inferior performances of the benchmark methods can be mainly attributed to the limitations of traditional ``mean-oriented" models and unmanaged gradient conflicts.
 
-本文提出了一种用于复杂 multi-output 系统 RPD 的 DA-DGP 框架。所提算法利用端到端加权 variational inference 系统，通过联合优化双注意力权重，实现精确 ROI 聚焦和自适应任务平衡。基于合成测试函数优化结果，相较基准方法，该算法在处理高维非线性方面表现出显著经验优势。本文还将所提算法应用于基于高保真 5G/6G OFDM 仿真的通信链路质量优化案例研究。\textcolor{red}{尽管工程样本预算有限，该算法仍能稳定识别出位于鲁棒 Pareto 前沿最进取吞吐肩部的最优解，其所选最优解 EVM 与最强序贯式 MOBO 基线相差不到 $0.1$\,dB，并在综合鲁棒 Pareto 评价下保持为所有一次性高斯过程代理中最优。}% [#9/#11/#12] 基准方法表现较差主要可归因于传统``mean-oriented''模型的局限以及未被管理的梯度冲突。
+本文提出了一种用于复杂 multi-output 系统 RPD 的 DA-DGP 框架。所提算法利用端到端加权 variational inference 系统，通过联合优化双注意力权重，实现精确 ROI 聚焦和自适应任务平衡。基于合成测试函数优化结果，相较基准方法，该算法在处理高维非线性方面表现出显著经验优势。本文还将所提算法应用于基于高保真 5G/6G OFDM 仿真的通信链路质量优化案例研究。\textcolor{red}{尽管工程样本预算有限，该算法仍能稳定识别出位于鲁棒 Pareto 前沿最进取吞吐肩部的最优解，其所选最优解 EVM 与最强序贯式加点 MOBO 基线处于同一优良区间，并在综合鲁棒 Pareto 评价下保持为所有一次性高斯过程代理中最优。}% [#9/#11/#12] 基准方法表现较差主要可归因于传统``mean-oriented''模型的局限以及未被管理的梯度冲突。
 
-Empirical evaluations on numerical benchmarks and a 5G/6G OFDM system validate the superiority of the method. Statistically, \textcolor{red}{DA-DGP attains the lowest robust quality loss among all one-shot Gaussian process surrogate variants and the highest AHP-TOPSIS closeness across the thirteen surrogate- and BO-based methods examined, while remaining about $0.1\%$ from the strongest hypervolume-aware BO competitor (qNEHVI) on $\mathrm{HV}_{\mathrm{n}}$.}% [#8/#9/#11] In the engineering application, \textcolor{red}{the optimized parameters drive the link to the most aggressive throughput optimal solution on the Pareto front and produce competitive selected-solution EVM (within $0.3$\,dB of the best sequential BO baseline) with a tightly bounded selected-solution EVM spread in the physical-layer check.}% [#9/#11] These findings confirm the capability of the framework to mitigate long-tail performance risks and enhance link robustness, offering a promising path for intelligent parameter optimization in complex manufacturing and communication processes.
+Empirical evaluations on numerical benchmarks and a 5G/6G OFDM system validate the superiority of the method. Statistically, \textcolor{red}{DA-DGP attains the lowest robust quality loss among all one-shot Gaussian process surrogate variants and the highest AHP-TOPSIS closeness across the thirteen surrogate- and BO-based methods examined; without additional sequential simulator calls, its $\mathrm{HV}_{\mathrm{n}}$ remains essentially tied with the strongest hypervolume-aware BO competitor (qNEHVI) and exceeds the other BO baselines.}% [#8/#9/#11] In the engineering application, \textcolor{red}{the optimized parameters drive the link to the most aggressive throughput optimal solution on the Pareto front and produce selected-solution EVM in the same high-quality range as the sequential BO baselines, together with a tightly bounded selected-solution EVM spread in the physical-layer check.}% [#9/#11] These findings confirm the capability of the framework to mitigate long-tail performance risks and enhance link robustness, offering a promising path for intelligent parameter optimization in complex manufacturing and communication processes.
 A limitation of the current work lies in the reliance on the preset kernel bandwidth $\sigma_{k}$. Future research will focus on incorporating $\sigma_{k}$ directly into the variational inference framework. Realizing the adaptive learning of this hyperparameter based on data distribution characteristics will further improve the automation and generalizability of the model.
 
-数值基准和 5G/6G OFDM 系统上的实证评估验证了该方法的优越性。从统计角度看，\textcolor{red}{在所有一次性高斯过程代理变体中 DA-DGP 取得最低的鲁棒质量损失，并在十三种基于代理建模与 BO 的方法中取得最高的 AHP-TOPSIS 接近度，同时其 $\mathrm{HV}_{\mathrm{n}}$ 与最强的超体积感知 BO 方法（qNEHVI）约相差 $0.1\%$。}% [#8/#9/#11] 在工程应用中，\textcolor{red}{优化参数把链路驱动至 Pareto 前沿最进取的吞吐最优解，并给出具有竞争力的所选最优解 EVM（与最优序贯式 BO 基线相差不到 $0.3$\,dB），同时在物理层检查中保持较小的所选最优解 EVM 扩散。}% [#9/#11] 这些发现证实，该框架能够缓解长尾性能风险并增强链路鲁棒性，为复杂制造与通信过程中的智能参数优化提供了有前景的路径。当前工作的一个局限在于依赖预设 kernel bandwidth $\sigma_{k}$。未来研究将聚焦于将 $\sigma_{k}$ 直接纳入 variational inference 框架。基于数据分布特征实现该超参数的自适应学习，将进一步提升模型的自动化程度和泛化能力。
+数值基准和 5G/6G OFDM 系统上的实证评估验证了该方法的优越性。从统计角度看，\textcolor{red}{在所有一次性高斯过程代理变体中 DA-DGP 取得最低的鲁棒质量损失，并在十三种基于代理建模与 BO 的方法中取得最高的 AHP-TOPSIS 接近度；在无需额外序贯调用仿真器的情况下，其 $\mathrm{HV}_{\mathrm{n}}$ 与最强的超体积感知 BO 方法（qNEHVI）基本持平，并优于其他 BO 基线。}% [#8/#9/#11] 在工程应用中，\textcolor{red}{优化参数把链路驱动至 Pareto 前沿最进取的吞吐最优解，并给出与序贯式 BO 基线处于同一优良区间的所选最优解 EVM，同时在物理层检查中保持较小的所选最优解 EVM 扩散。}% [#9/#11] 这些发现证实，该框架能够缓解长尾性能风险并增强链路鲁棒性，为复杂制造与通信过程中的智能参数优化提供了有前景的路径。当前工作的一个局限在于依赖预设 kernel bandwidth $\sigma_{k}$。未来研究将聚焦于将 $\sigma_{k}$ 直接纳入 variational inference 框架。基于数据分布特征实现该超参数的自适应学习，将进一步提升模型的自动化程度和泛化能力。
 
 
 
