@@ -115,7 +115,7 @@
 	\begin{equation}
 		q({\bf{f}},{\bf{u}}) = p({\bf{f}}|{\bf{u}})q({\bf{u}}),
 	\end{equation}
-	where $q(\mathbf{u}) = \mathcal{N}(\mathbf{m}, \mathbf{S})$ is a free variational distribution to be optimized, and $p(\mathbf{f} | \mathbf{u})$ is fixed to the model prior conditionals. This corresponds to Equation (4) in the main text. \textcolor{red}{The goal} of variational inference is to minimize the Kullback-Leibler (KL) divergence between the approximate posterior and the true posterior, which is equivalent to maximizing the ELBO:% [#3]
+	where $q(\mathbf{u}) = \mathcal{N}(\mathbf{m}, \mathbf{S})$ is a free variational distribution to be optimized, and $p(\mathbf{f} | \mathbf{u})$ is fixed to the model prior conditionals. This corresponds to Equation (4) in the main text. \textcolor{red}{Accordingly, the goal} of variational inference is to minimize the Kullback-Leibler (KL) divergence between the approximate posterior and the true posterior, which is equivalent to maximizing the ELBO:% [#3]
 	\begin{equation}
 		\mathcal{L} = \iint q(\mathbf{f}, \mathbf{u}) \log \frac{p(\mathbf{y}, \mathbf{f}, \mathbf{u})}{q(\mathbf{f}, \mathbf{u})} \, d\mathbf{f} d\mathbf{u}
 	\end{equation}
@@ -205,7 +205,7 @@
 	\section{Theoretical Justification of the Weighted ELBO} \label{app:C}
 	\resetappendixcounters % [#1]
 
-	This appendix provides the theoretical basis for the sample-weighted ELBO objective function defined in Equation (16). \textcolor{red}{Standard} variational inference minimizes the KL divergence between the variational posterior $q(\mathbf{u})$ and the true Bayesian posterior $p(\mathbf{u}|\mathbf{y}) \propto p(\mathbf{y}|\mathbf{f})p(\mathbf{f}|\mathbf{u})p(\mathbf{u})$. This is equivalent to maximizing the standard ELBO:% [#3]
+	This appendix provides the theoretical basis for the sample-weighted ELBO objective function defined in Equation (16). \textcolor{red}{In standard} variational inference, the KL divergence between the variational posterior $q(\mathbf{u})$ and the true Bayesian posterior $p(\mathbf{u}|\mathbf{y}) \propto p(\mathbf{y}|\mathbf{f})p(\mathbf{f}|\mathbf{u})p(\mathbf{u})$ is minimized. This is equivalent to maximizing the standard ELBO:% [#3]
 	\begin{equation}
 		\mathcal{L}
 		= \mathbb{E}_{q}\!\left[\log p(\mathbf{y}\mid \mathbf{f})\right]
@@ -282,7 +282,7 @@
 	\subsection{Bandwidth Sensitivity} \label{app:E1}
 	The bandwidth study confirms that moderate kernels are preferable. Averaged over three tasks, $\sigma=0.5$ yields the best QL (\textbf{0.034774}), while $\sigma=0.3$ attains the best RMSE (\textbf{0.069403}) and remains very close to $\sigma=0.5$. In contrast, $\sigma=0.1$ degrades both RMSE and QL, indicating over-localization of the training signal. Hence, the default choice $\sigma=0.5$ provides the most balanced overall behavior.
 
-	带宽敏感性结果表明，中等带宽更为合适。在三个任务平均意义下，$\sigma=0.5$ 取得最佳 QL（\textbf{0.034774}），而 $\sigma=0.3$ 取得最佳 RMSE（\textbf{0.069403}），且与 $\sigma=0.5$ 非常接近。相比之下，$\sigma=0.1$ 会同时恶化 RMSE 和 QL，说明训练信号被过度局部化。因此，默认设定 $\sigma=0.5$ 在综合表现上最为均衡。
+	带宽敏感性结果表明，中等带宽更为合适。在三个任务平均意义下，$\sigma=0.5$ 取得最佳 QL（\textbf{0.034774}），而 $\sigma=0.3$ 取得最佳 RMSE（\textbf{0.069403}），且与 $\sigma=0.5$ 非常接近。相比之下，$\sigma=0.1$ 会同时恶化 RMSE 和 QL，说明训练信号被过度收缩到 ROI 中极窄邻域。因此，默认设定 $\sigma=0.5$ 在综合表现上最为均衡。
 
 	\begin{table}[htbp]
 		\centering
@@ -427,9 +427,9 @@
 	\section{Wall-clock Training Time and Time Complexity} \label{app:F}
 	\resetappendixcounters % [#1]
 
-		\textcolor{red}{This appendix reports the detailed wall-clock training time and asymptotic time-complexity order of the Gaussian process surrogate methods evaluated in Section~4.2 of the main paper. All methods are trained for $500$ epochs on the OFDM dataset with $N=400$ training samples, $B=128$, hidden latent dimension $h=5$, $M=128$ inducing points, $p=3$ response tasks, and $q=3$ LMC latent functions where applicable, on a single workstation equipped with an NVIDIA RTX~2060 GPU, PyTorch~2.11+cu130 and Python~3.10. Table~\ref{tab:training_time_appendix} aggregates the total wall-clock time, the per-epoch time, the trainable-parameter count, and the total asymptotic training order for each method.}% [#5]
+		\textcolor{red}{This appendix reports the wall-clock training time and asymptotic time-complexity order of the Gaussian process surrogate methods evaluated in Section~4.2 of the main paper. All methods are trained for $500$ epochs on the OFDM dataset with $N=400$ training samples, $B=128$, hidden latent dimension $h=5$, $M=128$ inducing points, $p=3$ response tasks, and $q=3$ LMC latent functions where applicable, on a single workstation equipped with an NVIDIA RTX~2060 GPU, PyTorch~2.11+cu130 and Python~3.10. Table~\ref{tab:training_time_appendix} summarizes the total wall-clock time, per-epoch time, trainable-parameter count, and total asymptotic training order for each method.}% [#5]
 
-		\textcolor{red}{本附录给出正文 Section~4.2 中各高斯过程代理方法的 wall-clock 训练耗时与渐近时间复杂度。所有方法在 OFDM 数据集上训练 $500$ epochs，使用 $N=400$ 训练样本、$B=128$、隐藏潜在维度 $h=5$、$M=128$ 个 inducing points、$p=3$ 个响应任务；对 LMC-DGP，latent functions 数为 $q=3$。硬件为一块 NVIDIA RTX~2060 GPU，软件栈为 PyTorch~2.11+cu130、Python~3.10。Table~\ref{tab:training_time_appendix} 汇总各方法的总耗时、单 epoch 耗时、可训练参数量以及总训练渐近阶。}% [#5]
+		\textcolor{red}{本附录给出正文 Section~4.2 中各高斯过程代理方法的 wall-clock 训练耗时与渐近时间复杂度。所有方法在 OFDM 数据集上训练 $500$ epochs，使用 $N=400$ 训练样本、$B=128$、隐藏潜在维度 $h=5$、$M=128$ 个 inducing points、$p=3$ 个响应任务；对 LMC-DGP，latent functions 数为 $q=3$。硬件为一块 NVIDIA RTX~2060 GPU，软件栈为 PyTorch~2.11+cu130、Python~3.10。Table~\ref{tab:training_time_appendix} 汇总各方法的总 wall-clock 耗时、单 epoch 耗时、可训练参数量以及总训练渐近阶。}% [#5]
 
 		\begin{table}[!h]
 			\centering
@@ -456,15 +456,15 @@
 		\end{tabular*}
 	\end{table}
 
-		\textcolor{red}{The table reports asymptotic orders up to constant factors, so DA-DGP and T-Atten have the same formal order as the shared DGP backbone. Their larger wall-clock times arise from constant-factor operations introduced by bilevel optimisation: the inner virtual update, the unrolled validation backward, and two finite-difference Hessian--vector evaluations. The gradient-balancing baseline (MGDA) and the independent-task baseline (Indep-DGP) instead scale approximately linearly in the number of tasks $p$. The heteroscedastic exact GP (Indep-HetGP) bypasses the variational machinery and is dominated by the dense $N\times N$ Cholesky factorisation, which remains affordable because $N=400$ is small. These numbers verify that the additional wall-clock overhead of DA-DGP is acceptable for a one-shot surrogate fit, in exchange for the robust Pareto frontier reported in Table~7 of the main paper.}% [#5/#7]
+		\textcolor{red}{The table reports asymptotic orders up to constant factors, so DA-DGP and T-Atten have the same formal order as the shared DGP backbone. Their larger wall-clock times arise from constant-factor operations introduced by bilevel optimization: the inner virtual update, the unrolled validation backward, and two finite-difference Hessian--vector evaluations. The gradient-balancing baseline (MGDA) and the independent-task baseline (Indep-DGP) instead scale approximately linearly in the number of tasks $p$. The heteroscedastic exact GP (Indep-HetGP) bypasses the variational machinery and is dominated by the dense $N\times N$ Cholesky factorization, which remains affordable because $N=400$ is small. These measurements quantify the extra wall-clock overhead of DA-DGP and show that it remains practical for a one-shot surrogate fit under the robust Pareto assessment reported in Table~7 of the main paper.}% [#5/#7]
 
-		\textcolor{red}{表中渐近阶省略常数因子，因此 DA-DGP 与 T-Atten 在形式上与共享 DGP 主干保持相同阶。二者 wall-clock 时间较高，来自 bilevel 优化引入的常数因子操作，包括内层虚拟更新、验证 unrolled 反向传播以及两次 finite-difference Hessian--vector 近似；梯度均衡基线（MGDA）和独立任务基线（Indep-DGP）则近似随任务数 $p$ 线性增长。异方差 exact GP（Indep-HetGP）不经过变分机制，其代价由 $N\times N$ Cholesky 分解主导，因 $N=400$ 较小而仍可接受。综上，DA-DGP 多出的 wall-clock 开销对于一次性代理拟合是可接受的，所换得的是正文 Table~7 中的鲁棒 Pareto 前沿。}% [#5/#7]
+		\textcolor{red}{表中渐近阶省略常数因子，因此 DA-DGP 与 T-Atten 在形式上与共享 DGP 主干保持相同阶。二者 wall-clock 时间较高，来自 bilevel 优化引入的常数因子操作，包括内层虚拟更新、验证 unrolled 反向传播以及两次 finite-difference Hessian--vector 近似；梯度均衡基线（MGDA）和独立任务基线（Indep-DGP）则近似随任务数 $p$ 线性增长。异方差 exact GP（Indep-HetGP）不经过变分机制，其代价由 $N\times N$ Cholesky 分解主导，因 $N=400$ 较小而仍可接受。综上，这些测量量化了 DA-DGP 额外的 wall-clock 开销，并表明其在正文 Table~7 所示鲁棒 Pareto 评价下，对于一次性代理拟合仍具有实际可行性。}% [#5/#7]
 
 	\subsection{\textcolor{red}{Robust Pareto Indicator Settings}} \label{app:F1}% [#4]
 
-	\textcolor{red}{For reproducibility of the AHP-weighted TOPSIS ranking in Table~7 of the main paper, the nine robust Pareto indicators are treated as follows. The benefit-type indicators are the number of method-local Pareto points (\#P), the number of contributions to the global front (\#GP), global contribution rate (GC), normalised hypervolume ($\mathrm{HV}_{\mathrm{n}}$), and hypervolume ratio (HVR), whereas the cost-type indicators are inverted generational distance (IGD), inverted generational distance plus (IGD$^{+}$), spacing metric (SP), and closest-ideal distance (CID). The raw AHP weights assigned to these indicators are $[6,3,3,1,6,1,6,1,6]$, respectively, and are normalized to sum to one before TOPSIS aggregation. This setting gives higher emphasis to local-front density, hypervolume ratio, IGD$^{+}$, and CID while retaining the remaining indicators as supporting evidence, so the final $C_i$ rank should be read as an integrated robust-frontier assessment rather than a claim of dominance on every single metric.}% [#4]
+		\textcolor{red}{For reproducibility of the AHP-weighted TOPSIS ranking in Table~7 of the main paper, the nine robust Pareto indicators are treated as follows. The benefit-type indicators are the number of within-method Pareto points (\#P), the number of contributions to the global front (\#GP), global contribution rate (GC), normalized hypervolume ($\mathrm{HV}_{\mathrm{n}}$), and hypervolume ratio (HVR), whereas the cost-type indicators are inverted generational distance (IGD), inverted generational distance plus (IGD$^{+}$), spacing metric (SP), and closest-ideal distance (CID). The raw AHP weights assigned to these indicators are $[6,3,3,1,6,1,6,1,6]$, respectively, and are normalized to sum to one before TOPSIS aggregation. This setting gives higher emphasis to within-method frontier density, hypervolume ratio, IGD$^{+}$, and CID while retaining the remaining indicators as supporting evidence, so the final $C_i$ rank should be read as an integrated robust-frontier assessment rather than a claim of dominance on every single metric.}% [#4]
 
-	\textcolor{red}{为便于复核正文 Table~7 的 AHP 加权 TOPSIS 排名，九个鲁棒 Pareto 指标按如下方向处理：方法内 Pareto 点数 (\#P)、对全局前沿的贡献数 (\#GP)、全局贡献率 (GC)、归一化超体积 ($\mathrm{HV}_{\mathrm{n}}$) 和超体积比 (HVR) 为收益型指标，反世代距离 (IGD)、增强反世代距离 (IGD$^{+}$)、spacing metric (SP) 与最近理想点距离 (CID) 为成本型指标。对应的 AHP 原始权重依次为 $[6,3,3,1,6,1,6,1,6]$，并在 TOPSIS 聚合前归一化为和为一。该设定对局部前沿密度、超体积比、IGD$^{+}$ 和 CID 赋予更高权重，同时保留其余指标作为支撑证据，因此最终 $C_i$ 排名应理解为综合鲁棒前沿评价，而非声称某一方法在每个单项指标上均逐项支配。}% [#4]
+	\textcolor{red}{为便于复核正文 Table~7 的 AHP 加权 TOPSIS 排名，九个鲁棒 Pareto 指标按如下方向处理：方法内 Pareto 点数 (\#P)、对全局前沿的贡献数 (\#GP)、全局贡献率 (GC)、归一化超体积 ($\mathrm{HV}_{\mathrm{n}}$) 和超体积比 (HVR) 为收益型指标，反世代距离 (IGD)、增强反世代距离 (IGD$^{+}$)、spacing metric (SP) 与最近理想点距离 (CID) 为成本型指标。对应的 AHP 原始权重依次为 $[6,3,3,1,6,1,6,1,6]$，并在 TOPSIS 聚合前归一化为和为一。该设定对方法内前沿密度、超体积比、IGD$^{+}$ 和 CID 赋予更高权重，同时保留其余指标作为支撑证据，因此最终 $C_i$ 排名应理解为综合鲁棒前沿评价，而非声称某一方法在每个单项指标上均逐项支配。}% [#4]
 
 	\newpage
 \begin{thebibliography}{99}
